@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DailyFlow</string>
+    <string name="title_activity_main">DailyFlow</string>
+    <string name="package_name">com.bugunyap.app</string>
+    <string name="custom_url_scheme">com.bugunyap.app</string>
+</resources>
