@@ -18,18 +18,47 @@ const filterButtons = document.querySelectorAll(".filter-button");
 const quickNotes = document.querySelector("#quickNotes");
 const quickNotesStorageKey = "dailyflow_quick_notes";
 let activeFilter = "all";
+
+// ==========================================================================
+// SAFE STORAGE WRAPPERS (Crash-proof localStorage for WebView/Restricted env)
+// ==========================================================================
+function safeGetStorage(key, defaultValue = "") {
+  try {
+    const val = localStorage.getItem(key);
+    return val !== null ? val : defaultValue;
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
+function safeSetStorage(key, val) {
+  try {
+    localStorage.setItem(key, String(val));
+  } catch (e) {}
+}
+
+function safeRemoveStorage(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {}
+}
+
 let tasks = loadTasks();
 
 function loadTasks() {
   try {
-    return JSON.parse(localStorage.getItem(storageKey)) || [];
+    return JSON.parse(safeGetStorage(storageKey, "[]")) || [];
   } catch {
     return [];
   }
 }
 
 function saveTasks() {
-  localStorage.setItem(storageKey, JSON.stringify(tasks));
+  try {
+    safeSetStorage(storageKey, JSON.stringify(tasks));
+  } catch (e) {
+    console.warn("Could not save tasks:", e);
+  }
 }
 
 // ==========================================================================
@@ -38,9 +67,9 @@ function saveTasks() {
 const NOTIFICATION_CHANNEL_ID = "dailyflow_reminders";
 
 async function initLocalNotificationChannel() {
-  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
-  if (!LocalNotifications) return;
   try {
+    const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+    if (!LocalNotifications || typeof LocalNotifications.createChannel !== "function") return;
     await LocalNotifications.createChannel({
       id: NOTIFICATION_CHANNEL_ID,
       name: "DailyFlow Görev Hatırlatıcıları",
@@ -57,24 +86,31 @@ async function initLocalNotificationChannel() {
 }
 
 async function requestNotificationPermission() {
-  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
-  if (LocalNotifications) {
-    try {
+  try {
+    const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+    if (LocalNotifications && typeof LocalNotifications.checkPermissions === "function") {
       let perm = await LocalNotifications.checkPermissions();
-      if (perm.display !== "granted") {
+      if (perm?.display !== "granted" && typeof LocalNotifications.requestPermissions === "function") {
         perm = await LocalNotifications.requestPermissions();
       }
-      return perm.display === "granted";
-    } catch (err) {
-      console.warn("Bildirim izni istenirken hata:", err);
-      return false;
+      return perm?.display === "granted";
     }
-  } else if ("Notification" in window) {
-    if (Notification.permission === "default") {
-      const res = await Notification.requestPermission();
-      return res === "granted";
+  } catch (err) {
+    console.warn("Capacitor bildirim izni hatası:", err);
+  }
+
+  // Yalnızca yerel olmayan tarayıcı ortamında Web Notification iznini güvenle kontrol et
+  try {
+    const isNative = typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform();
+    if (!isNative && typeof window !== "undefined" && "Notification" in window && typeof Notification.requestPermission === "function") {
+      if (Notification.permission === "default") {
+        const res = await Notification.requestPermission();
+        return res === "granted";
+      }
+      return Notification.permission === "granted";
     }
-    return Notification.permission === "granted";
+  } catch (err) {
+    console.warn("Web Notification desteklenmiyor:", err);
   }
   return false;
 }
@@ -118,43 +154,70 @@ async function scheduleTaskNotification(task, scheduledDate) {
       console.error("[Capacitor] Bildirim planlama hatası:", err);
       return null;
     }
-  } else if ("Notification" in window && Notification.permission === "granted") {
-    const delay = scheduledDate.getTime() - now.getTime();
-    if (delay > 0 && delay < 2147483647) {
-      setTimeout(() => {
-        new Notification("⏰ DailyFlow Hatırlatıcı", {
-          body: task.title ? `${task.title} görevinizin zamanı geldi!` : "Zamanlanmış görevinizin saati geldi.",
-          icon: "favicon.ico"
-        });
-      }, delay);
-      return notifId;
-    }
   }
+
+  // Web tarayıcı ortamı fallback
+  try {
+    const isNative = typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform();
+    if (!isNative && typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
+      const delay = scheduledDate.getTime() - now.getTime();
+      if (delay > 0 && delay < 2147483647) {
+        setTimeout(() => {
+          try {
+            new Notification("⏰ DailyFlow Hatırlatıcı", {
+              body: task.title ? `${task.title} görevinizin zamanı geldi!` : "Zamanlanmış görevinizin saati geldi.",
+              icon: "favicon.ico"
+            });
+          } catch (e) {
+            console.warn("Web Notification oluşturulamadı:", e);
+          }
+        }, delay);
+        return notifId;
+      }
+    }
+  } catch (e) {}
+
   return null;
 }
 
 async function cancelTaskNotification(notificationId) {
   if (!notificationId) return;
-  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
-  if (LocalNotifications) {
-    try {
+  try {
+    const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+    if (LocalNotifications && typeof LocalNotifications.cancel === "function") {
       await LocalNotifications.cancel({
         notifications: [{ id: Number(notificationId) }]
       });
       console.log(`[Capacitor] Bildirim iptal edildi: ID=${notificationId}`);
-    } catch (err) {
-      console.warn("[Capacitor] Bildirim iptal edilemedi:", err);
     }
+  } catch (err) {
+    console.warn("[Capacitor] Bildirim iptal edilemedi:", err);
   }
 }
 
-if (window.Capacitor?.Plugins?.LocalNotifications) {
-  initLocalNotificationChannel();
-  window.Capacitor.Plugins.LocalNotifications.addListener("localNotificationActionPerformed", (action) => {
-    console.log("DailyFlow bildirim tıklandı:", action);
-    if (typeof setAppView === "function") setAppView("dashboard");
-  });
+function setupNotifications() {
+  try {
+    const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+    if (LocalNotifications) {
+      initLocalNotificationChannel();
+      if (typeof LocalNotifications.addListener === "function") {
+        LocalNotifications.addListener("localNotificationActionPerformed", (action) => {
+          console.log("DailyFlow bildirim tıklandı:", action);
+          if (typeof setAppView === "function") setAppView("dashboard");
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Notification listener setup error:", err);
+  }
 }
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupNotifications, false);
+} else {
+  setupNotifications();
+}
+document.addEventListener("deviceready", setupNotifications, false);
 
 function formatDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
@@ -290,26 +353,38 @@ let themeAdTimer = null;
 let pendingTheme = "matcha";
 
 function applyTheme(theme) {
-  document.body.classList.toggle("dark", theme === "dark");
-  document.body.dataset.theme = theme === "matcha" || theme === "cafe-royal" ? theme : "";
-  localStorage.setItem(themeKey, theme === "matcha" ? "matcha" : theme);
-  if (theme === "cafe-royal") localStorage.setItem(themeKey, "cafe-royal");
-  themeOptions.forEach((option) => option.classList.toggle("active", option.dataset.themeChoice === theme));
+  try {
+    document.body.classList.toggle("dark", theme === "dark");
+    document.body.dataset.theme = theme === "matcha" || theme === "cafe-royal" ? theme : "";
+    safeSetStorage(themeKey, theme === "matcha" ? "matcha" : theme);
+    if (theme === "cafe-royal") safeSetStorage(themeKey, "cafe-royal");
+    themeOptions.forEach((option) => option.classList.toggle("active", option.dataset.themeChoice === theme));
+  } catch (e) {
+    console.warn("Theme apply error:", e);
+  }
 }
 
 function hasActiveTheme(theme) {
-  const expiryKey = themeExpiryKeys[theme];
-  const expiresAt = Number(localStorage.getItem(expiryKey));
-  if (!expiresAt || expiresAt <= Date.now()) {
-    localStorage.removeItem(expiryKey);
+  try {
+    const expiryKey = themeExpiryKeys[theme];
+    const expiresAt = Number(safeGetStorage(expiryKey, "0"));
+    if (!expiresAt || expiresAt <= Date.now()) {
+      safeRemoveStorage(expiryKey);
+      return false;
+    }
+    return true;
+  } catch (e) {
     return false;
   }
-  return true;
 }
 
 function getStoredTheme() {
-  const storedTheme = localStorage.getItem(themeKey);
-  return (storedTheme === "matcha" || storedTheme === "cafe-royal") && hasActiveTheme(storedTheme) ? storedTheme : (storedTheme === "dark" ? "dark" : "light");
+  try {
+    const storedTheme = safeGetStorage(themeKey, "light");
+    return (storedTheme === "matcha" || storedTheme === "cafe-royal") && hasActiveTheme(storedTheme) ? storedTheme : (storedTheme === "dark" ? "dark" : "light");
+  } catch (e) {
+    return "light";
+  }
 }
 
 function updateThemeUnlockCopy(theme) {
@@ -740,22 +815,28 @@ function renderCalendarDates() {
   }).join("");
 }
 
-applyTheme(getStoredTheme());
-if (localStorage.getItem(themeKey) === "matcha") {
-  const storedTheme = localStorage.getItem(themeKey);
-  const themeExpiresAt = Number(localStorage.getItem(themeExpiryKeys[storedTheme]));
-  window.setTimeout(() => {
-    if (!hasActiveTheme(storedTheme)) applyTheme("light");
-  }, Math.max(themeExpiresAt - Date.now(), 0));
+function initThemeTimer() {
+  try {
+    const storedTheme = safeGetStorage(themeKey, "");
+    if (storedTheme === "matcha" || storedTheme === "cafe-royal") {
+      const themeExpiresAt = Number(safeGetStorage(themeExpiryKeys[storedTheme], "0"));
+      window.setTimeout(() => {
+        if (!hasActiveTheme(storedTheme)) applyTheme("light");
+      }, Math.max(themeExpiresAt - Date.now(), 0));
+    }
+  } catch (e) {}
 }
-quickNotes.value = localStorage.getItem(quickNotesStorageKey) || "";
-quickNotes.addEventListener("input", () => {
-  localStorage.setItem(quickNotesStorageKey, quickNotes.value);
-});
-renderCalendarDates();
-renderMonthPicker();
-renderTimePicker();
-renderTasks();
+
+function initQuickNotes() {
+  try {
+    if (quickNotes) {
+      quickNotes.value = safeGetStorage(quickNotesStorageKey, "");
+      quickNotes.addEventListener("input", () => {
+        safeSetStorage(quickNotesStorageKey, quickNotes.value);
+      });
+    }
+  } catch (e) {}
+}
 
 const menuButton = document.querySelector("#menuButton");
 const drawerClose = document.querySelector("#drawerClose");
@@ -919,8 +1000,8 @@ updatePomodoroDisplay();
 const financeCategoryNames = ["Transfers", "Shopping", "Food & Beverages", "Utility/Bills"];
 const financeCategoryColors = ["#59e6ff", "#d486ff", "#ff76ae", "#6db9ff"];
 let expenses = loadExpenses();
-let selectedCurrency = localStorage.getItem(currencyStorageKey) || "USD";
-let monthlyBudget = Number(localStorage.getItem(budgetStorageKey)) || 0;
+let selectedCurrency = safeGetStorage(currencyStorageKey, "USD");
+let monthlyBudget = Number(safeGetStorage(budgetStorageKey, "0")) || 0;
 if (!currencies[selectedCurrency]) selectedCurrency = "USD";
 
 function getCurrencySymbol() {
@@ -945,14 +1026,16 @@ function formatExpenseDate(dateValue) {
 
 function loadExpenses() {
   try {
-    return JSON.parse(localStorage.getItem(financeStorageKey)) || [];
+    return JSON.parse(safeGetStorage(financeStorageKey, "[]")) || [];
   } catch {
     return [];
   }
 }
 
 function saveExpenses() {
-  localStorage.setItem(financeStorageKey, JSON.stringify(expenses));
+  try {
+    safeSetStorage(financeStorageKey, JSON.stringify(expenses));
+  } catch (e) {}
 }
 
 function renderFinance() {
@@ -1088,4 +1171,23 @@ undoExpense.addEventListener("click", () => {
   deletedExpense = null;
 });
 
-renderFinance();
+// ==========================================================================
+// RESILIENT INITIALIZATION (Crash-proof startup for Android WebView & Browser)
+// ==========================================================================
+function initApp() {
+  try { applyTheme(getStoredTheme()); } catch (e) { console.error("Theme init error:", e); }
+  try { initThemeTimer(); } catch (e) { console.error("Theme timer error:", e); }
+  try { initQuickNotes(); } catch (e) { console.error("Quick notes error:", e); }
+  try { renderCalendarDates(); } catch (e) { console.error("Calendar dates error:", e); }
+  try { renderMonthPicker(); } catch (e) { console.error("Month picker error:", e); }
+  try { renderTimePicker(); } catch (e) { console.error("Time picker error:", e); }
+  try { renderTasks(); } catch (e) { console.error("Tasks error:", e); }
+  try { renderFinance(); } catch (e) { console.error("Finance error:", e); }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
+document.addEventListener("deviceready", initApp, false);
