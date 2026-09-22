@@ -258,7 +258,7 @@ body[data-theme="cafe-royal"] .task-panel::after { background-image: url("data:i
 .finance-heading h1 { color: var(--ink); }.finance-heading p:last-child { color: var(--muted); }
 .finance-summary { border-color: var(--line); color: var(--ink); background: var(--surface); box-shadow: var(--shadow); }
 .finance-badge { color: var(--mint-deep); border-color: rgba(91,191,140,.35); background: rgba(183,232,207,.45); }
-.finance-summary svg { bottom: -8px; }.finance-summary path { stroke-width: 13; }.gauge-track { stroke: var(--line); }.gauge-segment { fill: none; stroke-linecap: butt; stroke-dasharray: 0 392.7; }.gauge-transfers { stroke: #35bdd8; }.gauge-shopping { stroke: #9d63d8; }.gauge-food { stroke: #e86d9a; }.gauge-utility { stroke: #4d7cc5; }
+.finance-summary svg { bottom: -8px; background: transparent; }.finance-summary path { stroke-width: 13; fill: none; }.gauge-track { fill: none; stroke: var(--line); }.gauge-segment { fill: none; stroke-linecap: butt; stroke-dasharray: 0 392.7; }.gauge-transfers { stroke: #35bdd8; }.gauge-shopping { stroke: #9d63d8; }.gauge-food { stroke: #e86d9a; }.gauge-utility { stroke: #4d7cc5; }
 .finance-summary strong { color: var(--ink); }.finance-summary > span { color: var(--muted); }.finance-summary > small { z-index: 1; margin-top: 4px; color: var(--mint-deep); font-size: 11px; font-weight: 800; }.finance-summary.budget-exceeded > small { color: #c44772; }
 .currency-picker select { color: var(--ink); border-color: var(--line); background: var(--paper); }.currency-picker select:hover, .currency-picker select:focus { border-color: var(--mint-strong); }
 .finance-category { border-color: var(--line); background: var(--surface); box-shadow: var(--shadow); }.finance-category-head { color: var(--muted); }.finance-category-head strong { color: var(--ink); }.finance-bar { background: var(--line); }
@@ -500,11 +500,16 @@ body[data-theme="cafe-royal"] .task-panel::after { background-image: url("data:i
   justify-content: center;
   width: 100%;
   padding-top: 6px;
+  background: transparent;
 }
 .finance-gauge-wrapper svg {
   width: min(320px, 85%);
   height: auto;
   max-height: 145px;
+  background: transparent;
+}
+.finance-gauge-wrapper path {
+  fill: none;
 }
 .finance-gauge-center {
   display: flex;
