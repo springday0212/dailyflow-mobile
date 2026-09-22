@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f7f2">
+  <title>Do Today | Minimal Task Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuButton" type="button" aria-label="Open navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="brand">
+        <button class="brand-sun" id="themeToggle" type="button" title="Choose theme" aria-label="Choose theme">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <span>DailyFlow<span class="brand-dot">.</span></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard" id="dashboardView">
+      <section class="welcome-row">
+        <div class="welcome-intro">
+          <aside class="focus-panel quick-notes-card">
+            <div class="quick-notes-content">
+              <p class="eyebrow">QUICK NOTES</p>
+              <textarea id="quickNotes" placeholder="Write something to remember..." maxlength="500" aria-label="Quick notes"></textarea>
+            </div>
+          </aside>
+        </div>
+        <button class="calendar-widget focus-panel" id="calendarWidget" type="button" aria-label="Open calendar">
+          <span class="calendar-widget-art" aria-hidden="true">
+            <svg viewBox="0 0 90 90" width="90" height="90" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="45" cy="45" r="34" stroke-width="1.5"></circle>
+              <rect x="27" y="29" width="36" height="34" rx="5" stroke-width="2"></rect>
+              <path d="M35 24v12M55 24v12M27 41h36" stroke-width="2"></path>
+              <path d="M36 49h.01M45 49h.01M54 49h.01M36 56h.01M45 56h.01M54 56h.01" stroke-width="4"></path>
+            </svg>
+          </span>
+          <span class="calendar-widget-content">
+            <span class="eyebrow">THIS WEEK</span>
+            <span class="calendar-dates" id="calendarDates" aria-hidden="true"></span>
+            <span class="focus-footer"><span class="focus-line"></span><span>Plan · Focus · Achieve</span></span>
+          </span>
+        </button>
+      </section>
+
+      <section class="stats-grid" aria-label="Task summary">
+        <div class="stat-card accent-card">
+          <div class="stat-icon">✦</div>
+          <div><strong id="totalCount">0</strong><span>total tasks</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon muted-icon">◷</div>
+          <div><strong id="activeCount">0</strong><span>in progress</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-summary">
+            <div class="stat-icon green-icon">✓</div>
+            <div><strong id="doneCount">0</strong><span>completed</span></div>
+          </div>
+          <div class="completion-card">
+            <div class="completion-copy"><strong id="completionPercent">0%</strong><span>completed</span></div>
+            <div class="progress-track"><span id="progressBar"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="task-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Tasks</h2>
+              <p id="listDescription">Planned for today</p>
+            </div>
+            <button class="clear-button" id="clearCompleted" type="button">Clear completed</button>
+          </div>
+
+          <form class="add-task-form" id="taskForm">
+            <label class="input-wrap" for="taskInput">
+              <span class="plus-symbol">＋</span>
+              <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off" maxlength="120" required>
+            </label>
+            <select id="priorityInput" aria-label="Task priority">
+              <option value="low">Low priority</option>
+              <option value="medium" selected>Medium priority</option>
+              <option value="high">High priority</option>
+            </select>
+            <button class="add-button" type="submit">Add <span>↗</span></button>
+          </form>
+
+          <div class="toolbar">
+            <div class="filters" role="group" aria-label="Task filters">
+              <button class="filter-button active" data-filter="all" type="button">All <span id="allFilterCount">0</span></button>
+              <button class="filter-button" data-filter="active" type="button">Active</button>
+              <button class="filter-button" data-filter="completed" type="button">Completed</button>
+            </div>
+            <label class="search-box" for="searchInput">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="Search tasks...">
+            </label>
+          </div>
+
+          <div class="task-list" id="taskList" aria-live="polite"></div>
+          <div class="empty-state" id="emptyState" hidden>
+            <span class="empty-icon">✓</span>
+            <h3>All caught up</h3>
+            <p>You can start by adding a new task.</p>
+          </div>
+        </div>
+      </section>
+      <aside class="native-bento-ad" aria-label="Advertisement">
+        <div class="native-bento-ad__header"><span class="native-bento-ad__label">Ad</span></div>
+        <div class="native-bento-ad__media" aria-label="Advertisement image placeholder">
+          <span class="native-bento-ad__media-line"></span>
+          <span class="native-bento-ad__media-orb"></span>
+          <span class="native-bento-ad__media-note">Native ad creative</span>
+        </div>
+        <div class="native-bento-ad__footer"><button class="native-bento-ad__cta" type="button">Learn more <span aria-hidden="true">↗</span></button></div>
+      </aside>
+    </main>
+  </div>
+  <div class="calendar-modal" id="calendarModal" hidden>
+    <div class="calendar-backdrop" data-calendar-close></div>
+    <section class="calendar-dialog" role="dialog" aria-modal="true" aria-labelledby="calendarTitle">
+      <div class="bottom-sheet-drag" aria-hidden="true"><span class="drag-bar"></span></div>
+      <div class="picker-header">
+        <div><p class="eyebrow">SCHEDULE</p><h2 id="calendarTitle">Select date and time</h2></div>
+        <button class="calendar-close" type="button" data-calendar-close aria-label="Close calendar">×</button>
+      </div>
+
+      <div class="picker-tabs" role="tablist" aria-label="Picker view selection">
+        <button class="picker-tab active" id="pickerTabDate" type="button" role="tab" aria-selected="true" data-tab="date">
+          <span class="picker-tab-icon">📅</span>
+          <span class="picker-tab-text">Date</span>
+          <span class="picker-tab-badge" id="pickerDateBadge">Today</span>
+        </button>
+        <button class="picker-tab" id="pickerTabTime" type="button" role="tab" aria-selected="false" data-tab="time">
+          <span class="picker-tab-icon">⏰</span>
+          <span class="picker-tab-text">Time</span>
+          <span class="picker-tab-badge" id="pickerTimeBadge">10:00 AM</span>
+        </button>
+      </div>
+
+      <div class="picker-body">
+        <div class="month-picker" id="monthPickerSection">
+          <div class="quick-presets date-presets" role="group" aria-label="Quick dates">
+            <button class="preset-chip active" id="presetToday" type="button" data-date-preset="today">Today</button>
+            <button class="preset-chip" id="presetTomorrow" type="button" data-date-preset="tomorrow">Tomorrow</button>
+            <button class="preset-chip" id="presetWeekend" type="button" data-date-preset="weekend">This Weekend</button>
+          </div>
+          <div class="month-heading">
+            <button id="previousMonth" class="month-nav-btn" type="button" aria-label="Previous month">‹</button>
+            <div class="month-heading-label">
+              <strong id="monthTitle"></strong>
+              <select id="yearSelect" aria-label="Choose year"></select>
+            </div>
+            <button id="nextMonth" class="month-nav-btn" type="button" aria-label="Next month">›</button>
+          </div>
+          <button class="today-button" id="todayButton" type="button">Reset to Today</button>
+          <div class="month-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div class="month-days" id="monthDays" role="grid" aria-label="Calendar days"></div>
+        </div>
+
+        <div class="time-picker" id="timePickerSection">
+          <div class="quick-presets time-presets" role="group" aria-label="Quick time slots">
+            <button class="preset-chip" data-time-preset="09:00 AM" type="button">09:00 AM</button>
+            <button class="preset-chip" data-time-preset="12:00 PM" type="button">12:00 PM</button>
+            <button class="preset-chip" data-time-preset="03:00 PM" type="button">03:00 PM</button>
+            <button class="preset-chip" data-time-preset="06:00 PM" type="button">06:00 PM</button>
+            <button class="preset-chip" data-time-preset="08:00 PM" type="button">08:00 PM</button>
+          </div>
+          <div class="time-display-card">
+            <div class="time-display-digits">
+              <span class="time-unit-val" id="timeDisplayHour">10</span>
+              <span class="time-unit-colon">:</span>
+              <span class="time-unit-val" id="timeDisplayMinute">00</span>
+            </div>
+            <div class="period-toggle" role="group" aria-label="Choose AM or PM">
+              <button class="period-button active" type="button" data-period="AM" aria-pressed="true">AM</button>
+              <button class="period-button" type="button" data-period="PM" aria-pressed="false">PM</button>
+            </div>
+          </div>
+          <div class="time-columns" aria-label="Choose time">
+            <div class="time-column">
+              <div class="time-column-header"><span class="time-column-label">Hour (1-12)</span></div>
+              <div class="time-list hour-grid" id="hourList" tabindex="0" aria-label="Hour selection"></div>
+            </div>
+            <div class="time-column">
+              <div class="time-column-header">
+                <span class="time-column-label">Minute</span>
+                <div class="minute-stepper">
+                  <button type="button" id="minuteDecBtn" class="stepper-btn" aria-label="Minus 5 minutes">-5m</button>
+                  <button type="button" id="minuteIncBtn" class="stepper-btn" aria-label="Plus 5 minutes">+5m</button>
+                </div>
+              </div>
+              <div class="time-list minute-grid" id="minuteList" tabindex="0" aria-label="Minute selection"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="picker-footer">
+        <label class="calendar-note" for="calendarNote"><span>Add note</span><input id="calendarNote" type="text" maxlength="120" placeholder="Write a note for this time..." autocomplete="off"></label>
+        <div class="picker-footer-actions"><p id="selectionSummary" aria-live="polite">Today at 10:00 AM</p><button class="continue-button" id="continueButton" type="button">Save to Tasks</button></div>
+      </div>
+    </section>
+  </div>
+  <div class="theme-modal" id="themeModal" hidden>
+    <div class="theme-backdrop" data-theme-close></div>
+    <section class="theme-dialog" role="dialog" aria-modal="true" aria-labelledby="themeTitle">
+      <div class="theme-dialog-header">
+        <div><p class="eyebrow">PERSONALIZE YOUR FLOW</p><h2 id="themeTitle">Theme Picker</h2></div>
+        <button class="theme-close" type="button" data-theme-close aria-label="Close theme picker">×</button>
+      </div>
+      <div class="theme-picker-view" id="themePickerView">
+        <p class="theme-dialog-copy">Match your workspace to the mood you want to work in.</p>
+        <div class="theme-options" role="list" aria-label="Themes">
+          <button class="theme-option theme-option-light" type="button" data-theme-choice="light" role="listitem">
+            <span class="theme-option-preview"><span></span><i></i><b></b></span>
+            <span class="theme-option-info"><strong>Default Light Sage</strong><small>Soft &amp; calm</small></span>
+            <span class="theme-option-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="theme-option theme-option-dark" type="button" data-theme-choice="dark" role="listitem">
+            <span class="theme-option-preview"><span></span><i></i><b></b></span>
+            <span class="theme-option-info"><strong>Dark Sage</strong><small>Deep &amp; focused</small></span>
+            <span class="theme-option-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="theme-option theme-option-matcha" type="button" data-theme-choice="matcha" role="listitem">
+            <span class="theme-lock-badge">🔒 Unlock for 24 Hours</span>
+            <span class="theme-option-preview"><span></span><i></i><b></b></span>
+            <span class="theme-option-info"><strong>Matcha Garden 🌸</strong><small>Fresh &amp; botanical</small></span>
+            <span class="theme-option-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="theme-option theme-option-cafe" type="button" data-theme-choice="cafe-royal" role="listitem">
+            <span class="theme-lock-badge">🔒 Unlock for 24 Hours</span>
+            <span class="theme-option-preview"><span></span><i></i><b></b></span>
+            <span class="theme-option-info"><strong>Café Royal ♠️</strong><small>Warm &amp; vintage</small></span>
+            <span class="theme-option-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+      </div>
+      <div class="theme-confirm-view" id="themeConfirmView" hidden>
+        <div class="theme-confirm-art" aria-hidden="true">✦</div>
+        <p class="eyebrow" id="themeConfirmEyebrow">MATCHA GARDEN</p>
+        <h3 id="themeConfirmTitle">A little more green today?</h3>
+        <p id="themeConfirmCopy">Watch a short ad to use this theme for 24 hours.</p>
+        <div class="theme-confirm-actions">
+          <button class="theme-secondary-button" id="themeConfirmCancel" type="button">Cancel</button>
+          <button class="theme-primary-button" id="themeWatchAd" type="button">Watch ad &amp; unlock</button>
+        </div>
+      </div>
+      <div class="theme-ad-view" id="themeAdView" hidden aria-live="polite">
+        <div class="theme-ad-orbit" aria-hidden="true"><span></span><i></i><b></b></div>
+        <p class="eyebrow" id="themeAdEyebrow">MATCHA GARDEN</p>
+        <h3 id="themeAdTitle">Your garden is getting ready</h3>
+        <p id="themeAdCopy">The theme will unlock when the short ad simulation ends.</p>
+        <div class="theme-ad-progress"><span id="themeAdProgress"></span></div>
+        <strong id="themeAdCountdown">4</strong>
+      </div>
+    </section>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+  <aside class="sidebar-drawer" id="sidebarDrawer" aria-label="Navigation" aria-hidden="true">
+    <div class="sidebar-header"><div><strong>DailyFlow</strong><span>Navigation</span></div><button class="drawer-close" id="drawerClose" type="button" aria-label="Close navigation">×</button></div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" type="button" data-view="dashboard"><span aria-hidden="true">▤</span>Dashboard / Tasks</button>
+      <button class="sidebar-link" type="button" data-view="focus"><span aria-hidden="true">◷</span>Pomodoro Focus</button>
+      <button class="sidebar-link" type="button" data-view="finance"><span aria-hidden="true">💳</span>Finance Tracker</button>
+    </nav>
+  </aside>
+  <main class="focus-view" id="focusView" hidden>
+    <button class="focus-back" id="focusBack" type="button">← Dashboard</button>
+    <section class="pomodoro-shell" aria-labelledby="pomodoroTitle">
+      <p class="eyebrow">DAILYFLOW FOCUS</p>
+      <h1 id="pomodoroTitle">Pomodoro Focus</h1>
+      <div class="pomodoro-modes" role="group" aria-label="Focus duration">
+        <button class="pomodoro-mode active" type="button" data-focus="25" data-break="5"><strong>Classic</strong><span>25 / 5</span></button>
+        <button class="pomodoro-mode" type="button" data-focus="45" data-break="15"><strong>Study</strong><span>45 / 15</span></button>
+        <button class="pomodoro-mode" type="button" data-focus="50" data-break="10"><strong>Deep Work</strong><span>50 / 10</span></button>
+      </div>
+      <div class="pomodoro-ring" aria-live="polite">
+        <svg viewBox="0 0 260 260" aria-hidden="true"><circle class="ring-track" cx="130" cy="130" r="112"></circle><circle class="ring-progress" id="pomodoroProgress" cx="130" cy="130" r="112"></circle></svg>
+        <div class="pomodoro-time"><strong id="pomodoroTime">25:00</strong><span id="pomodoroStatus">Focus Time</span></div>
+      </div>
+      <div class="pomodoro-controls"><button class="pomodoro-start" id="pomodoroStart" type="button">Start</button><button class="pomodoro-reset" id="pomodoroReset" type="button">Reset</button></div>
+      <aside class="native-bento-ad" aria-label="Advertisement">
+        <div class="native-bento-ad__header"><span class="native-bento-ad__label">Ad</span></div>
+        <div class="native-bento-ad__media" aria-label="Advertisement image placeholder">
+          <span class="native-bento-ad__media-line"></span>
+          <span class="native-bento-ad__media-orb"></span>
+          <span class="native-bento-ad__media-note">Native ad creative</span>
+        </div>
+        <div class="native-bento-ad__footer"><button class="native-bento-ad__cta" type="button">Learn more <span aria-hidden="true">↗</span></button></div>
+      </aside>
+    </section>
+  </main>
+  <main class="finance-view" id="finance-view" hidden>
+    <button class="finance-back" id="financeBack" type="button">← Dashboard</button>
+    <section class="finance-shell" aria-labelledby="financeTitle">
+      <div class="finance-heading"><p class="eyebrow">MONEY CONTROL</p><h1 id="financeTitle">Finance Tracker</h1><p>Keep your everyday spending visible and intentional.</p></div>
+      <div class="finance-summary">
+        <div class="finance-summary-header">
+          <div class="finance-badge">EXPENSES</div>
+          <div class="finance-header-controls">
+            <label class="currency-picker" for="currencySelect">
+              <span class="sr-only">Currency</span>
+              <select id="currencySelect" aria-label="Select currency">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="JPY">JPY (¥)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="CAD">CAD (C$)</option>
+                <option value="TRY">TRY (₺)</option>
+                <option value="AED">AED (د.إ)</option>
+              </select>
+            </label>
+            <button class="budget-toggle-btn" id="budgetToggleBtn" type="button" aria-expanded="false" aria-controls="budgetEditorCard" aria-label="Set or edit monthly budget">
+              <span class="budget-toggle-icon">🎯</span>
+              <span class="budget-toggle-text">Budget: <strong id="budgetBadgeVal">Set</strong></span>
+              <span class="budget-toggle-action">✎</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="budget-editor-card" id="budgetEditorCard" hidden>
+          <div class="budget-editor-inner">
+            <div class="budget-editor-title">
+              <span>🎯 Monthly Budget</span>
+              <button type="button" class="budget-editor-close" id="budgetEditorClose" aria-label="Close budget editor">×</button>
+            </div>
+            <div class="budget-picker-wrap">
+              <label class="budget-picker" for="budgetInput">
+                <span class="sr-only">Monthly budget</span>
+                <div class="budget-input-wrapper">
+                  <span class="budget-currency-symbol" id="budgetCurrencySymbol">$</span>
+                  <input id="budgetInput" type="number" min="0" step="0.01" placeholder="Set monthly budget" inputmode="decimal">
+                </div>
+                <button id="budgetSave" type="button">Save Budget</button>
+              </label>
+            </div>
+            <div class="budget-quick-chips" role="group" aria-label="Quick budget increments">
+              <button type="button" class="budget-chip" data-budget-add="100">+100</button>
+              <button type="button" class="budget-chip" data-budget-add="250">+250</button>
+              <button type="button" class="budget-chip" data-budget-add="500">+500</button>
+              <button type="button" class="budget-chip" data-budget-add="1000">+1,000</button>
+              <button type="button" class="budget-chip budget-chip-clear" data-budget-reset="true">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="finance-gauge-wrapper">
+          <svg viewBox="0 0 320 170" aria-hidden="true">
+            <path class="gauge-track" d="M35 145 A125 125 0 0 1 285 145"></path>
+            <path class="gauge-segment gauge-transfers" data-category="Transfers" d="M35 145 A125 125 0 0 1 285 145"></path>
+            <path class="gauge-segment gauge-shopping" data-category="Shopping" d="M35 145 A125 125 0 0 1 285 145"></path>
+            <path class="gauge-segment gauge-food" data-category="Food &amp; Beverages" d="M35 145 A125 125 0 0 1 285 145"></path>
+            <path class="gauge-segment gauge-utility" data-category="Utility/Bills" d="M35 145 A125 125 0 0 1 285 145"></path>
+          </svg>
+          <div class="finance-gauge-center">
+            <strong id="financeTotal">$0</strong>
+            <span>This month</span>
+            <small id="financeBudgetStatus">Set a monthly budget</small>
+          </div>
+        </div>
+      </div>
+      <div class="finance-categories" id="financeCategories"></div>
+      <form class="finance-form" id="financeForm">
+        <div class="finance-form-grid">
+          <div class="finance-field">
+            <label for="expenseTitle" class="sr-only">Expense title</label>
+            <input id="expenseTitle" type="text" placeholder="Expense title (e.g. Groceries)" maxlength="60" required>
+          </div>
+          <div class="finance-field">
+            <label for="expenseAmount" class="sr-only">Amount</label>
+            <input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="Amount" inputmode="decimal" required>
+          </div>
+          <div class="finance-field">
+            <label for="expenseDate" class="sr-only">Expense date</label>
+            <input id="expenseDate" type="date" aria-label="Expense date">
+          </div>
+          <div class="finance-field">
+            <label for="expenseCategory" class="sr-only">Expense category</label>
+            <select id="expenseCategory" aria-label="Expense category">
+              <option value="Transfers">Transfers</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Food & Beverages">Food & Beverages</option>
+              <option value="Utility/Bills">Utility/Bills</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="finance-submit-btn" aria-label="Add expense">
+          <span class="btn-icon">+</span>
+          <span class="btn-text">Add Expense</span>
+        </button>
+      </form>
+      <div class="finance-history"><div class="finance-section-heading"><h2>Recent expenses</h2><span id="financeCount">0 items</span></div><div id="expenseList"></div></div>
+      <aside class="native-bento-ad" aria-label="Advertisement">
+        <div class="native-bento-ad__header"><span class="native-bento-ad__label">Ad</span></div>
+        <div class="native-bento-ad__media" aria-label="Advertisement image placeholder">
+          <span class="native-bento-ad__media-line"></span>
+          <span class="native-bento-ad__media-orb"></span>
+          <span class="native-bento-ad__media-note">Native ad creative</span>
+        </div>
+        <div class="native-bento-ad__footer"><button class="native-bento-ad__cta" type="button">Learn more <span aria-hidden="true">↗</span></button></div>
+      </aside>
+    </section>
+  </main>
+  <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
+  <script src="script.js"></script>
+</body>
+</html>
