@@ -32,6 +32,130 @@ function saveTasks() {
   localStorage.setItem(storageKey, JSON.stringify(tasks));
 }
 
+// ==========================================================================
+// CAPACITOR LOCAL NOTIFICATIONS (Yerel Bildirimler & Alarm Sistemi)
+// ==========================================================================
+const NOTIFICATION_CHANNEL_ID = "dailyflow_reminders";
+
+async function initLocalNotificationChannel() {
+  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+  if (!LocalNotifications) return;
+  try {
+    await LocalNotifications.createChannel({
+      id: NOTIFICATION_CHANNEL_ID,
+      name: "DailyFlow Görev Hatırlatıcıları",
+      description: "Zamanlanmış görevler için yüksek öncelikli bildirim ve sesli alarm",
+      importance: 5, // IMPORTANCE_HIGH (WhatsApp/Instagram gibi başlık ve sesle ekrana düşer)
+      visibility: 1, // VISIBILITY_PUBLIC (Kilit ekranında görünür)
+      vibration: true,
+      lights: true,
+      lightColor: "#72f4be"
+    });
+  } catch (err) {
+    console.warn("Bildirim kanalı oluşturulamadı:", err);
+  }
+}
+
+async function requestNotificationPermission() {
+  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+  if (LocalNotifications) {
+    try {
+      let perm = await LocalNotifications.checkPermissions();
+      if (perm.display !== "granted") {
+        perm = await LocalNotifications.requestPermissions();
+      }
+      return perm.display === "granted";
+    } catch (err) {
+      console.warn("Bildirim izni istenirken hata:", err);
+      return false;
+    }
+  } else if ("Notification" in window) {
+    if (Notification.permission === "default") {
+      const res = await Notification.requestPermission();
+      return res === "granted";
+    }
+    return Notification.permission === "granted";
+  }
+  return false;
+}
+
+async function scheduleTaskNotification(task, scheduledDate) {
+  if (!task || !scheduledDate) return null;
+  const now = new Date();
+  if (scheduledDate.getTime() <= now.getTime()) {
+    return null;
+  }
+
+  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+  const notifId = Math.abs(Math.floor(Date.now() % 2147483647) + Math.floor(Math.random() * 1000));
+
+  if (LocalNotifications) {
+    try {
+      await requestNotificationPermission();
+      await initLocalNotificationChannel();
+
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: notifId,
+            title: "⏰ DailyFlow Hatırlatıcı",
+            body: task.title ? `${task.title} görevinizin zamanı geldi!` : "Zamanlanmış görevinizin saati geldi.",
+            schedule: {
+              at: scheduledDate,
+              allowWhileIdle: true
+            },
+            channelId: NOTIFICATION_CHANNEL_ID,
+            actionTypeId: "",
+            extra: {
+              taskId: task.id
+            }
+          }
+        ]
+      });
+      console.log(`[Capacitor] Bildirim planlandı: ID=${notifId}, Zaman=${scheduledDate.toLocaleString()}`);
+      return notifId;
+    } catch (err) {
+      console.error("[Capacitor] Bildirim planlama hatası:", err);
+      return null;
+    }
+  } else if ("Notification" in window && Notification.permission === "granted") {
+    const delay = scheduledDate.getTime() - now.getTime();
+    if (delay > 0 && delay < 2147483647) {
+      setTimeout(() => {
+        new Notification("⏰ DailyFlow Hatırlatıcı", {
+          body: task.title ? `${task.title} görevinizin zamanı geldi!` : "Zamanlanmış görevinizin saati geldi.",
+          icon: "favicon.ico"
+        });
+      }, delay);
+      return notifId;
+    }
+  }
+  return null;
+}
+
+async function cancelTaskNotification(notificationId) {
+  if (!notificationId) return;
+  const LocalNotifications = window.Capacitor?.Plugins?.LocalNotifications;
+  if (LocalNotifications) {
+    try {
+      await LocalNotifications.cancel({
+        notifications: [{ id: Number(notificationId) }]
+      });
+      console.log(`[Capacitor] Bildirim iptal edildi: ID=${notificationId}`);
+    } catch (err) {
+      console.warn("[Capacitor] Bildirim iptal edilemedi:", err);
+    }
+  }
+}
+
+if (window.Capacitor?.Plugins?.LocalNotifications) {
+  initLocalNotificationChannel();
+  window.Capacitor.Plugins.LocalNotifications.addListener("localNotificationActionPerformed", (action) => {
+    console.log("DailyFlow bildirim tıklandı:", action);
+    if (typeof setAppView === "function") setAppView("dashboard");
+  });
+}
+
 function formatDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
 }
@@ -56,7 +180,7 @@ function renderTasks() {
       <button class="check-button" type="button" data-action="toggle" data-id="${task.id}" aria-label="${task.completed ? "Mark as incomplete" : "Mark as complete"}">${task.completed ? "✓" : ""}</button>
       <div class="task-content">
         <span class="task-name">${escapeHtml(task.title)}</span>
-        <div class="task-meta"><span class="priority priority-${task.priority}">${getPriorityLabel(task.priority)}</span>${task.scheduledTime ? `<span>${escapeHtml(task.scheduledTime)}</span>` : ""}<span>${task.createdAt}</span></div>
+        <div class="task-meta"><span class="priority priority-${task.priority}">${getPriorityLabel(task.priority)}</span>${task.scheduledTime ? `<span>${escapeHtml(task.scheduledTime)}</span>` : ""}${task.notificationId ? `<span title="Hatırlatıcı kurulu">🔔</span>` : ""}<span>${task.createdAt}</span></div>
       </div>
       <div class="task-actions">
         <button class="task-action" type="button" data-action="edit" data-id="${task.id}" aria-label="Edit task">✎</button>
@@ -107,8 +231,18 @@ taskList.addEventListener("click", (event) => {
   const taskId = button.dataset.id;
   const task = tasks.find((item) => item.id === taskId);
   if (!task) return;
-  if (button.dataset.action === "toggle") task.completed = !task.completed;
-  if (button.dataset.action === "delete") tasks = tasks.filter((item) => item.id !== taskId);
+  if (button.dataset.action === "toggle") {
+    task.completed = !task.completed;
+    if (task.completed && task.notificationId) {
+      cancelTaskNotification(task.notificationId);
+    }
+  }
+  if (button.dataset.action === "delete") {
+    if (task.notificationId) {
+      cancelTaskNotification(task.notificationId);
+    }
+    tasks = tasks.filter((item) => item.id !== taskId);
+  }
   if (button.dataset.action === "edit") {
     const nextTitle = window.prompt("Edit task", task.title);
     if (nextTitle === null) return;
@@ -126,6 +260,11 @@ filterButtons.forEach((button) => button.addEventListener("click", () => {
 
 searchInput.addEventListener("input", renderTasks);
 document.querySelector("#clearCompleted").addEventListener("click", () => {
+  tasks.forEach((task) => {
+    if (task.completed && task.notificationId) {
+      cancelTaskNotification(task.notificationId);
+    }
+  });
   tasks = tasks.filter((task) => !task.completed);
   saveTasks();
   renderTasks();
@@ -527,7 +666,7 @@ periodButtons.forEach((button) => button.addEventListener("click", () => {
 }));
 
 if (continueButton) {
-  continueButton.addEventListener("click", () => {
+  continueButton.addEventListener("click", async () => {
     const note = calendarNote ? calendarNote.value.trim() : "";
     if (!note) {
       if (calendarNote) calendarNote.focus();
@@ -538,10 +677,44 @@ if (continueButton) {
     const selectedTime = formatSelectedTime();
     savedNotes.push({ date: selectedDate, time: selectedTime, note });
     localStorage.setItem(calendarNotesKey, JSON.stringify(savedNotes));
-    tasks.unshift({ id: Date.now().toString(), title: note, priority: "medium", completed: false, createdAt: formatDate(pickerDate), scheduledTime: selectedTime });
+
+    let targetHour = (selectedHourIndex + 1) % 12;
+    if (selectedPeriod === "PM") targetHour += 12;
+    const scheduledDateTime = new Date(
+      pickerDate.getFullYear(),
+      pickerDate.getMonth(),
+      pickerDate.getDate(),
+      targetHour,
+      selectedMinuteIndex,
+      0,
+      0
+    );
+
+    const taskId = Date.now().toString();
+    const newTask = {
+      id: taskId,
+      title: note,
+      priority: "medium",
+      completed: false,
+      createdAt: formatDate(pickerDate),
+      scheduledTime: selectedTime,
+      scheduledDate: selectedDate,
+      scheduledTimestamp: scheduledDateTime.getTime()
+    };
+
+    if (scheduledDateTime.getTime() > Date.now()) {
+      const notifId = await scheduleTaskNotification(newTask, scheduledDateTime);
+      if (notifId) {
+        newTask.notificationId = notifId;
+      }
+    }
+
+    tasks.unshift(newTask);
     saveTasks();
     renderTasks();
-    if (selectionSummary) selectionSummary.textContent = "Saved to Tasks.";
+    if (selectionSummary) {
+      selectionSummary.textContent = newTask.notificationId ? "Saved & Alarm set 🔔" : "Saved to Tasks.";
+    }
     continueButton.textContent = "Saved ✓";
     window.setTimeout(() => {
       continueButton.textContent = "Save to Tasks";
