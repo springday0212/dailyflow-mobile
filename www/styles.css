@@ -287,6 +287,250 @@ body[data-theme="cafe-royal"] .task-panel::after { background-image: url("data:i
 .finance-view .native-bento-ad__media { background: linear-gradient(110deg, rgba(183,232,207,.55), rgba(214,130,255,.16)); }
 .pomodoro-shell .native-bento-ad { width: min(620px, 100%); margin-top: 2px; }
 @media (max-width: 560px) { .native-bento-ad { margin-top: 22px; padding: 15px; }.native-bento-ad__media { min-height: 94px; padding: 17px; }.native-bento-ad__media-orb { right: 22%; }.native-bento-ad__media-note { right: 13px; }.native-bento-ad__footer { align-items: center; } }
+
+/* ==========================================================================
+   WEB-ONLY APP DOWNLOAD CARD (Google Play Badge & QR Code)
+   ========================================================================== */
+.web-download-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding: 16px 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: radial-gradient(circle at 92% 50%, rgba(183, 232, 207, .25), transparent 45%), var(--surface);
+  box-shadow: var(--shadow);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.web-download-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 220px;
+  flex: 1 1 280px;
+}
+
+.web-download-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--peach);
+  color: var(--peach-deep);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.web-download-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--peach-deep);
+}
+
+.web-download-title {
+  margin: 0;
+  font: 800 17px "Manrope", sans-serif;
+  letter-spacing: -.4px;
+  color: var(--ink);
+}
+
+.web-download-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.4;
+}
+
+.web-download-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Google Play Badge Button */
+.google-play-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px 8px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  text-decoration: none;
+  color: #202124;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  user-select: none;
+}
+
+.google-play-badge:hover {
+  transform: translateY(-2px);
+  border-color: var(--mint-strong);
+  box-shadow: 0 6px 18px rgba(91, 191, 140, .2);
+}
+
+.google-play-badge:active {
+  transform: translateY(0);
+}
+
+.google-play-logo {
+  flex-shrink: 0;
+  display: block;
+}
+
+.google-play-badge-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.gp-tagline {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: #5f6368;
+}
+
+.gp-brand {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+  color: #202124;
+}
+
+/* QR Code Card */
+.qr-code-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  text-decoration: none;
+  color: #202124;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  user-select: none;
+}
+
+.qr-code-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--mint-strong);
+  box-shadow: 0 6px 18px rgba(91, 191, 140, .2);
+}
+
+.qr-code-card:active {
+  transform: translateY(0);
+}
+
+.qr-code-box {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 2px;
+}
+
+.qr-code-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qr-code-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.qr-tagline {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  color: #5f6368;
+}
+
+.qr-brand {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+  color: var(--mint-deep);
+}
+
+/* Dark Theme Support */
+body.dark .web-download-card {
+  background: radial-gradient(circle at 92% 50%, rgba(51, 112, 78, .22), transparent 45%), var(--surface);
+  border-color: var(--line);
+}
+body.dark .google-play-badge,
+body.dark .qr-code-card {
+  background: #202d28;
+  border-color: var(--line);
+  color: #edf5ef;
+}
+body.dark .gp-tagline,
+body.dark .qr-tagline {
+  color: var(--muted);
+}
+body.dark .gp-brand {
+  color: #ffffff;
+}
+body.dark .qr-brand {
+  color: var(--mint);
+}
+body.dark .qr-code-box {
+  background: #ffffff;
+}
+
+/* Custom Themes Support */
+body[data-theme="matcha"] .web-download-card {
+  background: radial-gradient(circle at 92% 50%, rgba(137, 211, 133, .22), transparent 45%), var(--surface);
+}
+body[data-theme="cafe-royal"] .web-download-card {
+  background: radial-gradient(circle at 92% 50%, rgba(241, 218, 191, .3), transparent 45%), var(--surface);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .web-download-card {
+    padding: 16px 18px;
+    gap: 14px;
+  }
+  .web-download-actions {
+    width: 100%;
+  }
+  .google-play-badge,
+  .qr-code-card {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* CRITICAL: Hide strictly in Capacitor / Native App environments */
+html.is-capacitor #webDownloadCard,
+body.is-capacitor #webDownloadCard,
+.is-capacitor .web-download-card {
+  display: none !important;
+}
+
 /* ==========================================================================
    FINANCE TRACKER & BUDGET - Mobile-First & Ergonomic Styles
    ========================================================================== */
@@ -1765,3 +2009,7 @@ body[data-theme="cafe-royal"] .privacy-footer-note {
 body[data-theme="cafe-royal"] .privacy-footer-note strong {
   color: #8b1e1e;
 }
+
+/* Mobile App Build: strictly hide web download card */
+#webDownloadCard { display: none !important; }
+

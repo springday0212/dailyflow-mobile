@@ -1209,7 +1209,24 @@ undoExpense.addEventListener("click", () => {
 // ==========================================================================
 // RESILIENT INITIALIZATION (Crash-proof startup for Android WebView & Browser)
 // ==========================================================================
+function checkNativePlatform() {
+  try {
+    const isNative = (typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform());
+    if (isNative) {
+      document.documentElement.classList.add("is-capacitor");
+      document.body.classList.add("is-capacitor");
+      const downloadCard = document.getElementById("webDownloadCard");
+      if (downloadCard) {
+        downloadCard.remove();
+      }
+    }
+  } catch (e) {
+    console.warn("Platform check error:", e);
+  }
+}
+
 function initApp() {
+  try { checkNativePlatform(); } catch (e) {}
   try { applyTheme(getStoredTheme()); } catch (e) { console.error("Theme init error:", e); }
   try { initThemeTimer(); } catch (e) { console.error("Theme timer error:", e); }
   try { initQuickNotes(); } catch (e) { console.error("Quick notes error:", e); }
@@ -1220,9 +1237,14 @@ function initApp() {
   try { renderFinance(); } catch (e) { console.error("Finance error:", e); }
 }
 
+checkNativePlatform();
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initApp);
 } else {
   initApp();
 }
-document.addEventListener("deviceready", initApp, false);
+document.addEventListener("deviceready", () => {
+  checkNativePlatform();
+  initApp();
+}, false);
