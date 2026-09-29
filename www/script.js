@@ -926,6 +926,41 @@ focusBack.addEventListener("click", () => setAppView("dashboard"));
 financeBack.addEventListener("click", () => setAppView("dashboard"));
 sidebarLinks.forEach((link) => link.addEventListener("click", () => setAppView(link.dataset.view)));
 
+// ==========================================================================
+// PRIVACY POLICY MODAL CONTROLLER
+// ==========================================================================
+const privacyPolicyBtn = document.querySelector("#privacyPolicyBtn");
+const privacyModal = document.querySelector("#privacyModal");
+
+function setPrivacyModalVisibility(isVisible) {
+  if (!privacyModal) return;
+  privacyModal.hidden = !isVisible;
+  document.body.classList.toggle("modal-open", isVisible);
+  if (isVisible) {
+    setDrawerVisibility(false);
+    const closeBtn = privacyModal.querySelector(".privacy-close");
+    if (closeBtn) closeBtn.focus();
+  }
+}
+
+if (privacyPolicyBtn) {
+  privacyPolicyBtn.addEventListener("click", () => setPrivacyModalVisibility(true));
+}
+
+if (privacyModal) {
+  privacyModal.addEventListener("click", (event) => {
+    if (event.target.closest("[data-privacy-close]")) {
+      setPrivacyModalVisibility(false);
+    }
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && privacyModal && !privacyModal.hidden) {
+    setPrivacyModalVisibility(false);
+  }
+});
+
 function updatePomodoroDisplay() {
   const minutes = Math.floor(pomodoroRemaining / 60);
   const seconds = pomodoroRemaining % 60;

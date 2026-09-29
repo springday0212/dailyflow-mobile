@@ -285,6 +285,14 @@
       <button class="sidebar-link" type="button" data-view="focus"><span aria-hidden="true">◷</span>Pomodoro Focus</button>
       <button class="sidebar-link" type="button" data-view="finance"><span aria-hidden="true">💳</span>Finance Tracker</button>
     </nav>
+    <div class="sidebar-footer">
+      <button class="sidebar-privacy-btn" id="privacyPolicyBtn" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>Privacy Policy</span>
+      </button>
+    </div>
   </aside>
   <main class="focus-view" id="focusView" hidden>
     <button class="focus-back" id="focusBack" type="button">← Dashboard</button>
@@ -423,6 +431,60 @@
       </aside>
     </section>
   </main>
+  <div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" hidden>
+    <div class="privacy-backdrop" data-privacy-close aria-hidden="true"></div>
+    <section class="privacy-dialog" role="document">
+      <div class="privacy-sheet-drag" aria-hidden="true"><span class="privacy-drag-bar"></span></div>
+      <header class="privacy-header">
+        <div class="privacy-header-left">
+          <div class="privacy-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>Privacy &amp; Data Security</span>
+          </div>
+          <h2 id="privacyTitle">Privacy Policy</h2>
+          <p class="privacy-subtitle">DailyFlow is built with an offline-first, zero-tracking philosophy.</p>
+        </div>
+        <button class="privacy-close" id="privacyClose" type="button" data-privacy-close aria-label="Close privacy policy">×</button>
+      </header>
+      <div class="privacy-body">
+        <div class="privacy-grid">
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">🔒</div>
+            <div class="privacy-card-content">
+              <strong>100% Local Device Storage</strong>
+              <p>All your tasks, daily quick notes, Pomodoro records, and finance transactions are saved exclusively on your local device storage. Your personal information never leaves your phone or browser.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">🛡️</div>
+            <div class="privacy-card-content">
+              <strong>Zero Tracking &amp; No Remote Servers</strong>
+              <p>DailyFlow does not operate remote user tracking databases or transmit telemetry. We never collect, monitor, share, or sell any personal or financial data to third parties.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">🔔</div>
+            <div class="privacy-card-content">
+              <strong>On-Device Local Notifications</strong>
+              <p>Task reminders and alarms are scheduled directly through your device's operating system (Local Notifications). No external cloud servers receive or process your reminder schedule.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">🗑️</div>
+            <div class="privacy-card-content">
+              <strong>Complete User Ownership</strong>
+              <p>You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.</p>
+            </div>
+          </div>
+        </div>
+        <div class="privacy-footer-note">
+          <p>Questions or inquiries about our privacy practices? Contact us at <strong>camurdesaleyna@gmail.com</strong>.</p>
+        </div>
+      </div>
+    </section>
+  </div>
   <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
   <script src="./script.js"></script>
 </body>
