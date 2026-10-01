@@ -1180,18 +1180,10 @@ if (budgetSave) {
     }, 600);
   });
 }
-// --- Custom Pastel Datepicker for Finance Tracker ---
-const expenseDatePickerWrap = document.querySelector("#expenseDatePickerWrap");
-const expenseDateTrigger = document.querySelector("#expenseDateTrigger");
-const expenseDateDisplay = document.querySelector("#expenseDateDisplay");
-const expenseDatePickerPopup = document.querySelector("#expenseDatePickerPopup");
-const customDpTitle = document.querySelector("#customDpTitle");
-const customDpPrevMonth = document.querySelector("#customDpPrevMonth");
-const customDpNextMonth = document.querySelector("#customDpNextMonth");
-const customDpWeekdays = document.querySelector("#customDpWeekdays");
-const customDpGrid = document.querySelector("#customDpGrid");
-const customDpClear = document.querySelector("#customDpClear");
-const customDpToday = document.querySelector("#customDpToday");
+// --- Custom Pastel Datepicker for Finance Tracker (matches target UI) ---
+let customDpSelectedDate = new Date();
+let customDpCurrentMonth = new Date(customDpSelectedDate.getFullYear(), customDpSelectedDate.getMonth(), 1);
+let customDpInitialized = false;
 
 function formatIsoToDisplayDate(isoDateStr) {
   if (!isoDateStr || !/^\d{4}-\d{2}-\d{2}$/.test(isoDateStr)) return "";
@@ -1199,24 +1191,26 @@ function formatIsoToDisplayDate(isoDateStr) {
   return `${day}.${month}.${year}`;
 }
 
-let customDpSelectedDate = new Date();
-let customDpCurrentMonth = new Date(customDpSelectedDate.getFullYear(), customDpSelectedDate.getMonth(), 1);
-
 function updateExpenseDateValue(isoDate) {
-  if (expenseDate) expenseDate.value = isoDate;
-  if (expenseDateDisplay) expenseDateDisplay.textContent = formatIsoToDisplayDate(isoDate);
+  const dateInput = document.querySelector("#expenseDate");
+  const displaySpan = document.querySelector("#expenseDateDisplay");
+  if (dateInput) dateInput.value = isoDate;
+  if (displaySpan) displaySpan.textContent = formatIsoToDisplayDate(isoDate);
 }
 
 function setCustomDatePickerVisibility(visible) {
-  if (!expenseDatePickerPopup) return;
-  expenseDatePickerPopup.hidden = !visible;
-  if (expenseDateTrigger) {
-    expenseDateTrigger.setAttribute("aria-expanded", String(visible));
-    expenseDateTrigger.classList.toggle("active", visible);
+  const popup = document.querySelector("#expenseDatePickerPopup");
+  const trigger = document.querySelector("#expenseDateTrigger");
+  const dateInput = document.querySelector("#expenseDate");
+  if (!popup) return;
+  popup.hidden = !visible;
+  if (trigger) {
+    trigger.setAttribute("aria-expanded", String(visible));
+    trigger.classList.toggle("active", visible);
   }
   if (visible) {
-    if (expenseDate && expenseDate.value && /^\d{4}-\d{2}-\d{2}$/.test(expenseDate.value)) {
-      const [y, m, d] = expenseDate.value.split("-").map(Number);
+    if (dateInput && dateInput.value && /^\d{4}-\d{2}-\d{2}$/.test(dateInput.value)) {
+      const [y, m, d] = dateInput.value.split("-").map(Number);
       customDpSelectedDate = new Date(y, m - 1, d);
     } else {
       customDpSelectedDate = new Date();
@@ -1226,24 +1220,38 @@ function setCustomDatePickerVisibility(visible) {
   }
 }
 
+window.toggleCustomDatePicker = function(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  const popup = document.querySelector("#expenseDatePickerPopup");
+  if (!popup) return;
+  setCustomDatePickerVisibility(popup.hidden);
+};
+
 function renderCustomDatePicker() {
-  if (!customDpGrid || !customDpTitle) return;
-  const isTr = /^(tr)/i.test(navigator.language || "");
-  const locale = isTr ? "tr-TR" : "en-US";
+  const grid = document.querySelector("#customDpGrid");
+  const title = document.querySelector("#customDpTitle");
+  const weekdaysEl = document.querySelector("#customDpWeekdays");
+  const clearBtn = document.querySelector("#customDpClear");
+  const todayBtn = document.querySelector("#customDpToday");
+  if (!grid || !title) return;
 
-  const monthName = customDpCurrentMonth.toLocaleDateString(locale, { month: "long" });
-  const formattedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-  customDpTitle.textContent = `${formattedMonthName} ${customDpCurrentMonth.getFullYear()}`;
+  const trMonths = [
+    "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+  ];
+  const monthName = trMonths[customDpCurrentMonth.getMonth()];
+  title.textContent = `${monthName} ${customDpCurrentMonth.getFullYear()}`;
 
-  if (customDpWeekdays) {
-    const weekdays = isTr 
-      ? ["Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"] 
-      : ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-    customDpWeekdays.innerHTML = weekdays.map((w) => `<span>${w}</span>`).join("");
+  if (weekdaysEl) {
+    const weekdays = ["Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"];
+    weekdaysEl.innerHTML = weekdays.map((w) => `<span>${w}</span>`).join("");
   }
 
-  if (customDpClear) customDpClear.textContent = isTr ? "Temizle" : "Clear";
-  if (customDpToday) customDpToday.textContent = isTr ? "Bugün" : "Today";
+  if (clearBtn) clearBtn.textContent = "Temizle";
+  if (todayBtn) todayBtn.textContent = "Bugün";
 
   const year = customDpCurrentMonth.getFullYear();
   const month = customDpCurrentMonth.getMonth();
@@ -1267,7 +1275,7 @@ function renderCustomDatePicker() {
 
   const today = new Date();
 
-  customDpGrid.innerHTML = cells.map((cell) => {
+  grid.innerHTML = cells.map((cell) => {
     const cellDate = new Date(year, month + cell.monthOffset, cell.day);
     const isSelected = customDpSelectedDate && 
       cellDate.getFullYear() === customDpSelectedDate.getFullYear() &&
@@ -1292,36 +1300,51 @@ function renderCustomDatePicker() {
 }
 
 function initCustomDatePicker() {
-  if (!expenseDateTrigger) return;
-  
-  updateExpenseDateValue(getTodayInputDate());
+  const trigger = document.querySelector("#expenseDateTrigger");
+  const popup = document.querySelector("#expenseDatePickerPopup");
+  const prevBtn = document.querySelector("#customDpPrevMonth");
+  const nextBtn = document.querySelector("#customDpNextMonth");
+  const grid = document.querySelector("#customDpGrid");
+  const todayBtn = document.querySelector("#customDpToday");
+  const clearBtn = document.querySelector("#customDpClear");
+  if (!trigger) return;
 
-  expenseDateTrigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const isCurrentlyOpen = expenseDatePickerPopup && !expenseDatePickerPopup.hidden;
-    setCustomDatePickerVisibility(!isCurrentlyOpen);
+  const todayIso = getTodayInputDate();
+  const dateInput = document.querySelector("#expenseDate");
+  if (dateInput && !dateInput.value) {
+    updateExpenseDateValue(todayIso);
+  }
+
+  if (customDpInitialized) return;
+  customDpInitialized = true;
+
+  trigger.addEventListener("click", (e) => {
+    window.toggleCustomDatePicker(e);
   });
 
-  if (customDpPrevMonth) {
-    customDpPrevMonth.addEventListener("click", (e) => {
+  if (prevBtn) {
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
       customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() - 1);
       renderCustomDatePicker();
     });
   }
 
-  if (customDpNextMonth) {
-    customDpNextMonth.addEventListener("click", (e) => {
+  if (nextBtn) {
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
       customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() + 1);
       renderCustomDatePicker();
     });
   }
 
-  if (customDpGrid) {
-    customDpGrid.addEventListener("click", (e) => {
+  if (grid) {
+    grid.addEventListener("click", (e) => {
       const dayBtn = e.target.closest(".custom-dp-day");
       if (!dayBtn) return;
+      e.preventDefault();
       e.stopPropagation();
       const iso = dayBtn.dataset.iso;
       if (!iso) return;
@@ -1333,32 +1356,35 @@ function initCustomDatePicker() {
     });
   }
 
-  if (customDpToday) {
-    customDpToday.addEventListener("click", (e) => {
+  if (todayBtn) {
+    todayBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      const todayIso = getTodayInputDate();
-      const [y, m, d] = todayIso.split("-").map(Number);
+      const nowIso = getTodayInputDate();
+      const [y, m, d] = nowIso.split("-").map(Number);
       customDpSelectedDate = new Date(y, m - 1, d);
       customDpCurrentMonth = new Date(y, m - 1, 1);
-      updateExpenseDateValue(todayIso);
+      updateExpenseDateValue(nowIso);
       setCustomDatePickerVisibility(false);
     });
   }
 
-  if (customDpClear) {
-    customDpClear.addEventListener("click", (e) => {
+  if (clearBtn) {
+    clearBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      const todayIso = getTodayInputDate();
-      const [y, m, d] = todayIso.split("-").map(Number);
+      const nowIso = getTodayInputDate();
+      const [y, m, d] = nowIso.split("-").map(Number);
       customDpSelectedDate = new Date(y, m - 1, d);
       customDpCurrentMonth = new Date(y, m - 1, 1);
-      updateExpenseDateValue(todayIso);
+      updateExpenseDateValue(nowIso);
       setCustomDatePickerVisibility(false);
     });
   }
 
   document.addEventListener("click", (e) => {
-    if (expenseDatePickerPopup && !expenseDatePickerPopup.hidden) {
+    const activePopup = document.querySelector("#expenseDatePickerPopup");
+    if (activePopup && !activePopup.hidden) {
       if (!e.target.closest("#expenseDatePickerWrap")) {
         setCustomDatePickerVisibility(false);
       }
@@ -1366,9 +1392,13 @@ function initCustomDatePicker() {
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && expenseDatePickerPopup && !expenseDatePickerPopup.hidden) {
-      setCustomDatePickerVisibility(false);
-      expenseDateTrigger.focus();
+    if (e.key === "Escape") {
+      const activePopup = document.querySelector("#expenseDatePickerPopup");
+      if (activePopup && !activePopup.hidden) {
+        setCustomDatePickerVisibility(false);
+        const trig = document.querySelector("#expenseDateTrigger");
+        if (trig) trig.focus();
+      }
     }
   });
 }

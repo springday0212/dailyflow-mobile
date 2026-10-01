@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=3.1">
   <script>
     try {
       if (typeof window.Capacitor !== "undefined" && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
@@ -483,11 +483,11 @@
           <div class="finance-field date-field custom-datepicker-wrap" id="expenseDatePickerWrap">
             <label for="expenseDateTrigger" class="sr-only">Expense date</label>
             <input id="expenseDate" type="hidden" name="expenseDate" value="">
-            <button type="button" class="custom-date-trigger" id="expenseDateTrigger" aria-haspopup="dialog" aria-expanded="false" aria-label="Choose expense date">
+            <button type="button" class="custom-date-trigger" id="expenseDateTrigger" onclick="window.toggleCustomDatePicker(event)" aria-haspopup="dialog" aria-expanded="false" aria-label="Tarih seçin">
               <span class="custom-date-val" id="expenseDateDisplay">01.10.2026</span>
               <span class="custom-date-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="4" ry="4"></rect>
                   <line x1="16" y1="2" x2="16" y2="6"></line>
                   <line x1="8" y1="2" x2="8" y2="6"></line>
                   <line x1="3" y1="10" x2="21" y2="10"></line>
@@ -598,6 +598,6 @@
     </section>
   </div>
   <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
-  <script src="./script.js"></script>
+  <script src="./script.js?v=3.1"></script>
 </body>
 </html>
