@@ -1246,19 +1246,19 @@ function renderCustomDatePicker() {
   const todayBtn = document.querySelector("#customDpToday");
   if (!grid || !title) return;
 
-  const trMonths = [
-    "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
-    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+  const enMonths = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ];
-  title.textContent = `${trMonths[customDpCurrentMonth.getMonth()]} ${customDpCurrentMonth.getFullYear()}`;
+  title.textContent = `${enMonths[customDpCurrentMonth.getMonth()]} ${customDpCurrentMonth.getFullYear()}`;
 
   if (weekdaysEl) {
-    const weekdays = ["Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"];
+    const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
     weekdaysEl.innerHTML = weekdays.map((w) => `<span>${w}</span>`).join("");
   }
 
-  if (clearBtn) clearBtn.textContent = "Temizle";
-  if (todayBtn) todayBtn.textContent = "Bugün";
+  if (clearBtn) clearBtn.textContent = "Clear";
+  if (todayBtn) todayBtn.textContent = "Today";
 
   const year = customDpCurrentMonth.getFullYear();
   const month = customDpCurrentMonth.getMonth();
@@ -1414,7 +1414,7 @@ function initCustomDatePicker() {
     });
   }
 
-  // 6. Today button (Bugün)
+  // 6. Today button
   if (todayBtn) {
     todayBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1431,7 +1431,7 @@ function initCustomDatePicker() {
     });
   }
 
-  // 7. Clear button (Temizle - resets to today)
+  // 7. Clear button (resets to today)
   if (clearBtn) {
     clearBtn.addEventListener("click", (e) => {
       e.preventDefault();
