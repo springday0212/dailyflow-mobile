@@ -282,6 +282,9 @@ taskForm.addEventListener("submit", (event) => {
   saveTasks();
   taskInput.value = "";
   priorityInput.value = "medium";
+  if (typeof setCustomSelectValue === "function") {
+    setCustomSelectValue("priorityInput", "medium");
+  }
   activeFilter = "all";
   filterButtons.forEach((button) => button.classList.toggle("active", button.dataset.filter === activeFilter));
   renderTasks();
@@ -1205,6 +1208,9 @@ function setCustomDatePickerVisibility(visible) {
   if (!popup) return;
 
   if (visible) {
+    if (typeof closeAllCustomPopups === "function") {
+      closeAllCustomPopups();
+    }
     popup.hidden = false;
     popup.style.display = "flex";
     popup.classList.add("is-open");
@@ -1465,6 +1471,156 @@ function initCustomDatePicker() {
   });
 }
 
+let customSelectsInitialized = false;
+
+function closeAllCustomPopups() {
+  document.querySelectorAll(".custom-select-wrap").forEach((wrap) => {
+    const popup = wrap.querySelector(".custom-select-popup");
+    const trigger = wrap.querySelector(".custom-select-trigger");
+    if (popup) {
+      popup.hidden = true;
+      popup.style.display = "none";
+      popup.classList.remove("is-open");
+    }
+    if (trigger) {
+      trigger.classList.remove("active");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+function setCustomSelectValue(selectId, value) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  select.value = value;
+  const wrap = select.closest(".custom-select-wrap");
+  if (!wrap) return;
+  const valEl = wrap.querySelector(".custom-select-val");
+  const options = wrap.querySelectorAll(".custom-select-option");
+  options.forEach((opt) => {
+    const isSel = opt.dataset.value === value;
+    opt.classList.toggle("selected", isSel);
+    opt.setAttribute("aria-selected", isSel ? "true" : "false");
+    if (isSel && valEl) {
+      const textSpan = opt.querySelector("span:first-child");
+      valEl.textContent = textSpan ? textSpan.textContent.trim() : opt.textContent.trim();
+    }
+  });
+}
+
+function initCustomSelects() {
+  const wraps = document.querySelectorAll(".custom-select-wrap");
+  if (!wraps.length) return;
+
+  wraps.forEach((wrap) => {
+    const trigger = wrap.querySelector(".custom-select-trigger");
+    const popup = wrap.querySelector(".custom-select-popup");
+    const select = wrap.querySelector("select");
+    const valEl = wrap.querySelector(".custom-select-val");
+    const options = wrap.querySelectorAll(".custom-select-option");
+
+    if (!trigger || !popup || !select) return;
+
+    // Ensure initial hidden state
+    popup.hidden = true;
+    popup.style.display = "none";
+    popup.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.classList.remove("active");
+
+    // Sync initial label and selected option from select value
+    if (select.value) {
+      options.forEach((opt) => {
+        const isSel = opt.dataset.value === select.value;
+        opt.classList.toggle("selected", isSel);
+        opt.setAttribute("aria-selected", isSel ? "true" : "false");
+        if (isSel && valEl) {
+          const textSpan = opt.querySelector("span:first-child");
+          valEl.textContent = textSpan ? textSpan.textContent.trim() : opt.textContent.trim();
+        }
+      });
+    }
+
+    if (customSelectsInitialized) return;
+
+    // 1. Toggle popup on trigger click
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = !popup.hidden && popup.classList.contains("is-open");
+      if (isOpen) {
+        popup.hidden = true;
+        popup.style.display = "none";
+        popup.classList.remove("is-open");
+        trigger.classList.remove("active");
+        trigger.setAttribute("aria-expanded", "false");
+      } else {
+        closeAllCustomPopups();
+        if (typeof setCustomDatePickerVisibility === "function") {
+          setCustomDatePickerVisibility(false);
+        }
+        popup.hidden = false;
+        popup.style.display = "flex";
+        popup.classList.add("is-open");
+        trigger.classList.add("active");
+        trigger.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    // 2. Prevent closing when clicking inside popup
+    popup.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    // 3. Option selection
+    options.forEach((opt) => {
+      opt.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const value = opt.dataset.value;
+        const textSpan = opt.querySelector("span:first-child");
+        const label = textSpan ? textSpan.textContent.trim() : opt.textContent.trim();
+
+        select.value = value;
+        if (valEl) valEl.textContent = label;
+
+        options.forEach((o) => {
+          const isSel = o === opt;
+          o.classList.toggle("selected", isSel);
+          o.setAttribute("aria-selected", isSel ? "true" : "false");
+        });
+
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+
+        // Close popup
+        popup.hidden = true;
+        popup.style.display = "none";
+        popup.classList.remove("is-open");
+        trigger.classList.remove("active");
+        trigger.setAttribute("aria-expanded", "false");
+      });
+    });
+  });
+
+  if (!customSelectsInitialized) {
+    customSelectsInitialized = true;
+
+    // Outside click to close
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".custom-select-wrap")) {
+        closeAllCustomPopups();
+      }
+    });
+
+    // Escape to close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeAllCustomPopups();
+      }
+    });
+  }
+}
+
 updateExpenseDateValue(getTodayInputDate());
 
 financeForm.addEventListener("submit", (event) => {
@@ -1475,6 +1631,12 @@ financeForm.addEventListener("submit", (event) => {
   expenses.unshift({ id: Date.now().toString(), title, amount, category: expenseCategory.value, date: expenseDate.value || getTodayInputDate(), createdAt: formatDate() });
   saveExpenses();
   financeForm.reset();
+  if (typeof setCustomSelectValue === "function") {
+    setCustomSelectValue("expenseCategory", "Transfers");
+  }
+  if (typeof closeAllCustomPopups === "function") {
+    closeAllCustomPopups();
+  }
   updateExpenseDateValue(getTodayInputDate());
   customDpSelectedDate = new Date();
   setCustomDatePickerVisibility(false);
@@ -1577,6 +1739,7 @@ function initApp() {
   try { renderTasks(); } catch (e) { console.error("Tasks error:", e); }
   try { renderFinance(); } catch (e) { console.error("Finance error:", e); }
   try { initCustomDatePicker(); } catch (e) { console.error("Custom datepicker error:", e); }
+  try { initCustomSelects(); } catch (e) { console.error("Custom selects error:", e); }
   try { initAdSense(); } catch (e) {}
 }
 

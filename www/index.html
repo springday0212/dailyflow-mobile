@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=3.2">
+  <link rel="stylesheet" href="./styles.css?v=3.3">
   <script>
     try {
       if (typeof window.Capacitor !== "undefined" && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
@@ -119,11 +119,35 @@
               <span class="plus-symbol">＋</span>
               <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off" maxlength="120" required>
             </label>
-            <select id="priorityInput" aria-label="Task priority">
-              <option value="low">Low priority</option>
-              <option value="medium" selected>Medium priority</option>
-              <option value="high">High priority</option>
-            </select>
+            <div class="custom-select-wrap priority-wrap" id="taskPriorityWrap">
+              <select id="priorityInput" tabindex="-1" aria-hidden="true" style="display: none;">
+                <option value="low">Low priority</option>
+                <option value="medium" selected>Medium priority</option>
+                <option value="high">High priority</option>
+              </select>
+              <button type="button" class="custom-select-trigger" id="taskPriorityTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Task priority">
+                <span class="custom-select-val" id="taskPriorityDisplay">Medium priority</span>
+                <span class="custom-select-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="custom-select-popup" id="taskPriorityPopup" role="listbox" aria-label="Task priority" hidden style="display: none;">
+                <button type="button" class="custom-select-option" data-value="low" role="option" aria-selected="false">
+                  <span>Low priority</span>
+                  <span class="custom-select-check" aria-hidden="true">✓</span>
+                </button>
+                <button type="button" class="custom-select-option selected" data-value="medium" role="option" aria-selected="true">
+                  <span>Medium priority</span>
+                  <span class="custom-select-check" aria-hidden="true">✓</span>
+                </button>
+                <button type="button" class="custom-select-option" data-value="high" role="option" aria-selected="false">
+                  <span>High priority</span>
+                  <span class="custom-select-check" aria-hidden="true">✓</span>
+                </button>
+              </div>
+            </div>
             <button class="add-button" type="submit">Add <span>↗</span></button>
           </form>
 
@@ -469,16 +493,50 @@
             <label for="expenseAmount" class="sr-only">Amount</label>
             <input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="Amount" inputmode="decimal" required>
           </div>
-          <div class="finance-field category-field">
-            <label for="expenseCategory" class="sr-only">Expense category</label>
-            <select id="expenseCategory" aria-label="Expense category">
-              <option value="Transfers">Transfers</option>
+          <div class="finance-field category-field custom-select-wrap" id="expenseCategoryWrap">
+            <label for="expenseCategoryTrigger" class="sr-only">Expense category</label>
+            <select id="expenseCategory" tabindex="-1" aria-hidden="true" style="display: none;">
+              <option value="Transfers" selected>Transfers</option>
               <option value="Shopping">Shopping</option>
-              <option value="Food & Beverages">Food & Beverages</option>
+              <option value="Food &amp; Beverages">Food &amp; Beverages</option>
               <option value="Utility/Bills">Utility/Bills</option>
               <option value="Entertainment">Entertainment</option>
               <option value="Vacation">Vacation</option>
             </select>
+            <button type="button" class="custom-select-trigger" id="expenseCategoryTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Expense category">
+              <span class="custom-select-val" id="expenseCategoryDisplay">Transfers</span>
+              <span class="custom-select-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
+            <div class="custom-select-popup" id="expenseCategoryPopup" role="listbox" aria-label="Expense category" hidden style="display: none;">
+              <button type="button" class="custom-select-option selected" data-value="Transfers" role="option" aria-selected="true">
+                <span>Transfers</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+              <button type="button" class="custom-select-option" data-value="Shopping" role="option" aria-selected="false">
+                <span>Shopping</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+              <button type="button" class="custom-select-option" data-value="Food &amp; Beverages" role="option" aria-selected="false">
+                <span>Food &amp; Beverages</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+              <button type="button" class="custom-select-option" data-value="Utility/Bills" role="option" aria-selected="false">
+                <span>Utility/Bills</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+              <button type="button" class="custom-select-option" data-value="Entertainment" role="option" aria-selected="false">
+                <span>Entertainment</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+              <button type="button" class="custom-select-option" data-value="Vacation" role="option" aria-selected="false">
+                <span>Vacation</span>
+                <span class="custom-select-check" aria-hidden="true">✓</span>
+              </button>
+            </div>
           </div>
           <div class="finance-field date-field custom-datepicker-wrap" id="expenseDatePickerWrap">
             <label for="expenseDateTrigger" class="sr-only">Expense date</label>
@@ -598,6 +656,6 @@
     </section>
   </div>
   <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
-  <script src="./script.js?v=3.2"></script>
+  <script src="./script.js?v=3.3"></script>
 </body>
 </html>
