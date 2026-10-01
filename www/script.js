@@ -1045,8 +1045,8 @@ pomodoroModes.forEach((mode) => mode.addEventListener("click", () => {
 }));
 updatePomodoroDisplay();
 
-const financeCategoryNames = ["Transfers", "Shopping", "Food & Beverages", "Utility/Bills"];
-const financeCategoryColors = ["#59e6ff", "#d486ff", "#ff76ae", "#6db9ff"];
+const financeCategoryNames = ["Transfers", "Shopping", "Food & Beverages", "Utility/Bills", "Entertainment", "Vacation"];
+const financeCategoryColors = ["#59e6ff", "#d486ff", "#ff76ae", "#6db9ff", "#f59e0b", "#10b981"];
 let expenses = loadExpenses();
 let selectedCurrency = safeGetStorage(currencyStorageKey, "USD");
 let monthlyBudget = Number(safeGetStorage(budgetStorageKey, "0")) || 0;
