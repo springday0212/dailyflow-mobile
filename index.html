@@ -480,9 +480,47 @@
               <option value="Vacation">Vacation</option>
             </select>
           </div>
-          <div class="finance-field date-field">
-            <label for="expenseDate" class="sr-only">Expense date</label>
-            <input id="expenseDate" type="date" aria-label="Expense date">
+          <div class="finance-field date-field custom-datepicker-wrap" id="expenseDatePickerWrap">
+            <label for="expenseDateTrigger" class="sr-only">Expense date</label>
+            <input id="expenseDate" type="hidden" name="expenseDate" value="">
+            <button type="button" class="custom-date-trigger" id="expenseDateTrigger" aria-haspopup="dialog" aria-expanded="false" aria-label="Choose expense date">
+              <span class="custom-date-val" id="expenseDateDisplay">01.10.2026</span>
+              <span class="custom-date-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+            </button>
+            <div class="custom-datepicker-popup" id="expenseDatePickerPopup" role="dialog" aria-modal="true" aria-label="Choose expense date" hidden>
+              <div class="custom-dp-header">
+                <strong class="custom-dp-title" id="customDpTitle">Ekim 2026</strong>
+                <div class="custom-dp-arrows">
+                  <button type="button" class="custom-dp-arrow" id="customDpPrevMonth" aria-label="Previous month" title="Previous month">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="19" x2="12" y2="5"></line>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                    </svg>
+                  </button>
+                  <button type="button" class="custom-dp-arrow" id="customDpNextMonth" aria-label="Next month" title="Next month">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="custom-dp-weekdays" id="customDpWeekdays">
+                <span>Pt</span><span>Sa</span><span>Ça</span><span>Pe</span><span>Cu</span><span>Ct</span><span>Pa</span>
+              </div>
+              <div class="custom-dp-grid" id="customDpGrid" role="grid" aria-label="Days"></div>
+              <div class="custom-dp-footer">
+                <button type="button" class="custom-dp-action" id="customDpClear">Temizle</button>
+                <button type="button" class="custom-dp-action" id="customDpToday">Bugün</button>
+              </div>
+            </div>
           </div>
         </div>
         <button type="submit" class="finance-submit-btn" aria-label="Add expense">

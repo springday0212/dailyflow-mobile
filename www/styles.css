@@ -931,6 +931,245 @@ body.is-capacitor .native-bento-ad,
   font-size: 20px;
   line-height: 1;
 }
+
+/* --- Custom Pastel Datepicker for Finance Tracker --- */
+.custom-datepicker-wrap {
+  position: relative;
+  width: 100%;
+}
+.custom-date-trigger {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 15px "Manrope", sans-serif;
+  outline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+  user-select: none;
+}
+.custom-date-trigger:hover {
+  border-color: var(--mint-strong);
+}
+.custom-date-trigger:focus,
+.custom-date-trigger.active {
+  border-color: var(--mint-strong);
+  box-shadow: 0 0 0 3px rgba(91, 191, 140, 0.15);
+}
+.custom-date-val {
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  color: var(--ink);
+}
+.custom-date-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color .15s ease;
+}
+.custom-date-trigger:hover .custom-date-icon,
+.custom-date-trigger.active .custom-date-icon {
+  color: var(--mint-deep);
+}
+
+.custom-datepicker-popup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 272px;
+  max-width: calc(100vw - 36px);
+  padding: 16px 14px 12px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+  animation: customDpPop .18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes customDpPop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.custom-dp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 4px;
+}
+.custom-dp-title {
+  font: 700 15px "Manrope", sans-serif;
+  color: var(--ink);
+  letter-spacing: -0.2px;
+}
+.custom-dp-arrows {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.custom-dp-arrow {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--mint-deep);
+  cursor: pointer;
+  transition: all .15s ease;
+  padding: 0;
+}
+.custom-dp-arrow:hover {
+  background: rgba(91, 191, 140, 0.16);
+  color: var(--mint-strong);
+}
+.custom-dp-arrow:active {
+  transform: scale(0.92);
+}
+
+.custom-dp-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font: 700 12px "Manrope", sans-serif;
+  color: var(--mint-deep);
+  padding-bottom: 2px;
+  opacity: 0.85;
+}
+
+.custom-dp-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px 2px;
+}
+.custom-dp-day {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  font: 600 13px "Manrope", sans-serif;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all .15s ease;
+  padding: 0;
+}
+.custom-dp-day:hover:not(.muted):not(.selected) {
+  background: rgba(91, 191, 140, 0.18);
+  color: var(--mint-deep);
+}
+.custom-dp-day.muted {
+  color: var(--muted);
+  opacity: 0.42;
+}
+.custom-dp-day.muted:hover {
+  opacity: 0.8;
+  background: rgba(91, 191, 140, 0.1);
+}
+.custom-dp-day.today:not(.selected) {
+  font-weight: 800;
+  color: var(--mint-deep);
+  position: relative;
+}
+.custom-dp-day.today:not(.selected)::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--mint-strong);
+}
+.custom-dp-day.selected {
+  background: var(--mint-strong) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(98, 186, 142, 0.38);
+}
+
+.custom-dp-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  margin-top: 2px;
+  border-top: 1px solid var(--line);
+}
+.custom-dp-action {
+  background: transparent;
+  border: none;
+  font: 700 13px "Manrope", sans-serif;
+  color: var(--mint-deep);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all .15s ease;
+}
+.custom-dp-action:hover {
+  color: var(--mint-strong);
+  background: rgba(91, 191, 140, 0.12);
+}
+.custom-dp-action:active {
+  transform: scale(0.95);
+}
+
+/* Theme overrides */
+body[data-theme="matcha"] .custom-dp-day.selected {
+  background: #de82c6 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 10px rgba(222, 130, 198, 0.4);
+}
+body[data-theme="matcha"] .custom-dp-arrow,
+body[data-theme="matcha"] .custom-dp-action,
+body[data-theme="matcha"] .custom-dp-weekdays,
+body[data-theme="matcha"] .custom-dp-day.today:not(.selected) {
+  color: #c96cb4;
+}
+body[data-theme="matcha"] .custom-datepicker-popup {
+  background: #fbf4fa;
+  border-color: rgba(222, 130, 198, 0.25);
+}
+body[data-theme="matcha"] .custom-date-trigger {
+  background: #fbf4fa;
+}
+
+body[data-theme="cafe-royal"] .custom-dp-day.selected {
+  background: #8b1e1e !important;
+  color: #f1dabf !important;
+  box-shadow: 0 4px 10px rgba(139, 38, 38, 0.35);
+}
+body[data-theme="cafe-royal"] .custom-dp-arrow,
+body[data-theme="cafe-royal"] .custom-dp-action,
+body[data-theme="cafe-royal"] .custom-dp-weekdays,
+body[data-theme="cafe-royal"] .custom-dp-day.today:not(.selected) {
+  color: #8b1e1e;
+}
+body[data-theme="cafe-royal"] .custom-datepicker-popup {
+  background: #f4ebe1;
+  border-color: rgba(54, 36, 23, 0.24);
+}
+body[data-theme="cafe-royal"] .custom-date-trigger {
+  background: #f4ebe1;
+  border-color: rgba(54, 36, 23, 0.2);
+  color: #362417;
+}
+
 .finance-toast {
   position: fixed;
   z-index: 1001;

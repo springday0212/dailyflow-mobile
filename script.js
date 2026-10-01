@@ -1180,7 +1180,200 @@ if (budgetSave) {
     }, 600);
   });
 }
-expenseDate.value = getTodayInputDate();
+// --- Custom Pastel Datepicker for Finance Tracker ---
+const expenseDatePickerWrap = document.querySelector("#expenseDatePickerWrap");
+const expenseDateTrigger = document.querySelector("#expenseDateTrigger");
+const expenseDateDisplay = document.querySelector("#expenseDateDisplay");
+const expenseDatePickerPopup = document.querySelector("#expenseDatePickerPopup");
+const customDpTitle = document.querySelector("#customDpTitle");
+const customDpPrevMonth = document.querySelector("#customDpPrevMonth");
+const customDpNextMonth = document.querySelector("#customDpNextMonth");
+const customDpWeekdays = document.querySelector("#customDpWeekdays");
+const customDpGrid = document.querySelector("#customDpGrid");
+const customDpClear = document.querySelector("#customDpClear");
+const customDpToday = document.querySelector("#customDpToday");
+
+function formatIsoToDisplayDate(isoDateStr) {
+  if (!isoDateStr || !/^\d{4}-\d{2}-\d{2}$/.test(isoDateStr)) return "";
+  const [year, month, day] = isoDateStr.split("-");
+  return `${day}.${month}.${year}`;
+}
+
+let customDpSelectedDate = new Date();
+let customDpCurrentMonth = new Date(customDpSelectedDate.getFullYear(), customDpSelectedDate.getMonth(), 1);
+
+function updateExpenseDateValue(isoDate) {
+  if (expenseDate) expenseDate.value = isoDate;
+  if (expenseDateDisplay) expenseDateDisplay.textContent = formatIsoToDisplayDate(isoDate);
+}
+
+function setCustomDatePickerVisibility(visible) {
+  if (!expenseDatePickerPopup) return;
+  expenseDatePickerPopup.hidden = !visible;
+  if (expenseDateTrigger) {
+    expenseDateTrigger.setAttribute("aria-expanded", String(visible));
+    expenseDateTrigger.classList.toggle("active", visible);
+  }
+  if (visible) {
+    if (expenseDate && expenseDate.value && /^\d{4}-\d{2}-\d{2}$/.test(expenseDate.value)) {
+      const [y, m, d] = expenseDate.value.split("-").map(Number);
+      customDpSelectedDate = new Date(y, m - 1, d);
+    } else {
+      customDpSelectedDate = new Date();
+    }
+    customDpCurrentMonth = new Date(customDpSelectedDate.getFullYear(), customDpSelectedDate.getMonth(), 1);
+    renderCustomDatePicker();
+  }
+}
+
+function renderCustomDatePicker() {
+  if (!customDpGrid || !customDpTitle) return;
+  const isTr = /^(tr)/i.test(navigator.language || "");
+  const locale = isTr ? "tr-TR" : "en-US";
+
+  const monthName = customDpCurrentMonth.toLocaleDateString(locale, { month: "long" });
+  const formattedMonthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+  customDpTitle.textContent = `${formattedMonthName} ${customDpCurrentMonth.getFullYear()}`;
+
+  if (customDpWeekdays) {
+    const weekdays = isTr 
+      ? ["Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"] 
+      : ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+    customDpWeekdays.innerHTML = weekdays.map((w) => `<span>${w}</span>`).join("");
+  }
+
+  if (customDpClear) customDpClear.textContent = isTr ? "Temizle" : "Clear";
+  if (customDpToday) customDpToday.textContent = isTr ? "Bugün" : "Today";
+
+  const year = customDpCurrentMonth.getFullYear();
+  const month = customDpCurrentMonth.getMonth();
+  const firstDayRaw = new Date(year, month, 1).getDay(); // Sunday=0, Monday=1, ...
+  const firstDayIndex = (firstDayRaw === 0 ? 6 : firstDayRaw - 1); // Monday=0, Sunday=6
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  const cells = [];
+  for (let i = firstDayIndex - 1; i >= 0; i--) {
+    cells.push({ day: daysInPrevMonth - i, monthOffset: -1 });
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push({ day: d, monthOffset: 0 });
+  }
+  const totalCells = cells.length > 35 ? 42 : 35;
+  let nextDay = 1;
+  while (cells.length < totalCells) {
+    cells.push({ day: nextDay++, monthOffset: 1 });
+  }
+
+  const today = new Date();
+
+  customDpGrid.innerHTML = cells.map((cell) => {
+    const cellDate = new Date(year, month + cell.monthOffset, cell.day);
+    const isSelected = customDpSelectedDate && 
+      cellDate.getFullYear() === customDpSelectedDate.getFullYear() &&
+      cellDate.getMonth() === customDpSelectedDate.getMonth() &&
+      cellDate.getDate() === customDpSelectedDate.getDate();
+
+    const isToday = cellDate.getFullYear() === today.getFullYear() &&
+      cellDate.getMonth() === today.getMonth() &&
+      cellDate.getDate() === today.getDate();
+
+    const isoDate = `${cellDate.getFullYear()}-${String(cellDate.getMonth() + 1).padStart(2, "0")}-${String(cell.day).padStart(2, "0")}`;
+
+    const classes = [
+      "custom-dp-day",
+      cell.monthOffset !== 0 ? "muted" : "",
+      isToday ? "today" : "",
+      isSelected ? "selected" : ""
+    ].filter(Boolean).join(" ");
+
+    return `<button type="button" class="${classes}" data-iso="${isoDate}" data-day="${cell.day}" data-offset="${cell.monthOffset}" aria-pressed="${isSelected}">${cell.day}</button>`;
+  }).join("");
+}
+
+function initCustomDatePicker() {
+  if (!expenseDateTrigger) return;
+  
+  updateExpenseDateValue(getTodayInputDate());
+
+  expenseDateTrigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isCurrentlyOpen = expenseDatePickerPopup && !expenseDatePickerPopup.hidden;
+    setCustomDatePickerVisibility(!isCurrentlyOpen);
+  });
+
+  if (customDpPrevMonth) {
+    customDpPrevMonth.addEventListener("click", (e) => {
+      e.stopPropagation();
+      customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() - 1);
+      renderCustomDatePicker();
+    });
+  }
+
+  if (customDpNextMonth) {
+    customDpNextMonth.addEventListener("click", (e) => {
+      e.stopPropagation();
+      customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() + 1);
+      renderCustomDatePicker();
+    });
+  }
+
+  if (customDpGrid) {
+    customDpGrid.addEventListener("click", (e) => {
+      const dayBtn = e.target.closest(".custom-dp-day");
+      if (!dayBtn) return;
+      e.stopPropagation();
+      const iso = dayBtn.dataset.iso;
+      if (!iso) return;
+      const [y, m, d] = iso.split("-").map(Number);
+      customDpSelectedDate = new Date(y, m - 1, d);
+      customDpCurrentMonth = new Date(y, m - 1, 1);
+      updateExpenseDateValue(iso);
+      setCustomDatePickerVisibility(false);
+    });
+  }
+
+  if (customDpToday) {
+    customDpToday.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const todayIso = getTodayInputDate();
+      const [y, m, d] = todayIso.split("-").map(Number);
+      customDpSelectedDate = new Date(y, m - 1, d);
+      customDpCurrentMonth = new Date(y, m - 1, 1);
+      updateExpenseDateValue(todayIso);
+      setCustomDatePickerVisibility(false);
+    });
+  }
+
+  if (customDpClear) {
+    customDpClear.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const todayIso = getTodayInputDate();
+      const [y, m, d] = todayIso.split("-").map(Number);
+      customDpSelectedDate = new Date(y, m - 1, d);
+      customDpCurrentMonth = new Date(y, m - 1, 1);
+      updateExpenseDateValue(todayIso);
+      setCustomDatePickerVisibility(false);
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (expenseDatePickerPopup && !expenseDatePickerPopup.hidden) {
+      if (!e.target.closest("#expenseDatePickerWrap")) {
+        setCustomDatePickerVisibility(false);
+      }
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && expenseDatePickerPopup && !expenseDatePickerPopup.hidden) {
+      setCustomDatePickerVisibility(false);
+      expenseDateTrigger.focus();
+    }
+  });
+}
+
+updateExpenseDateValue(getTodayInputDate());
 
 financeForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -1190,7 +1383,8 @@ financeForm.addEventListener("submit", (event) => {
   expenses.unshift({ id: Date.now().toString(), title, amount, category: expenseCategory.value, date: expenseDate.value || getTodayInputDate(), createdAt: formatDate() });
   saveExpenses();
   financeForm.reset();
-  expenseDate.value = getTodayInputDate();
+  updateExpenseDateValue(getTodayInputDate());
+  customDpSelectedDate = new Date();
   renderFinance();
 });
 
@@ -1289,6 +1483,7 @@ function initApp() {
   try { renderTimePicker(); } catch (e) { console.error("Time picker error:", e); }
   try { renderTasks(); } catch (e) { console.error("Tasks error:", e); }
   try { renderFinance(); } catch (e) { console.error("Finance error:", e); }
+  try { initCustomDatePicker(); } catch (e) { console.error("Custom datepicker error:", e); }
   try { initAdSense(); } catch (e) {}
 }
 
