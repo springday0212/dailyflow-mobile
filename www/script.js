@@ -474,8 +474,6 @@ const pickerDateBadge = document.querySelector("#pickerDateBadge");
 const pickerTimeBadge = document.querySelector("#pickerTimeBadge");
 const timeDisplayHour = document.querySelector("#timeDisplayHour");
 const timeDisplayMinute = document.querySelector("#timeDisplayMinute");
-const minuteIncBtn = document.querySelector("#minuteIncBtn");
-const minuteDecBtn = document.querySelector("#minuteDecBtn");
 const presetToday = document.querySelector("#presetToday");
 const presetTomorrow = document.querySelector("#presetTomorrow");
 const presetWeekend = document.querySelector("#presetWeekend");
@@ -486,6 +484,23 @@ let pickerMonth = new Date(pickerDate.getFullYear(), pickerDate.getMonth(), 1);
 let selectedHourIndex = 9; // 10:00
 let selectedMinuteIndex = 0;
 let selectedPeriod = "AM";
+
+function scrollTimeSelectionIntoView(smooth = false) {
+  requestAnimationFrame(() => {
+    [hourList, minuteList].forEach((list) => {
+      if (!list) return;
+      const active = list.querySelector(".time-option.active");
+      if (active) {
+        const targetScroll = active.offsetTop - (list.clientHeight - active.clientHeight) / 2;
+        if (smooth) {
+          list.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
+        } else {
+          list.scrollTop = Math.max(0, targetScroll);
+        }
+      }
+    });
+  });
+}
 
 function setActivePickerTab(tab) {
   const isDate = tab === "date";
@@ -499,6 +514,9 @@ function setActivePickerTab(tab) {
   }
   if (calendarDialog) {
     calendarDialog.dataset.activeTab = tab;
+  }
+  if (!isDate) {
+    scrollTimeSelectionIntoView(false);
   }
 }
 
@@ -515,6 +533,7 @@ function setCalendarVisibility(isVisible) {
     renderTimePicker();
     const closeBtn = calendarModal.querySelector(".calendar-close");
     if (closeBtn) closeBtn.focus();
+    scrollTimeSelectionIntoView(false);
   }
 }
 
@@ -571,13 +590,14 @@ function renderTimePicker() {
         event.preventDefault();
         selectedHourIndex = Number(timeButton.dataset.timeIndex);
         updateTimeSelection();
+        scrollTimeSelectionIntoView(true);
       });
     });
   }
 
   if (minuteList) {
-    const minuteSteps = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-    minuteList.innerHTML = minuteSteps.map((minute) => {
+    const minutes = Array.from({ length: 60 }, (_, minute) => minute);
+    minuteList.innerHTML = minutes.map((minute) => {
       const isSelected = minute === selectedMinuteIndex;
       return `<button class="time-option${isSelected ? " active selected" : ""}" type="button" data-time-minute="${minute}" aria-pressed="${isSelected}">${String(minute).padStart(2, "0")}</button>`;
     }).join("");
@@ -587,24 +607,13 @@ function renderTimePicker() {
         event.preventDefault();
         selectedMinuteIndex = Number(timeButton.dataset.timeMinute);
         updateTimeSelection();
+        scrollTimeSelectionIntoView(true);
       });
     });
   }
 
   updateTimeSelection();
-}
-
-if (minuteIncBtn) {
-  minuteIncBtn.addEventListener("click", () => {
-    selectedMinuteIndex = (selectedMinuteIndex + 5) % 60;
-    updateTimeSelection();
-  });
-}
-if (minuteDecBtn) {
-  minuteDecBtn.addEventListener("click", () => {
-    selectedMinuteIndex = (selectedMinuteIndex - 5 + 60) % 60;
-    updateTimeSelection();
-  });
+  scrollTimeSelectionIntoView(false);
 }
 
 document.querySelectorAll("[data-time-preset]").forEach((presetBtn) => {
@@ -624,6 +633,7 @@ document.querySelectorAll("[data-time-preset]").forEach((presetBtn) => {
     });
     document.querySelectorAll("[data-time-preset]").forEach((b) => b.classList.toggle("active", b === presetBtn));
     updateTimeSelection();
+    scrollTimeSelectionIntoView(true);
   });
 });
 
