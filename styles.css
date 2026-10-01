@@ -269,24 +269,65 @@ body[data-theme="cafe-royal"] .task-panel::after { background-image: url("data:i
 .currency-picker select { color: var(--ink); border-color: var(--line); background: var(--paper); }.currency-picker select:hover, .currency-picker select:focus { border-color: var(--mint-strong); }
 .finance-category { border-color: var(--line); background: var(--surface); box-shadow: var(--shadow); }.finance-category-head { color: var(--muted); }.finance-category-head strong { color: var(--ink); }.finance-bar { background: var(--line); }
 
-.native-bento-ad { display: grid; gap: 16px; margin-top: 28px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); }
-.native-bento-ad__header, .native-bento-ad__footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-.native-bento-ad__label { padding: 4px 7px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: transparent; font-size: 9px; font-weight: 700; letter-spacing: .5px; }
-.native-bento-ad__media { position: relative; display: flex; align-items: center; min-height: 106px; overflow: hidden; padding: 20px 24px; border: 1px solid var(--line); border-radius: 11px; background: linear-gradient(110deg, rgba(183,232,207,.68), rgba(255,240,220,.72)); }
-.native-bento-ad__media::before, .native-bento-ad__media::after { position: absolute; content: ""; border-radius: 50%; }
-.native-bento-ad__media::before { right: 13%; bottom: -45px; width: 180px; height: 130px; background: rgba(91,191,140,.5); }
-.native-bento-ad__media::after { right: 5%; top: -55px; width: 120px; height: 120px; background: rgba(219,142,74,.34); }
-.native-bento-ad__media-line { position: relative; z-index: 1; width: min(210px, 55%); height: 8px; border-radius: 99px; background: rgba(40,117,86,.52); box-shadow: 0 17px 0 rgba(40,117,86,.18), 0 34px 0 rgba(40,117,86,.12); }
-.native-bento-ad__media-orb { position: absolute; z-index: 1; right: 26%; width: 35px; height: 35px; border-radius: 50%; background: var(--surface); box-shadow: 0 0 0 9px rgba(255,255,255,.3); }
-.native-bento-ad__media-note { position: absolute; right: 18px; bottom: 13px; z-index: 2; color: rgba(29,41,38,.5); font-size: 9px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
-.native-bento-ad__footer { justify-content: flex-end; }
-.native-bento-ad__cta { padding: 10px 13px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: var(--surface); font-size: 11px; font-weight: 800; transition: border-color .2s, background .2s, transform .2s; }
-.native-bento-ad__cta span { margin-left: 4px; color: var(--mint-deep); }
-.native-bento-ad__cta:hover { border-color: var(--mint-strong); background: var(--mint); transform: translateY(-1px); }
+.native-bento-ad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  contain: paint;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.native-bento-ad__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.native-bento-ad__label {
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.native-bento-ad__body {
+  position: relative;
+  width: 100%;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .015);
+  box-sizing: border-box;
+}
+.native-bento-ad .adsbygoogle {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+body.dark .native-bento-ad__body {
+  background: rgba(255, 255, 255, .02);
+}
 .finance-view .native-bento-ad { margin-top: 22px; }
-.finance-view .native-bento-ad__media { background: linear-gradient(110deg, rgba(183,232,207,.55), rgba(214,130,255,.16)); }
 .pomodoro-shell .native-bento-ad { width: min(620px, 100%); margin-top: 2px; }
-@media (max-width: 560px) { .native-bento-ad { margin-top: 22px; padding: 15px; }.native-bento-ad__media { min-height: 94px; padding: 17px; }.native-bento-ad__media-orb { right: 22%; }.native-bento-ad__media-note { right: 13px; }.native-bento-ad__footer { align-items: center; } }
+@media (max-width: 560px) {
+  .native-bento-ad { margin-top: 22px; padding: 14px; }
+}
 
 /* ==========================================================================
    WEB-ONLY APP DOWNLOAD CARD (Google Play Badge & QR Code)
@@ -527,7 +568,10 @@ body[data-theme="cafe-royal"] .web-download-card {
 /* CRITICAL: Hide strictly in Capacitor / Native App environments */
 html.is-capacitor #webDownloadCard,
 body.is-capacitor #webDownloadCard,
-.is-capacitor .web-download-card {
+.is-capacitor .web-download-card,
+html.is-capacitor .native-bento-ad,
+body.is-capacitor .native-bento-ad,
+.is-capacitor .native-bento-ad {
   display: none !important;
 }
 
