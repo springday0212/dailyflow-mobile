@@ -1006,8 +1006,12 @@ body.is-capacitor .native-bento-ad,
   box-sizing: border-box;
   animation: customDpPop .18s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.custom-datepicker-popup[hidden] {
+.custom-datepicker-popup[hidden],
+.custom-datepicker-popup:not(.is-open) {
   display: none !important;
+}
+.custom-datepicker-popup.is-open {
+  display: flex !important;
 }
 
 @keyframes customDpPop {

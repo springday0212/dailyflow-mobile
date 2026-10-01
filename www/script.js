@@ -1203,12 +1203,16 @@ function setCustomDatePickerVisibility(visible) {
   const trigger = document.querySelector("#expenseDateTrigger");
   const dateInput = document.querySelector("#expenseDate");
   if (!popup) return;
-  popup.hidden = !visible;
-  if (trigger) {
-    trigger.setAttribute("aria-expanded", String(visible));
-    trigger.classList.toggle("active", visible);
-  }
+
   if (visible) {
+    popup.hidden = false;
+    popup.style.display = "flex";
+    popup.classList.add("is-open");
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "true");
+      trigger.classList.add("active");
+    }
+
     if (dateInput && dateInput.value && /^\d{4}-\d{2}-\d{2}$/.test(dateInput.value)) {
       const [y, m, d] = dateInput.value.split("-").map(Number);
       customDpSelectedDate = new Date(y, m - 1, d);
@@ -1217,18 +1221,16 @@ function setCustomDatePickerVisibility(visible) {
     }
     customDpCurrentMonth = new Date(customDpSelectedDate.getFullYear(), customDpSelectedDate.getMonth(), 1);
     renderCustomDatePicker();
+  } else {
+    popup.hidden = true;
+    popup.style.display = "none";
+    popup.classList.remove("is-open");
+    if (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.classList.remove("active");
+    }
   }
 }
-
-window.toggleCustomDatePicker = function(e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-  const popup = document.querySelector("#expenseDatePickerPopup");
-  if (!popup) return;
-  setCustomDatePickerVisibility(popup.hidden);
-};
 
 function renderCustomDatePicker() {
   const grid = document.querySelector("#customDpGrid");
@@ -1242,8 +1244,7 @@ function renderCustomDatePicker() {
     "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
     "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
   ];
-  const monthName = trMonths[customDpCurrentMonth.getMonth()];
-  title.textContent = `${monthName} ${customDpCurrentMonth.getFullYear()}`;
+  title.textContent = `${trMonths[customDpCurrentMonth.getMonth()]} ${customDpCurrentMonth.getFullYear()}`;
 
   if (weekdaysEl) {
     const weekdays = ["Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"];
@@ -1262,40 +1263,57 @@ function renderCustomDatePicker() {
 
   const cells = [];
   for (let i = firstDayIndex - 1; i >= 0; i--) {
-    cells.push({ day: daysInPrevMonth - i, monthOffset: -1 });
+    const d = daysInPrevMonth - i;
+    cells.push({
+      day: d,
+      date: new Date(year, month - 1, d),
+      isCurrentMonth: false
+    });
   }
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ day: d, monthOffset: 0 });
+    cells.push({
+      day: d,
+      date: new Date(year, month, d),
+      isCurrentMonth: true
+    });
   }
   const totalCells = cells.length > 35 ? 42 : 35;
   let nextDay = 1;
   while (cells.length < totalCells) {
-    cells.push({ day: nextDay++, monthOffset: 1 });
+    cells.push({
+      day: nextDay,
+      date: new Date(year, month + 1, nextDay),
+      isCurrentMonth: false
+    });
+    nextDay++;
   }
 
   const today = new Date();
 
   grid.innerHTML = cells.map((cell) => {
-    const cellDate = new Date(year, month + cell.monthOffset, cell.day);
+    const cellYear = cell.date.getFullYear();
+    const cellMonth = cell.date.getMonth();
+    const cellDay = cell.date.getDate();
+
+    const isoDate = `${cellYear}-${String(cellMonth + 1).padStart(2, "0")}-${String(cellDay).padStart(2, "0")}`;
+
     const isSelected = customDpSelectedDate && 
-      cellDate.getFullYear() === customDpSelectedDate.getFullYear() &&
-      cellDate.getMonth() === customDpSelectedDate.getMonth() &&
-      cellDate.getDate() === customDpSelectedDate.getDate();
+      cellYear === customDpSelectedDate.getFullYear() &&
+      cellMonth === customDpSelectedDate.getMonth() &&
+      cellDay === customDpSelectedDate.getDate();
 
-    const isToday = cellDate.getFullYear() === today.getFullYear() &&
-      cellDate.getMonth() === today.getMonth() &&
-      cellDate.getDate() === today.getDate();
-
-    const isoDate = `${cellDate.getFullYear()}-${String(cellDate.getMonth() + 1).padStart(2, "0")}-${String(cell.day).padStart(2, "0")}`;
+    const isToday = cellYear === today.getFullYear() &&
+      cellMonth === today.getMonth() &&
+      cellDay === today.getDate();
 
     const classes = [
       "custom-dp-day",
-      cell.monthOffset !== 0 ? "muted" : "",
+      !cell.isCurrentMonth ? "muted" : "",
       isToday ? "today" : "",
       isSelected ? "selected" : ""
     ].filter(Boolean).join(" ");
 
-    return `<button type="button" class="${classes}" data-iso="${isoDate}" data-day="${cell.day}" data-offset="${cell.monthOffset}" aria-pressed="${isSelected}">${cell.day}</button>`;
+    return `<button type="button" class="${classes}" data-iso="${isoDate}" data-day="${cell.day}" aria-pressed="${isSelected}">${cell.day}</button>`;
   }).join("");
 }
 
@@ -1315,31 +1333,49 @@ function initCustomDatePicker() {
     updateExpenseDateValue(todayIso);
   }
 
+  // Ensure default hidden state on load
+  setCustomDatePickerVisibility(false);
+
   if (customDpInitialized) return;
   customDpInitialized = true;
 
+  // 1. Toggle open/close on trigger click
   trigger.addEventListener("click", (e) => {
-    window.toggleCustomDatePicker(e);
+    e.preventDefault();
+    e.stopPropagation();
+    const currentPopup = document.querySelector("#expenseDatePickerPopup");
+    const isOpen = currentPopup && !currentPopup.hidden && currentPopup.classList.contains("is-open");
+    setCustomDatePickerVisibility(!isOpen);
   });
 
+  // 2. Stop click propagation inside popup so clicks don't close it
+  if (popup) {
+    popup.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  // 3. Previous month arrow (↑)
   if (prevBtn) {
     prevBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() - 1);
+      customDpCurrentMonth = new Date(customDpCurrentMonth.getFullYear(), customDpCurrentMonth.getMonth() - 1, 1);
       renderCustomDatePicker();
     });
   }
 
+  // 4. Next month arrow (↓)
   if (nextBtn) {
     nextBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      customDpCurrentMonth.setMonth(customDpCurrentMonth.getMonth() + 1);
+      customDpCurrentMonth = new Date(customDpCurrentMonth.getFullYear(), customDpCurrentMonth.getMonth() + 1, 1);
       renderCustomDatePicker();
     });
   }
 
+  // 5. Day selection in grid
   if (grid) {
     grid.addEventListener("click", (e) => {
       const dayBtn = e.target.closest(".custom-dp-day");
@@ -1348,14 +1384,31 @@ function initCustomDatePicker() {
       e.stopPropagation();
       const iso = dayBtn.dataset.iso;
       if (!iso) return;
+
+      // Update active highlight style immediately on click
+      const currentSelected = grid.querySelectorAll(".custom-dp-day.selected");
+      currentSelected.forEach((el) => {
+        el.classList.remove("selected");
+        el.setAttribute("aria-pressed", "false");
+      });
+      dayBtn.classList.add("selected");
+      dayBtn.setAttribute("aria-pressed", "true");
+
       const [y, m, d] = iso.split("-").map(Number);
       customDpSelectedDate = new Date(y, m - 1, d);
       customDpCurrentMonth = new Date(y, m - 1, 1);
+
+      // Instant update of input and display value
       updateExpenseDateValue(iso);
-      setCustomDatePickerVisibility(false);
+
+      // Smooth auto-close after 120ms feedback
+      setTimeout(() => {
+        setCustomDatePickerVisibility(false);
+      }, 120);
     });
   }
 
+  // 6. Today button (Bugün)
   if (todayBtn) {
     todayBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1365,10 +1418,14 @@ function initCustomDatePicker() {
       customDpSelectedDate = new Date(y, m - 1, d);
       customDpCurrentMonth = new Date(y, m - 1, 1);
       updateExpenseDateValue(nowIso);
-      setCustomDatePickerVisibility(false);
+      renderCustomDatePicker();
+      setTimeout(() => {
+        setCustomDatePickerVisibility(false);
+      }, 120);
     });
   }
 
+  // 7. Clear button (Temizle - resets to today)
   if (clearBtn) {
     clearBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1378,23 +1435,28 @@ function initCustomDatePicker() {
       customDpSelectedDate = new Date(y, m - 1, d);
       customDpCurrentMonth = new Date(y, m - 1, 1);
       updateExpenseDateValue(nowIso);
-      setCustomDatePickerVisibility(false);
+      renderCustomDatePicker();
+      setTimeout(() => {
+        setCustomDatePickerVisibility(false);
+      }, 120);
     });
   }
 
+  // 8. Outside click to close
   document.addEventListener("click", (e) => {
     const activePopup = document.querySelector("#expenseDatePickerPopup");
-    if (activePopup && !activePopup.hidden) {
+    if (activePopup && (!activePopup.hidden || activePopup.classList.contains("is-open"))) {
       if (!e.target.closest("#expenseDatePickerWrap")) {
         setCustomDatePickerVisibility(false);
       }
     }
   });
 
+  // 9. Escape key to close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       const activePopup = document.querySelector("#expenseDatePickerPopup");
-      if (activePopup && !activePopup.hidden) {
+      if (activePopup && (!activePopup.hidden || activePopup.classList.contains("is-open"))) {
         setCustomDatePickerVisibility(false);
         const trig = document.querySelector("#expenseDateTrigger");
         if (trig) trig.focus();
@@ -1415,6 +1477,7 @@ financeForm.addEventListener("submit", (event) => {
   financeForm.reset();
   updateExpenseDateValue(getTodayInputDate());
   customDpSelectedDate = new Date();
+  setCustomDatePickerVisibility(false);
   renderFinance();
 });
 

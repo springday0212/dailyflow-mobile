@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=3.1">
+  <link rel="stylesheet" href="./styles.css?v=3.2">
   <script>
     try {
       if (typeof window.Capacitor !== "undefined" && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
@@ -483,7 +483,7 @@
           <div class="finance-field date-field custom-datepicker-wrap" id="expenseDatePickerWrap">
             <label for="expenseDateTrigger" class="sr-only">Expense date</label>
             <input id="expenseDate" type="hidden" name="expenseDate" value="">
-            <button type="button" class="custom-date-trigger" id="expenseDateTrigger" onclick="window.toggleCustomDatePicker(event)" aria-haspopup="dialog" aria-expanded="false" aria-label="Tarih seçin">
+            <button type="button" class="custom-date-trigger" id="expenseDateTrigger" aria-haspopup="dialog" aria-expanded="false" aria-label="Tarih seçin">
               <span class="custom-date-val" id="expenseDateDisplay">01.10.2026</span>
               <span class="custom-date-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -494,7 +494,7 @@
                 </svg>
               </span>
             </button>
-            <div class="custom-datepicker-popup" id="expenseDatePickerPopup" role="dialog" aria-modal="true" aria-label="Choose expense date" hidden>
+            <div class="custom-datepicker-popup" id="expenseDatePickerPopup" role="dialog" aria-modal="true" aria-label="Choose expense date" hidden style="display: none;">
               <div class="custom-dp-header">
                 <strong class="custom-dp-title" id="customDpTitle">Ekim 2026</strong>
                 <div class="custom-dp-arrows">
@@ -598,6 +598,6 @@
     </section>
   </div>
   <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
-  <script src="./script.js?v=3.1"></script>
+  <script src="./script.js?v=3.2"></script>
 </body>
 </html>
