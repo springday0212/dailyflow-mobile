@@ -220,11 +220,19 @@ if (document.readyState === "loading") {
 document.addEventListener("deviceready", setupNotifications, false);
 
 function formatDate(date = new Date()) {
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date);
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const localeMap = { en: "en-US", tr: "tr-TR", pt: "pt-BR", de: "de-DE", fr: "fr-FR", nl: "nl-NL" };
+  const loc = localeMap[lang] || "en-US";
+  return new Intl.DateTimeFormat(loc, { month: "short", day: "numeric" }).format(date);
 }
 
 function getPriorityLabel(priority) {
-  return { high: "High", medium: "Med", low: "Low" }[priority];
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  if (priority === "high") return dict.priorityHighShort || "High";
+  if (priority === "medium") return dict.priorityMedShort || "Med";
+  if (priority === "low") return dict.priorityLowShort || "Low";
+  return priority;
 }
 
 function getVisibleTasks() {
@@ -265,9 +273,19 @@ function updateStats() {
   document.querySelector("#allFilterCount").textContent = tasks.length;
   document.querySelector("#completionPercent").textContent = `${percent}%`;
   document.querySelector("#progressBar").style.width = `${percent}%`;
-  document.querySelector("#listDescription").textContent = active === 1 
-    ? "1 task remaining" 
-    : (active > 1 ? `${active} tasks remaining` : "Planned for today");
+
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  const listDescEl = document.querySelector("#listDescription");
+  if (listDescEl) {
+    if (active === 1) {
+      listDescEl.textContent = dict.tasksRemainingSingle || "1 task remaining";
+    } else if (active > 1) {
+      listDescEl.textContent = (dict.tasksRemainingPlural || "{n} tasks remaining").replace("{n}", active);
+    } else {
+      listDescEl.textContent = dict.listDescription || "Planned for today";
+    }
+  }
 }
 
 function escapeHtml(value) {
@@ -572,13 +590,19 @@ function updateTimeSelection() {
       option.setAttribute("aria-pressed", String(isSelected));
     });
   }
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  const localeMap = { en: "en-US", tr: "tr-TR", pt: "pt-BR", de: "de-DE", fr: "fr-FR", nl: "nl-NL" };
+  const loc = localeMap[lang] || "en-US";
+
   if (timeDisplayHour) timeDisplayHour.textContent = String(selectedHourIndex + 1).padStart(2, "0");
   if (timeDisplayMinute) timeDisplayMinute.textContent = String(selectedMinuteIndex).padStart(2, "0");
-  if (pickerDateBadge) pickerDateBadge.textContent = pickerDate.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  if (pickerDateBadge) pickerDateBadge.textContent = pickerDate.toLocaleDateString(loc, { month: "short", day: "numeric" });
   if (pickerTimeBadge) pickerTimeBadge.textContent = formatSelectedTime();
 
-  const selectedDate = pickerDate.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" });
-  if (selectionSummary) selectionSummary.textContent = `${selectedDate} at ${formatSelectedTime()}`;
+  const selectedDate = pickerDate.toLocaleDateString(loc, { weekday: "long", day: "numeric", month: "long" });
+  const atWord = dict.summaryAt || "at";
+  if (selectionSummary) selectionSummary.textContent = `${selectedDate} ${atWord} ${formatSelectedTime()}`;
 }
 
 function renderTimePicker() {
@@ -806,13 +830,15 @@ if (continueButton) {
     tasks.unshift(newTask);
     saveTasks();
     renderTasks();
+    const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+    const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
     if (selectionSummary) {
-      selectionSummary.textContent = newTask.notificationId ? "Saved & Alarm set 🔔" : "Saved to Tasks.";
+      selectionSummary.textContent = newTask.notificationId
+        ? (dict.taskSavedWithAlarm || "Saved & Alarm set 🔔")
+        : (dict.taskSavedToTasks || "Saved to Tasks.");
     }
-    continueButton.textContent = "Saved ✓";
+    continueButton.textContent = dict.savedCheck || "Saved ✓";
     window.setTimeout(() => {
-      const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
-      const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
       continueButton.textContent = dict.saveToTasks || "Save to Tasks";
       if (calendarNote) calendarNote.value = "";
       setCalendarVisibility(false);
@@ -1088,10 +1114,14 @@ function getTodayInputDate() {
 }
 
 function formatExpenseDate(dateValue) {
-  if (!dateValue) return "Today";
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  if (!dateValue) return dict.dpToday || "Today";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) return dateValue;
   const date = new Date(`${dateValue}T00:00:00`);
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  const localeMap = { en: "en-US", tr: "tr-TR", pt: "pt-BR", de: "de-DE", fr: "fr-FR", nl: "nl-NL" };
+  const loc = localeMap[lang] || "en-US";
+  return new Intl.DateTimeFormat(loc, { month: "short", day: "numeric", year: "numeric" }).format(date);
 }
 
 function loadExpenses() {
@@ -1143,9 +1173,12 @@ function renderFinance() {
   if (!monthlyBudget) {
     financeBudgetStatus.textContent = dict.financeStatusNoBudget || "Set a monthly budget";
   } else if (isOverBudget) {
-    financeBudgetStatus.textContent = `Over budget by ${formatMoney(total - monthlyBudget)} (${Math.round((total / monthlyBudget) * 100)}%)`;
+    financeBudgetStatus.textContent = (dict.budgetOverBy || "Over budget by {amount} ({pct}%)")
+      .replace("{amount}", formatMoney(total - monthlyBudget))
+      .replace("{pct}", Math.round((total / monthlyBudget) * 100));
   } else {
-    financeBudgetStatus.textContent = `${formatMoney(monthlyBudget - total)} remaining`;
+    financeBudgetStatus.textContent = (dict.budgetRemaining || "{amount} remaining")
+      .replace("{amount}", formatMoney(monthlyBudget - total));
   }
   let gaugeOffset = 0;
   financeGaugeSegments.forEach((segment) => {
@@ -1164,7 +1197,9 @@ function renderFinance() {
     const catLabel = getCategoryLabel(category);
     return `<div class="finance-category"><div class="finance-category-head"><strong>${catLabel}</strong><span>${formatMoney(categoryTotal)} · ${percentage}%</span></div><div class="finance-bar"><span style="width:${percentage}%; background:${financeCategoryColors[index]}"></span></div></div>`;
   }).join("");
-  expenseList.innerHTML = expenses.length ? expenses.map((expense) => `<div class="expense-row"><div class="expense-info"><strong>${escapeHtml(expense.title)}</strong><span>${getCategoryLabel(expense.category)} · ${formatExpenseDate(expense.date || expense.createdAt)}</span></div><div class="expense-total">${formatMoney(expense.amount)}<button class="expense-delete" type="button" data-expense-id="${expense.id}" aria-label="Delete expense">×</button></div></div>`).join("") : `<p class="finance-empty">No expenses yet.</p>`;
+  expenseList.innerHTML = expenses.length
+    ? expenses.map((expense) => `<div class="expense-row"><div class="expense-info"><strong>${escapeHtml(expense.title)}</strong><span>${getCategoryLabel(expense.category)} · ${formatExpenseDate(expense.date || expense.createdAt)}</span></div><div class="expense-total">${formatMoney(expense.amount)}<button class="expense-delete" type="button" data-expense-id="${expense.id}" aria-label="Delete expense">×</button></div></div>`).join("")
+    : `<p class="finance-empty">${dict.financeEmpty || "No expenses yet."}</p>`;
 }
 
 currencySelect.addEventListener("change", () => {

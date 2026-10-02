@@ -1,9 +1,9 @@
 /**
  * DailyFlow - Internationalization (i18n) Module
- * Supported Languages: English (en), Português (pt), Deutsch (de), Français (fr), Nederlands (nl)
+ * Supported Languages: English (en), Türkçe (tr), Português (pt), Deutsch (de), Français (fr), Nederlands (nl)
  */
 
-const SUPPORTED_LANGUAGES = ["en", "pt", "de", "fr", "nl"];
+const SUPPORTED_LANGUAGES = ["en", "tr", "pt", "de", "fr", "nl"];
 const DEFAULT_LANGUAGE = "en";
 
 const translations = {
@@ -33,11 +33,16 @@ const translations = {
     // Tasks Panel & Form
     tasksTitle: "Tasks",
     listDescription: "Planned for today",
+    tasksRemainingSingle: "1 task remaining",
+    tasksRemainingPlural: "{n} tasks remaining",
     clearCompleted: "Clear completed",
     newTaskPlaceholder: "Add a new task...",
     priorityLow: "Low priority",
     priorityMedium: "Medium priority",
     priorityHigh: "High priority",
+    priorityLowShort: "Low",
+    priorityMedShort: "Med",
+    priorityHighShort: "High",
     addBtn: "Add",
     filterAll: "All",
     filterActive: "Active",
@@ -66,7 +71,11 @@ const translations = {
     calendarNoteLabel: "Add note",
     calendarNotePlaceholder: "Write a note for this time...",
     saveToTasks: "Save to Tasks",
+    savedCheck: "Saved ✓",
     selectionSummaryDefault: "Today at 10:00 AM",
+    summaryAt: "at",
+    taskSavedWithAlarm: "Saved & Alarm set 🔔",
+    taskSavedToTasks: "Saved to Tasks.",
 
     // Pomodoro Focus View
     focusBack: "← Dashboard",
@@ -94,6 +103,8 @@ const translations = {
     budgetInputPlaceholder: "Set monthly budget",
     budgetSave: "Save Budget",
     budgetClear: "Clear",
+    budgetRemaining: "{amount} remaining",
+    budgetOverBy: "Over budget by {amount} ({pct}%)",
     financeThisMonth: "This month",
     financeStatusNoBudget: "Set a monthly budget",
     expenseTitlePlaceholder: "Expense title (e.g. Groceries)",
@@ -102,6 +113,7 @@ const translations = {
     recentExpenses: "Recent expenses",
     financeItemCountSingle: "item",
     financeItemCountPlural: "items",
+    financeEmpty: "No expenses yet.",
     expenseToastDeleted: "Expense deleted",
     undo: "Undo",
 
@@ -120,6 +132,7 @@ const translations = {
       "July", "August", "September", "October", "November", "December"
     ],
     dpWeekdays: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+    calendarWeekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     dpClear: "Clear",
     dpToday: "Today",
 
@@ -138,6 +151,10 @@ const translations = {
     themeUnlockBadge: "🔒 Unlock for 24 Hours",
     themeConfirmCancel: "Cancel",
     themeWatchAd: "Watch ad & unlock",
+    themeConfirmTitle: "A little more green today?",
+    themeConfirmCopy: "Watch a short ad to use this theme for 24 hours.",
+    themeAdTitle: "Your garden is getting ready",
+    themeAdCopy: "The theme will unlock when the short ad simulation ends.",
 
     // Privacy Policy Modal
     privacyBadge: "Privacy & Data Security",
@@ -153,6 +170,171 @@ const translations = {
     privacyCard4Desc: "You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.",
     privacyFooterNote: "Questions or inquiries about our privacy practices? Contact us at"
   },
+
+  tr: {
+    // Navigation & Sidebar
+    navDashboard: "Gösterge Paneli / Görevler",
+    navFocus: "Pomodoro Odak",
+    navFinance: "Finans Takibi",
+    navPrivacy: "Gizlilik Politikası",
+    sidebarNavigation: "Navigasyon",
+    openNavigation: "Menüyü aç",
+    closeNavigation: "Menüyü kapat",
+    chooseTheme: "Tema seç",
+    selectLanguage: "Dil seçin",
+
+    // Dashboard Quick Notes & This Week
+    quickNotesEyebrow: "HIZLI NOTLAR",
+    quickNotesPlaceholder: "Hatırlamak için bir şeyler yaz...",
+    calendarEyebrow: "BU HAFTA",
+    calendarTagline: "Planla · Odaklan · Başar",
+
+    // Stats Grid
+    statTotalTasks: "toplam görev",
+    statInProgress: "devam eden",
+    statCompleted: "tamamlanan",
+
+    // Tasks Panel & Form
+    tasksTitle: "Görevler",
+    listDescription: "Bugün için planlandı",
+    tasksRemainingSingle: "1 görev kaldı",
+    tasksRemainingPlural: "{n} görev kaldı",
+    clearCompleted: "Tamamlananları temizle",
+    newTaskPlaceholder: "Yeni bir görev ekle...",
+    priorityLow: "Düşük öncelik",
+    priorityMedium: "Orta öncelik",
+    priorityHigh: "Yüksek öncelik",
+    priorityLowShort: "Düşük",
+    priorityMedShort: "Orta",
+    priorityHighShort: "Yüksek",
+    addBtn: "Ekle",
+    filterAll: "Tümü",
+    filterActive: "Aktif",
+    filterCompleted: "Tamamlanan",
+    searchPlaceholder: "Görevlerde ara...",
+    emptyStateTitle: "Her şey tamam",
+    emptyStateDesc: "Yeni bir görev ekleyerek başlayabilirsiniz.",
+
+    // Web Download Card
+    webDownloadBadge: "GOOGLE PLAY",
+    webDownloadTitle: "DailyFlow'u Android için İndir",
+    webDownloadDesc: "Görevlerinizi, odak sayaçlarınızı ve bütçenizi doğrudan telefonunuzda yönetin.",
+    gpTagline: "HEMEN İNDİRİN",
+
+    // Schedule / Calendar Modal
+    calendarScheduleEyebrow: "PLANLAMA",
+    calendarTitle: "Tarih ve saat seçin",
+    tabDate: "Tarih",
+    tabTime: "Saat",
+    presetToday: "Bugün",
+    presetTomorrow: "Yarın",
+    presetWeekend: "Bu Hafta Sonu",
+    resetToToday: "Bugüne Sıfırla",
+    hourColLabel: "Saat (1-12)",
+    minuteColLabel: "Dakika (00-59)",
+    calendarNoteLabel: "Not ekle",
+    calendarNotePlaceholder: "Bu zaman için bir not yazın...",
+    saveToTasks: "Görevlere Kaydet",
+    savedCheck: "Kaydedildi ✓",
+    selectionSummaryDefault: "Bugün saat 10:00",
+    summaryAt: "saat",
+    taskSavedWithAlarm: "Kaydedildi & Hatırlatıcı kuruldu 🔔",
+    taskSavedToTasks: "Görevlere kaydedildi.",
+
+    // Pomodoro Focus View
+    focusBack: "← Gösterge Paneli",
+    pomodoroEyebrow: "DAILYFLOW ODAK",
+    pomodoroTitle: "Pomodoro Odak",
+    modeClassic: "Klasik",
+    modeStudy: "Ders",
+    modeDeepWork: "Derin Odak",
+    pomodoroStatusFocus: "Odaklanma Zamanı",
+    pomodoroStatusBreak: "Mola Zamanı",
+    pomodoroStart: "Başlat",
+    pomodoroPause: "Duraklat",
+    pomodoroResume: "Devam Et",
+    pomodoroReset: "Sıfırla",
+
+    // Finance View
+    financeBack: "← Gösterge Paneli",
+    financeEyebrow: "PARA YÖNETİMİ",
+    financeTitle: "Finans Takibi",
+    financeSubtitle: "Günlük harcamalarınızı görünür ve kontrollü tutun.",
+    financeBadge: "HARCAMALAR",
+    budgetLabel: "Bütçe:",
+    budgetSet: "Ayarla",
+    budgetEditorTitle: "🎯 Aylık Bütçe",
+    budgetInputPlaceholder: "Aylık bütçeyi girin",
+    budgetSave: "Bütçeyi Kaydet",
+    budgetClear: "Temizle",
+    budgetRemaining: "{amount} kaldı",
+    budgetOverBy: "Bütçe {amount} aşıldı (%{pct})",
+    financeThisMonth: "Bu ay",
+    financeStatusNoBudget: "Aylık bir bütçe belirleyin",
+    expenseTitlePlaceholder: "Harcama başlığı (örn. Market)",
+    expenseAmountPlaceholder: "Tutar",
+    financeAddExpense: "Harcama Ekle",
+    recentExpenses: "Son harcamalar",
+    financeItemCountSingle: "harcama",
+    financeItemCountPlural: "harcama",
+    financeEmpty: "Henüz harcama yok.",
+    expenseToastDeleted: "Harcama silindi",
+    undo: "Geri Al",
+
+    // Expense Categories
+    categoryTransfers: "Transferler",
+    categoryShopping: "Alışveriş",
+    categoryFood: "Yiyecek & İçecek",
+    categoryUtility: "Faturalar",
+    categoryEntertainment: "Eğlence",
+    categoryVacation: "Tatil",
+
+    // Custom Date Picker
+    dpSelectDate: "Tarih seç",
+    dpMonths: [
+      "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+      "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+    ],
+    dpWeekdays: ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"],
+    calendarWeekdays: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
+    dpClear: "Temizle",
+    dpToday: "Bugün",
+
+    // Theme Modal
+    themePickerEyebrow: "AKIŞINI KİŞİSELLEŞTİR",
+    themePickerTitle: "Tema Seçici",
+    themePickerCopy: "Çalışma alanınızı modunuza uygun hale getirin.",
+    themeDefaultTitle: "Varsayılan Açık Adaçayı",
+    themeDefaultSub: "Yumuşak & sakin",
+    themeDarkTitle: "Koyu Adaçayı",
+    themeDarkSub: "Derin & odaklı",
+    themeMatchaTitle: "Matcha Bahçesi 🌸",
+    themeMatchaSub: "Taze & botanik",
+    themeCafeTitle: "Café Royal ♠️",
+    themeCafeSub: "Sıcak & nostaljik",
+    themeUnlockBadge: "🔒 24 Saatliğine Aç",
+    themeConfirmCancel: "İptal",
+    themeWatchAd: "Reklam izle & aç",
+    themeConfirmTitle: "Bugün biraz daha mı yeşil?",
+    themeConfirmCopy: "Bu temayı 24 saat kullanmak için kısa bir reklam izleyin.",
+    themeAdTitle: "Bahçeniz hazırlanıyor",
+    themeAdCopy: "Kısa reklam simülasyonu bittiğinde tema açılacaktır.",
+
+    // Privacy Policy Modal
+    privacyBadge: "Gizlilik & Veri Güvenliği",
+    privacyTitle: "Gizlilik Politikası",
+    privacySubtitle: "DailyFlow, önce-çevrimdışı ve sıfır-takip felsefesiyle inşa edilmiştir.",
+    privacyCard1Title: "%100 Yerel Cihaz Depolaması",
+    privacyCard1Desc: "Tüm görevleriniz, günlük hızlı notlarınız, Pomodoro kayıtlarınız ve finans işlemleriniz yalnızca yerel cihaz depolamanızda saklanır. Kişisel bilgileriniz telefonunuzu veya tarayıcınızı asla terk etmez.",
+    privacyCard2Title: "Sıfır Takip & Uzak Sunucu Yok",
+    privacyCard2Desc: "DailyFlow harici kullanıcı takip veritabanları işletmez ve telemetri göndermez. Kişisel veya finansal verileriniz asla toplanmaz, izlenmez, paylaşılmaz veya üçüncü taraflara satılmaz.",
+    privacyCard3Title: "Cihaz İçi Yerel Bildirimler",
+    privacyCard3Desc: "Görev hatırlatıcıları ve alarmlar doğrudan cihazınızın işletim sistemi (Yerel Bildirimler) üzerinden zamanlanır. Hiçbir harici bulut sunucusu hatırlatma takviminizi almaz veya işlemez.",
+    privacyCard4Title: "Kullanıcıya Ait Tam Kontrol",
+    privacyCard4Desc: "Verileriniz üzerinde her zaman tam kontrole sahipsiniz. Uygulama verilerini temizlemek veya uygulamayı kaldırmak, depolanan tüm kayıtları cihazınızdan kalıcı olarak siler.",
+    privacyFooterNote: "Gizlilik uygulamalarımızla ilgili soru veya talepleriniz için bize ulaşın:"
+  },
+
   pt: {
     // Navigation & Sidebar
     navDashboard: "Painel / Tarefas",
@@ -178,24 +360,29 @@ const translations = {
 
     // Tasks Panel & Form
     tasksTitle: "Tarefas",
-    listDescription: "Planejadas para hoje",
+    listDescription: "Planejado para hoje",
+    tasksRemainingSingle: "1 tarefa restante",
+    tasksRemainingPlural: "{n} tarefas restantes",
     clearCompleted: "Limpar concluídas",
     newTaskPlaceholder: "Adicionar uma nova tarefa...",
     priorityLow: "Baixa prioridade",
     priorityMedium: "Média prioridade",
     priorityHigh: "Alta prioridade",
+    priorityLowShort: "Baixa",
+    priorityMedShort: "Média",
+    priorityHighShort: "Alta",
     addBtn: "Adicionar",
     filterAll: "Todas",
     filterActive: "Ativas",
     filterCompleted: "Concluídas",
-    searchPlaceholder: "Buscar tarefas...",
+    searchPlaceholder: "Pesquisar tarefas...",
     emptyStateTitle: "Tudo em dia",
     emptyStateDesc: "Você pode começar adicionando uma nova tarefa.",
 
     // Web Download Card
     webDownloadBadge: "GOOGLE PLAY",
     webDownloadTitle: "Baixe o DailyFlow para Android",
-    webDownloadDesc: "Organize suas tarefas, temporizadores de foco e orçamento direto no seu celular.",
+    webDownloadDesc: "Organize suas tarefas, timers de foco e orçamento diretamente no celular.",
     gpTagline: "DISPONÍVEL NO",
 
     // Schedule / Calendar Modal
@@ -211,8 +398,12 @@ const translations = {
     minuteColLabel: "Minuto (00-59)",
     calendarNoteLabel: "Adicionar nota",
     calendarNotePlaceholder: "Escreva uma nota para este horário...",
-    saveToTasks: "Salvar nas tarefas",
+    saveToTasks: "Salvar nas Tarefas",
+    savedCheck: "Salvo ✓",
     selectionSummaryDefault: "Hoje às 10:00",
+    summaryAt: "às",
+    taskSavedWithAlarm: "Salvo e alarme definido 🔔",
+    taskSavedToTasks: "Salvo nas tarefas.",
 
     // Pomodoro Focus View
     focusBack: "← Painel",
@@ -220,19 +411,19 @@ const translations = {
     pomodoroTitle: "Foco Pomodoro",
     modeClassic: "Clássico",
     modeStudy: "Estudo",
-    modeDeepWork: "Foco Profundo",
+    modeDeepWork: "Trabalho Profundo",
     pomodoroStatusFocus: "Tempo de Foco",
     pomodoroStatusBreak: "Tempo de Pausa",
     pomodoroStart: "Iniciar",
     pomodoroPause: "Pausar",
     pomodoroResume: "Retomar",
-    pomodoroReset: "Reiniciar",
+    pomodoroReset: "Redefinir",
 
     // Finance View
     financeBack: "← Painel",
     financeEyebrow: "CONTROLE FINANCEIRO",
     financeTitle: "Controle Financeiro",
-    financeSubtitle: "Mantenha seus gastos diários visíveis e intencionais.",
+    financeSubtitle: "Mantenha seus gastos diários visíveis e conscientes.",
     financeBadge: "DESPESAS",
     budgetLabel: "Orçamento:",
     budgetSet: "Definir",
@@ -240,21 +431,24 @@ const translations = {
     budgetInputPlaceholder: "Definir orçamento mensal",
     budgetSave: "Salvar Orçamento",
     budgetClear: "Limpar",
+    budgetRemaining: "{amount} restante",
+    budgetOverBy: "Acima do orçamento por {amount} ({pct}%)",
     financeThisMonth: "Este mês",
     financeStatusNoBudget: "Defina um orçamento mensal",
-    expenseTitlePlaceholder: "Título da despesa (ex: Supermercado)",
+    expenseTitlePlaceholder: "Título da despesa (ex: Mercado)",
     expenseAmountPlaceholder: "Valor",
     financeAddExpense: "Adicionar Despesa",
     recentExpenses: "Despesas recentes",
-    financeItemCountSingle: "item",
-    financeItemCountPlural: "itens",
+    financeItemCountSingle: "despesa",
+    financeItemCountPlural: "despesas",
+    financeEmpty: "Nenhuma despesa ainda.",
     expenseToastDeleted: "Despesa excluída",
     undo: "Desfazer",
 
     // Expense Categories
     categoryTransfers: "Transferências",
     categoryShopping: "Compras",
-    categoryFood: "Alimentação e Bebidas",
+    categoryFood: "Alimentos e Bebidas",
     categoryUtility: "Contas/Serviços",
     categoryEntertainment: "Entretenimento",
     categoryVacation: "Férias",
@@ -266,43 +460,49 @@ const translations = {
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ],
     dpWeekdays: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+    calendarWeekdays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
     dpClear: "Limpar",
     dpToday: "Hoje",
 
     // Theme Modal
     themePickerEyebrow: "PERSONALIZE SEU FLUXO",
     themePickerTitle: "Seletor de Temas",
-    themePickerCopy: "Combine seu espaço de trabalho com o seu humor.",
-    themeDefaultTitle: "Verde Sálvia Padrão",
+    themePickerCopy: "Combine seu espaço de trabalho com a sua vibe de hoje.",
+    themeDefaultTitle: "Sage Claro Padrão",
     themeDefaultSub: "Suave e calmo",
-    themeDarkTitle: "Sálvia Escuro",
+    themeDarkTitle: "Sage Escuro",
     themeDarkSub: "Profundo e focado",
-    themeMatchaTitle: "Matcha Garden 🌸",
+    themeMatchaTitle: "Jardim Matcha 🌸",
     themeMatchaSub: "Fresco e botânico",
-    themeCafeTitle: "Café Royal ♠️",
+    themeCafeTitle: "Café Real ♠️",
     themeCafeSub: "Aconchegante e vintage",
     themeUnlockBadge: "🔒 Desbloquear por 24 Horas",
     themeConfirmCancel: "Cancelar",
     themeWatchAd: "Ver anúncio e desbloquear",
+    themeConfirmTitle: "Um pouco mais de verde hoje?",
+    themeConfirmCopy: "Assista a um breve anúncio para usar este tema por 24 horas.",
+    themeAdTitle: "Seu jardim está sendo preparado",
+    themeAdCopy: "O tema será desbloqueado quando a simulação do anúncio terminar.",
 
     // Privacy Policy Modal
     privacyBadge: "Privacidade e Segurança",
     privacyTitle: "Política de Privacidade",
-    privacySubtitle: "O DailyFlow foi criado com filosofia offline-first e zero rastreamento.",
-    privacyCard1Title: "Armazenamento 100% Local",
-    privacyCard1Desc: "Todas as suas tarefas, notas diárias, registros Pomodoro e finanças são salvos exclusivamente no armazenamento local do seu dispositivo. Suas informações nunca saem do seu telefone ou navegador.",
-    privacyCard2Title: "Zero Rastreamento e Sem Servidores",
-    privacyCard2Desc: "O DailyFlow não opera bancos de dados remotos nem transmite telemetria. Nunca coletamos, monitoramos, compartilhamos ou vendemos dados pessoais ou financeiros a terceiros.",
-    privacyCard3Title: "Notificações Locais no Aparelho",
-    privacyCard3Desc: "Lembretes e alarmes de tarefas são programados diretamente pelo sistema operacional do seu dispositivo (Notificações Locais). Nenhum servidor externo recebe seus horários.",
-    privacyCard4Title: "Soberania Total do Usuário",
-    privacyCard4Desc: "Você tem controle total sobre seus dados a qualquer momento. Limpar os dados do aplicativo ou desinstalá-lo apaga permanentemente todos os registros salvos.",
-    privacyFooterNote: "Dúvidas sobre nossas práticas de privacidade? Fale conosco em"
+    privacySubtitle: "O DailyFlow foi construído com uma filosofia offline-first e zero rastreamento.",
+    privacyCard1Title: "100% Armazenamento Local no Dispositivo",
+    privacyCard1Desc: "Todas as suas tarefas, notas diárias, registros Pomodoro e transações financeiras são salvos exclusivamente no armazenamento local do seu dispositivo.",
+    privacyCard2Title: "Zero Rastreamento e Sem Servidores Remotos",
+    privacyCard2Desc: "O DailyFlow não opera bancos de dados remotos de rastreamento de usuários nem transmite telemetria. Nunca coletamos ou compartilhamos seus dados.",
+    privacyCard3Title: "Notificações Locais no Dispositivo",
+    privacyCard3Desc: "Lembretes e alarmes de tarefas são programados diretamente pelo sistema operacional do dispositivo (Notificações Locais).",
+    privacyCard4Title: "Controle Total do Usuário",
+    privacyCard4Desc: "Você tem soberania total sobre seus dados. Limpar os dados do aplicativo ou desinstalá-lo exclui permanentemente todos os registros do seu dispositivo.",
+    privacyFooterNote: "Dúvidas ou solicitações sobre nossas práticas de privacidade? Entre em contato pelo e-mail"
   },
+
   de: {
     // Navigation & Sidebar
     navDashboard: "Übersicht / Aufgaben",
-    navFocus: "Pomodoro Fokus",
+    navFocus: "Pomodoro-Fokus",
     navFinance: "Finanz-Tracker",
     navPrivacy: "Datenschutzerklärung",
     sidebarNavigation: "Navigation",
@@ -312,36 +512,41 @@ const translations = {
     selectLanguage: "Sprache wählen",
 
     // Dashboard Quick Notes & This Week
-    quickNotesEyebrow: "SCHNELLNOTIZEN",
-    quickNotesPlaceholder: "Schreibe etwas zur Erinnerung...",
+    quickNotesEyebrow: "SCHNELLE NOTIZEN",
+    quickNotesPlaceholder: "Schreiben Sie etwas zum Merken...",
     calendarEyebrow: "DIESE WOCHE",
     calendarTagline: "Planen · Fokussieren · Erreichen",
 
     // Stats Grid
-    statTotalTasks: "Gesamtaufgaben",
+    statTotalTasks: "Aufgaben gesamt",
     statInProgress: "in Bearbeitung",
     statCompleted: "abgeschlossen",
 
     // Tasks Panel & Form
     tasksTitle: "Aufgaben",
     listDescription: "Für heute geplant",
+    tasksRemainingSingle: "1 Aufgabe übrig",
+    tasksRemainingPlural: "{n} Aufgaben übrig",
     clearCompleted: "Erledigte löschen",
     newTaskPlaceholder: "Neue Aufgabe hinzufügen...",
     priorityLow: "Niedrige Priorität",
     priorityMedium: "Mittlere Priorität",
     priorityHigh: "Hohe Priorität",
+    priorityLowShort: "Niedrig",
+    priorityMedShort: "Mittel",
+    priorityHighShort: "Hoch",
     addBtn: "Hinzufügen",
     filterAll: "Alle",
     filterActive: "Aktiv",
     filterCompleted: "Erledigt",
     searchPlaceholder: "Aufgaben durchsuchen...",
     emptyStateTitle: "Alles erledigt",
-    emptyStateDesc: "Füge eine neue Aufgabe hinzu, um loszulegen.",
+    emptyStateDesc: "Sie können mit einer neuen Aufgabe beginnen.",
 
     // Web Download Card
     webDownloadBadge: "GOOGLE PLAY",
-    webDownloadTitle: "DailyFlow für Android holen",
-    webDownloadDesc: "Organisiere deine Aufgaben, Fokus-Timer und dein Budget direkt auf deinem Smartphone.",
+    webDownloadTitle: "DailyFlow für Android herunterladen",
+    webDownloadDesc: "Organisieren Sie Aufgaben, Fokus-Timer und Finanzen direkt auf Ihrem Smartphone.",
     gpTagline: "JETZT BEI",
 
     // Schedule / Calendar Modal
@@ -352,23 +557,27 @@ const translations = {
     presetToday: "Heute",
     presetTomorrow: "Morgen",
     presetWeekend: "Dieses Wochenende",
-    resetToToday: "Auf heute zurücksetzen",
+    resetToToday: "Auf Heute zurücksetzen",
     hourColLabel: "Stunde (1-12)",
     minuteColLabel: "Minute (00-59)",
     calendarNoteLabel: "Notiz hinzufügen",
-    calendarNotePlaceholder: "Schreibe eine Notiz für diese Zeit...",
+    calendarNotePlaceholder: "Notiz für diese Zeit schreiben...",
     saveToTasks: "In Aufgaben speichern",
+    savedCheck: "Gespeichert ✓",
     selectionSummaryDefault: "Heute um 10:00 Uhr",
+    summaryAt: "um",
+    taskSavedWithAlarm: "Gespeichert & Wecker gestellt 🔔",
+    taskSavedToTasks: "In Aufgaben gespeichert.",
 
     // Pomodoro Focus View
     focusBack: "← Übersicht",
     pomodoroEyebrow: "DAILYFLOW FOKUS",
-    pomodoroTitle: "Pomodoro Fokus",
+    pomodoroTitle: "Pomodoro-Fokus",
     modeClassic: "Klassisch",
     modeStudy: "Lernen",
-    modeDeepWork: "Tiefe Arbeit",
+    modeDeepWork: "Fokussiert",
     pomodoroStatusFocus: "Fokuszeit",
-    pomodoroStatusBreak: "Pause",
+    pomodoroStatusBreak: "Pausezeit",
     pomodoroStart: "Starten",
     pomodoroPause: "Pause",
     pomodoroResume: "Fortsetzen",
@@ -378,22 +587,25 @@ const translations = {
     financeBack: "← Übersicht",
     financeEyebrow: "FINANZKONTROLLE",
     financeTitle: "Finanz-Tracker",
-    financeSubtitle: "Halte deine täglichen Ausgaben im Blick und plane bewusst.",
+    financeSubtitle: "Behalten Sie Ihre alltäglichen Ausgaben sichtbar und bewusst im Blick.",
     financeBadge: "AUSGABEN",
     budgetLabel: "Budget:",
     budgetSet: "Festlegen",
-    budgetEditorTitle: "🎯 Monatliches Budget",
+    budgetEditorTitle: "🎯 Monatsbudget",
     budgetInputPlaceholder: "Monatsbudget festlegen",
     budgetSave: "Budget speichern",
     budgetClear: "Löschen",
+    budgetRemaining: "{amount} übrig",
+    budgetOverBy: "Budget um {amount} überschritten ({pct}%)",
     financeThisMonth: "Diesen Monat",
-    financeStatusNoBudget: "Monatsbudget festlegen",
-    expenseTitlePlaceholder: "Ausgabentitel (z. B. Lebensmittel)",
+    financeStatusNoBudget: "Monatliches Budget festlegen",
+    expenseTitlePlaceholder: "Ausgabenbezeichnung (z. B. Lebensmittel)",
     expenseAmountPlaceholder: "Betrag",
     financeAddExpense: "Ausgabe hinzufügen",
-    recentExpenses: "Aktuelle Ausgaben",
+    recentExpenses: "Letzte Ausgaben",
     financeItemCountSingle: "Eintrag",
     financeItemCountPlural: "Einträge",
+    financeEmpty: "Noch keine Ausgaben.",
     expenseToastDeleted: "Ausgabe gelöscht",
     undo: "Rückgängig",
 
@@ -401,7 +613,7 @@ const translations = {
     categoryTransfers: "Überweisungen",
     categoryShopping: "Einkaufen",
     categoryFood: "Essen & Trinken",
-    categoryUtility: "Rechnungen/Nebenkosten",
+    categoryUtility: "Rechnungen",
     categoryEntertainment: "Unterhaltung",
     categoryVacation: "Urlaub",
 
@@ -412,39 +624,45 @@ const translations = {
       "Juli", "August", "September", "Oktober", "November", "Dezember"
     ],
     dpWeekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+    calendarWeekdays: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
     dpClear: "Löschen",
     dpToday: "Heute",
 
     // Theme Modal
-    themePickerEyebrow: "PERSONALISIERE DEINEN FLOW",
-    themePickerTitle: "Design wählen",
-    themePickerCopy: "Passe deinen Arbeitsbereich deiner Stimmung an.",
-    themeDefaultTitle: "Helles Salbei (Standard)",
+    themePickerEyebrow: "GESTALTEN SIE IHREN FLOW",
+    themePickerTitle: "Design-Auswahl",
+    themePickerCopy: "Passen Sie Ihren Arbeitsbereich an Ihre aktuelle Stimmung an.",
+    themeDefaultTitle: "Standard Helles Salbei",
     themeDefaultSub: "Sanft & ruhig",
     themeDarkTitle: "Dunkles Salbei",
-    themeDarkSub: "Tief & fokussiert",
-    themeMatchaTitle: "Matcha Garden 🌸",
+    themeDarkSub: "Tief & konzentriert",
+    themeMatchaTitle: "Matcha-Garten 🌸",
     themeMatchaSub: "Frisch & botanisch",
     themeCafeTitle: "Café Royal ♠️",
     themeCafeSub: "Warm & klassisch",
     themeUnlockBadge: "🔒 Für 24 Stunden freischalten",
     themeConfirmCancel: "Abbrechen",
-    themeWatchAd: "Video ansehen & freischalten",
+    themeWatchAd: "Werbung ansehen & freischalten",
+    themeConfirmTitle: "Heute etwas mehr Grün?",
+    themeConfirmCopy: "Sehen Sie sich eine kurze Werbung an, um dieses Thema 24 Stunden lang zu nutzen.",
+    themeAdTitle: "Ihr Garten wird vorbereitet",
+    themeAdCopy: "Das Design wird freigeschaltet, sobald die kurze Werbesimulation endet.",
 
     // Privacy Policy Modal
     privacyBadge: "Datenschutz & Sicherheit",
     privacyTitle: "Datenschutzerklärung",
     privacySubtitle: "DailyFlow basiert auf einem Offline-First- und Zero-Tracking-Prinzip.",
     privacyCard1Title: "100% lokaler Gerätespeicher",
-    privacyCard1Desc: "Alle deine Aufgaben, Schnellnotizen, Pomodoro-Einträge und Finanzen werden ausschließlich lokal auf deinem Gerät gespeichert. Deine persönlichen Daten verlassen niemals dein Smartphone oder deinen Browser.",
-    privacyCard2Title: "Kein Tracking & keine Server",
-    privacyCard2Desc: "DailyFlow betreibt keine externen Tracking-Datenbanken und überträgt keine Telemetriedaten. Wir erfassen, überwachen, teilen oder verkaufen niemals persönliche oder finanzielle Daten an Dritte.",
-    privacyCard3Title: "Lokale Benachrichtigungen",
-    privacyCard3Desc: "Erinnerungen und Alarme werden direkt über das Betriebssystem deines Geräts geplant. Kein Cloud-Server empfängt oder verarbeitet deine Termine.",
-    privacyCard4Title: "Vollständige Datenkontrolle",
-    privacyCard4Desc: "Du hast jederzeit die volle Souveränität über deine Daten. Das Löschen von App-Daten oder die Deinstallation entfernt alle Einträge dauerhaft von deinem Gerät.",
-    privacyFooterNote: "Fragen zu unseren Datenschutzpraktiken? Kontaktiere uns unter"
+    privacyCard1Desc: "Alle Ihre Aufgaben, täglichen Notizen, Pomodoro-Aufzeichnungen und Finanztransaktionen werden ausschließlich im lokalen Speicher Ihres Geräts gespeichert.",
+    privacyCard2Title: "Kein Tracking & keine Remote-Server",
+    privacyCard2Desc: "DailyFlow betreibt keine Tracking-Datenbanken und überträgt keine Telemetriedaten. Ihre Daten verlassen niemals Ihr Gerät.",
+    privacyCard3Title: "Geräteinterne lokale Benachrichtigungen",
+    privacyCard3Desc: "Erinnerungen und Alarme werden direkt über das Betriebssystem Ihres Geräts gesteuert.",
+    privacyCard4Title: "Volle Datenhoheit des Nutzers",
+    privacyCard4Desc: "Sie haben jederzeit die volle Kontrolle über Ihre Daten. Das Löschen von App-Daten entfernt alle Einträge dauerhaft.",
+    privacyFooterNote: "Fragen zum Datenschutz? Kontaktieren Sie uns unter"
   },
+
   fr: {
     // Navigation & Sidebar
     navDashboard: "Tableau de bord / Tâches",
@@ -452,37 +670,42 @@ const translations = {
     navFinance: "Suivi Financier",
     navPrivacy: "Politique de Confidentialité",
     sidebarNavigation: "Navigation",
-    openNavigation: "Ouvrir la navigation",
-    closeNavigation: "Fermer la navigation",
+    openNavigation: "Ouvrir le menu",
+    closeNavigation: "Fermer le menu",
     chooseTheme: "Choisir un thème",
     selectLanguage: "Choisir la langue",
 
     // Dashboard Quick Notes & This Week
     quickNotesEyebrow: "NOTES RAPIDES",
-    quickNotesPlaceholder: "Écrivez un mémo...",
+    quickNotesPlaceholder: "Écrivez quelque chose à retenir...",
     calendarEyebrow: "CETTE SEMAINE",
-    calendarTagline: "Planifier · Se concentrer · Réussir",
+    calendarTagline: "Planifier · Concentrer · Réussir",
 
     // Stats Grid
-    statTotalTasks: "tâches totales",
+    statTotalTasks: "tâches au total",
     statInProgress: "en cours",
     statCompleted: "terminées",
 
     // Tasks Panel & Form
     tasksTitle: "Tâches",
-    listDescription: "Planifié pour aujourd'hui",
-    clearCompleted: "Effacer terminées",
-    newTaskPlaceholder: "Ajouter une tâche...",
+    listDescription: "Prévu pour aujourd'hui",
+    tasksRemainingSingle: "1 tâche restante",
+    tasksRemainingPlural: "{n} tâches restantes",
+    clearCompleted: "Effacer les terminées",
+    newTaskPlaceholder: "Ajouter une nouvelle tâche...",
     priorityLow: "Priorité basse",
     priorityMedium: "Priorité moyenne",
     priorityHigh: "Priorité haute",
+    priorityLowShort: "Basse",
+    priorityMedShort: "Moyenne",
+    priorityHighShort: "Haute",
     addBtn: "Ajouter",
     filterAll: "Toutes",
     filterActive: "Actives",
     filterCompleted: "Terminées",
     searchPlaceholder: "Rechercher des tâches...",
     emptyStateTitle: "Tout est à jour",
-    emptyStateDesc: "Commencez par ajouter une nouvelle tâche.",
+    emptyStateDesc: "Vous pouvez commencer par ajouter une tâche.",
 
     // Web Download Card
     webDownloadBadge: "GOOGLE PLAY",
@@ -491,20 +714,24 @@ const translations = {
     gpTagline: "DISPONIBLE SUR",
 
     // Schedule / Calendar Modal
-    calendarScheduleEyebrow: "PROGRAMME",
-    calendarTitle: "Sélectionnez date et heure",
+    calendarScheduleEyebrow: "PLANIFICATION",
+    calendarTitle: "Choisir la date et l'heure",
     tabDate: "Date",
     tabTime: "Heure",
     presetToday: "Aujourd'hui",
     presetTomorrow: "Demain",
     presetWeekend: "Ce week-end",
-    resetToToday: "Réinitialiser à aujourd'hui",
+    resetToToday: "Revenir à aujourd'hui",
     hourColLabel: "Heure (1-12)",
     minuteColLabel: "Minute (00-59)",
     calendarNoteLabel: "Ajouter une note",
-    calendarNotePlaceholder: "Écrivez une note pour ce moment...",
+    calendarNotePlaceholder: "Écrivez une note pour ce créneau...",
     saveToTasks: "Enregistrer dans les tâches",
+    savedCheck: "Enregistré ✓",
     selectionSummaryDefault: "Aujourd'hui à 10:00",
+    summaryAt: "à",
+    taskSavedWithAlarm: "Enregistré & Alarme définie 🔔",
+    taskSavedToTasks: "Enregistré dans les tâches.",
 
     // Pomodoro Focus View
     focusBack: "← Tableau de bord",
@@ -513,7 +740,7 @@ const translations = {
     modeClassic: "Classique",
     modeStudy: "Étude",
     modeDeepWork: "Travail Profond",
-    pomodoroStatusFocus: "Temps de Focus",
+    pomodoroStatusFocus: "Temps de Concentration",
     pomodoroStatusBreak: "Temps de Pause",
     pomodoroStart: "Démarrer",
     pomodoroPause: "Pause",
@@ -522,7 +749,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Tableau de bord",
-    financeEyebrow: "CONTRÔLE DU BUDGET",
+    financeEyebrow: "GESTION DE L'ARGENT",
     financeTitle: "Suivi Financier",
     financeSubtitle: "Gardez vos dépenses quotidiennes visibles et maîtrisées.",
     financeBadge: "DÉPENSES",
@@ -532,14 +759,17 @@ const translations = {
     budgetInputPlaceholder: "Définir le budget mensuel",
     budgetSave: "Enregistrer le budget",
     budgetClear: "Effacer",
+    budgetRemaining: "{amount} restant",
+    budgetOverBy: "Budget dépassé de {amount} ({pct}%)",
     financeThisMonth: "Ce mois-ci",
     financeStatusNoBudget: "Définir un budget mensuel",
-    expenseTitlePlaceholder: "Titre de la dépense (ex: Courses)",
+    expenseTitlePlaceholder: "Titre de la dépense (ex. Courses)",
     expenseAmountPlaceholder: "Montant",
     financeAddExpense: "Ajouter une dépense",
     recentExpenses: "Dépenses récentes",
-    financeItemCountSingle: "élément",
-    financeItemCountPlural: "éléments",
+    financeItemCountSingle: "dépense",
+    financeItemCountPlural: "dépenses",
+    financeEmpty: "Aucune dépense pour le moment.",
     expenseToastDeleted: "Dépense supprimée",
     undo: "Annuler",
 
@@ -547,55 +777,61 @@ const translations = {
     categoryTransfers: "Virements",
     categoryShopping: "Achats",
     categoryFood: "Alimentation",
-    categoryUtility: "Factures/Charges",
+    categoryUtility: "Factures",
     categoryEntertainment: "Divertissement",
     categoryVacation: "Vacances",
 
     // Custom Date Picker
-    dpSelectDate: "Sélectionner la date",
+    dpSelectDate: "Choisir une date",
     dpMonths: [
       "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
       "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
     ],
     dpWeekdays: ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"],
+    calendarWeekdays: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
     dpClear: "Effacer",
     dpToday: "Aujourd'hui",
 
     // Theme Modal
     themePickerEyebrow: "PERSONNALISEZ VOTRE FLUX",
-    themePickerTitle: "Choisir un thème",
-    themePickerCopy: "Adaptez votre espace de travail à votre humeur.",
-    themeDefaultTitle: "Sauge Clair Standard",
-    themeDefaultSub: "Doux & calme",
-    themeDarkTitle: "Sauge Foncée",
+    themePickerTitle: "Sélecteur de Thème",
+    themePickerCopy: "Adaptez votre espace à l'ambiance dans laquelle vous souhaitez travailler.",
+    themeDefaultTitle: "Sauge Clair par Défaut",
+    themeDefaultSub: "Doux & serein",
+    themeDarkTitle: "Sauge Sombre",
     themeDarkSub: "Profond & concentré",
-    themeMatchaTitle: "Matcha Garden 🌸",
+    themeMatchaTitle: "Jardin Matcha 🌸",
     themeMatchaSub: "Frais & botanique",
     themeCafeTitle: "Café Royal ♠️",
-    themeCafeSub: "Chaleureux & vintage",
-    themeUnlockBadge: "🔒 Débloquer pendant 24 Heures",
+    themeCafeSub: "Chaleureux & rétro",
+    themeUnlockBadge: "🔒 Débloquer pour 24 Heures",
     themeConfirmCancel: "Annuler",
     themeWatchAd: "Regarder une pub & débloquer",
+    themeConfirmTitle: "Un peu plus de vert aujourd'hui ?",
+    themeConfirmCopy: "Regardez une courte annonce pour utiliser ce thème pendant 24 heures.",
+    themeAdTitle: "Votre jardin se prépare",
+    themeAdCopy: "Le thème sera déverrouillé à la fin de la courte simulation publicitaire.",
 
     // Privacy Policy Modal
     privacyBadge: "Confidentialité & Sécurité",
     privacyTitle: "Politique de Confidentialité",
-    privacySubtitle: "DailyFlow est conçu selon une philosophie hors-ligne et sans pistage.",
-    privacyCard1Title: "Stockage 100% Local",
-    privacyCard1Desc: "Toutes vos tâches, notes quotidiennes, sessions Pomodoro et dépenses sont enregistrées exclusivement sur votre appareil. Vos informations ne quittent jamais votre téléphone ou votre navigateur.",
-    privacyCard2Title: "Zéro Pistage & Aucun Serveur",
-    privacyCard2Desc: "DailyFlow n'exploite aucune base de données de suivi et ne transmet aucune télémétrie. Nous ne collectons, ne partageons et ne vendons aucune donnée personnelle ou financière.",
+    privacySubtitle: "DailyFlow est conçu selon une philosophie hors-ligne d'abord et sans aucun suivi.",
+    privacyCard1Title: "Stockage 100% Local sur l'Appareil",
+    privacyCard1Desc: "Toutes vos tâches, notes, sessions Pomodoro et dépenses sont conservées exclusivement sur la mémoire de votre appareil.",
+    privacyCard2Title: "Zéro Pistage & Aucun Serveur Distant",
+    privacyCard2Desc: "DailyFlow ne gère aucune base de données distante et ne transmet aucune télémétrie. Vos données ne sont jamais vendues.",
     privacyCard3Title: "Notifications Locales sur l'Appareil",
-    privacyCard3Desc: "Les rappels et alarmes sont programmés directement via le système d'exploitation de votre appareil (Notifications Locales). Aucun serveur cloud ne reçoit votre planning.",
-    privacyCard4Title: "Contrôle Absolu de l'Utilisateur",
-    privacyCard4Desc: "Vous gardez une souveraineté totale sur vos données à tout moment. Effacer les données de l'application ou la désinstaller supprime définitivement toutes les entrées enregistrées.",
-    privacyFooterNote: "Des questions sur nos pratiques de confidentialité ? Contactez-nous à"
+    privacyCard3Desc: "Les rappels et alarmes de tâches sont gérés directement par le système d'exploitation de votre téléphone.",
+    privacyCard4Title: "Souveraineté Totale de l'Utilisateur",
+    privacyCard4Desc: "Vous avez un contrôle absolu sur vos données. La désinstallation supprime définitivement tous les enregistrements.",
+    privacyFooterNote: "Des questions sur notre politique de confidentialité ? Contactez-nous à"
   },
+
   nl: {
     // Navigation & Sidebar
-    navDashboard: "Overzicht / Taken",
-    navFocus: "Pomodoro Focus",
-    navFinance: "Financiën Tracker",
+    navDashboard: "Dashboard / Taken",
+    navFocus: "Pomodoro-Focus",
+    navFinance: "Financiën-Tracker",
     navPrivacy: "Privacybeleid",
     sidebarNavigation: "Navigatie",
     openNavigation: "Navigatie openen",
@@ -610,82 +846,94 @@ const translations = {
     calendarTagline: "Plannen · Focussen · Bereiken",
 
     // Stats Grid
-    statTotalTasks: "totaal aantal taken",
+    statTotalTasks: "taken in totaal",
     statInProgress: "bezig",
     statCompleted: "voltooid",
 
     // Tasks Panel & Form
     tasksTitle: "Taken",
     listDescription: "Gepland voor vandaag",
+    tasksRemainingSingle: "1 taak resterend",
+    tasksRemainingPlural: "{n} taken resterend",
     clearCompleted: "Voltooide wissen",
-    newTaskPlaceholder: "Nieuwe taak toevoegen...",
+    newTaskPlaceholder: "Voeg een nieuwe taak toe...",
     priorityLow: "Lage prioriteit",
-    priorityMedium: "Gemiddelde prioriteit",
+    priorityMedium: "Normale prioriteit",
     priorityHigh: "Hoge prioriteit",
+    priorityLowShort: "Laag",
+    priorityMedShort: "Gem",
+    priorityHighShort: "Hoog",
     addBtn: "Toevoegen",
     filterAll: "Alle",
     filterActive: "Actief",
     filterCompleted: "Voltooid",
-    searchPlaceholder: "Taken zoeken...",
+    searchPlaceholder: "Taken doorzoeken...",
     emptyStateTitle: "Helemaal bij",
-    emptyStateDesc: "Begin met het toevoegen van een nieuwe taak.",
+    emptyStateDesc: "Je kunt beginnen door een nieuwe taak toe te voegen.",
 
     // Web Download Card
     webDownloadBadge: "GOOGLE PLAY",
     webDownloadTitle: "Download DailyFlow voor Android",
-    webDownloadDesc: "Beheer je taken, focustimers en budget direct op je telefoon.",
+    webDownloadDesc: "Organiseer je taken, focustimers en budget rechtstreeks op je telefoon.",
     gpTagline: "ONTDEK HET OP",
 
     // Schedule / Calendar Modal
-    calendarScheduleEyebrow: "SCHEMA",
+    calendarScheduleEyebrow: "PLANNING",
     calendarTitle: "Selecteer datum en tijd",
     tabDate: "Datum",
     tabTime: "Tijd",
     presetToday: "Vandaag",
     presetTomorrow: "Morgen",
     presetWeekend: "Dit weekend",
-    resetToToday: "Herstellen naar vandaag",
+    resetToToday: "Terug naar Vandaag",
     hourColLabel: "Uur (1-12)",
     minuteColLabel: "Minuut (00-59)",
     calendarNoteLabel: "Notitie toevoegen",
-    calendarNotePlaceholder: "Schrijf een notitie voor dit moment...",
+    calendarNotePlaceholder: "Schrijf een notitie voor dit tijdstip...",
     saveToTasks: "Opslaan in taken",
+    savedCheck: "Opgeslagen ✓",
     selectionSummaryDefault: "Vandaag om 10:00",
+    summaryAt: "om",
+    taskSavedWithAlarm: "Opgeslagen & Alarm ingesteld 🔔",
+    taskSavedToTasks: "Opgeslagen in taken.",
 
     // Pomodoro Focus View
-    focusBack: "← Overzicht",
+    focusBack: "← Dashboard",
     pomodoroEyebrow: "DAILYFLOW FOCUS",
-    pomodoroTitle: "Pomodoro Focus",
+    pomodoroTitle: "Pomodoro-Focus",
     modeClassic: "Klassiek",
     modeStudy: "Studie",
-    modeDeepWork: "Diep Werk",
+    modeDeepWork: "Diepe Focus",
     pomodoroStatusFocus: "Focustijd",
     pomodoroStatusBreak: "Pauzetijd",
-    pomodoroStart: "Start",
+    pomodoroStart: "Starten",
     pomodoroPause: "Pauze",
     pomodoroResume: "Hervatten",
-    pomodoroReset: "Herstellen",
+    pomodoroReset: "Resetten",
 
     // Finance View
-    financeBack: "← Overzicht",
+    financeBack: "← Dashboard",
     financeEyebrow: "GELDBEHEER",
-    financeTitle: "Financiën Tracker",
+    financeTitle: "Financiën-Tracker",
     financeSubtitle: "Houd je dagelijkse uitgaven overzichtelijk en bewust.",
     financeBadge: "UITGAVEN",
     budgetLabel: "Budget:",
     budgetSet: "Instellen",
-    budgetEditorTitle: "🎯 Maandelijks Budget",
+    budgetEditorTitle: "🎯 Maandbudget",
     budgetInputPlaceholder: "Maandbudget instellen",
     budgetSave: "Budget opslaan",
     budgetClear: "Wissen",
+    budgetRemaining: "{amount} resterend",
+    budgetOverBy: "Budget overschreden met {amount} ({pct}%)",
     financeThisMonth: "Deze maand",
     financeStatusNoBudget: "Stel een maandbudget in",
-    expenseTitlePlaceholder: "Uitgave titel (bijv. Boodschappen)",
+    expenseTitlePlaceholder: "Omschrijving (bijv. Boodschappen)",
     expenseAmountPlaceholder: "Bedrag",
     financeAddExpense: "Uitgave toevoegen",
     recentExpenses: "Recente uitgaven",
-    financeItemCountSingle: "item",
-    financeItemCountPlural: "items",
+    financeItemCountSingle: "uitgave",
+    financeItemCountPlural: "uitgaven",
+    financeEmpty: "Nog geen uitgaven.",
     expenseToastDeleted: "Uitgave verwijderd",
     undo: "Ongedaan maken",
 
@@ -693,8 +941,8 @@ const translations = {
     categoryTransfers: "Overboekingen",
     categoryShopping: "Winkelen",
     categoryFood: "Eten & Drinken",
-    categoryUtility: "Rekeningen",
-    categoryEntertainment: "Amusement",
+    categoryUtility: "Vaste Lasten",
+    categoryEntertainment: "Vermaak",
     categoryVacation: "Vakantie",
 
     // Custom Date Picker
@@ -704,42 +952,45 @@ const translations = {
       "Juli", "Augustus", "September", "Oktober", "November", "December"
     ],
     dpWeekdays: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
+    calendarWeekdays: ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"],
     dpClear: "Wissen",
     dpToday: "Vandaag",
 
     // Theme Modal
     themePickerEyebrow: "PERSONALISEER JE FLOW",
-    themePickerTitle: "Thema kiezen",
-    themePickerCopy: "Pas je werkruimte aan op je stemming.",
+    themePickerTitle: "Themakiezer",
+    themePickerCopy: "Stem je werkruimte af op de sfeer waarin je wilt werken.",
     themeDefaultTitle: "Standaard Licht Salie",
     themeDefaultSub: "Zacht & rustig",
     themeDarkTitle: "Donker Salie",
     themeDarkSub: "Diep & gefocust",
-    themeMatchaTitle: "Matcha Garden 🌸",
+    themeMatchaTitle: "Matcha Tuin 🌸",
     themeMatchaSub: "Fris & botanisch",
     themeCafeTitle: "Café Royal ♠️",
     themeCafeSub: "Warm & vintage",
     themeUnlockBadge: "🔒 Ontgrendel voor 24 Uur",
     themeConfirmCancel: "Annuleren",
-    themeWatchAd: "Advertentie kijken & ontgrendelen",
+    themeWatchAd: "Bekijk advertentie & ontgrendel",
+    themeConfirmTitle: "Vandaag een beetje meer groen?",
+    themeConfirmCopy: "Bekijk een korte advertentie om dit thema 24 uur te gebruiken.",
+    themeAdTitle: "Je tuin wordt klaargemaakt",
+    themeAdCopy: "Het thema wordt ontgrendeld zodra de korte advertentiesimulatie eindigt.",
 
     // Privacy Policy Modal
     privacyBadge: "Privacy & Gegevensbeveiliging",
     privacyTitle: "Privacybeleid",
     privacySubtitle: "DailyFlow is gebouwd met een offline-first en nul-tracking filosofie.",
-    privacyCard1Title: "100% Lokale Apparaatopslag",
-    privacyCard1Desc: "Al je taken, snelle notities, Pomodoro-sessies en financiën worden uitsluitend lokaal op je apparaat opgeslagen. Je persoonlijke gegevens verlaten nooit je telefoon of browser.",
+    privacyCard1Title: "100% Lokale Apparaat-opslag",
+    privacyCard1Desc: "Al je taken, dagelijkse notities, Pomodoro-sessies en uitgaven worden uitsluitend op je lokale apparaat bewaard.",
     privacyCard2Title: "Geen Tracking & Geen Externe Servers",
-    privacyCard2Desc: "DailyFlow gebruikt geen externe tracking-databases en verzendt geen telemetrie. We verzamelen, monitoren, delen of verkopen nooit persoonlijke of financiële gegevens aan derden.",
-    privacyCard3Title: "Lokale Apparaatmeldingen",
-    privacyCard3Desc: "Herinneringen en alarmen worden rechtstreeks via het besturingssysteem van je apparaat gepland. Geen externe cloudservers ontvangen je planning.",
-    privacyCard4Title: "Volledige Controle voor de Gebruiker",
-    privacyCard4Desc: "Je hebt te allen tijde de volledige controle over je gegevens. Het wissen van app-gegevens of het verwijderen van de app verwijdert permanent alle opgeslagen gegevens van je apparaat.",
-    privacyFooterNote: "Vragen over ons privacybeleid? Neem contact met ons op via"
+    privacyCard2Desc: "DailyFlow gebruikt geen tracking-databases en verzendt geen telemetrie. We verkopen je gegevens nooit.",
+    privacyCard3Title: "Lokale Meldingen op het Apparaat",
+    privacyCard3Desc: "Herinneringen en alarmen worden rechtstreeks via het besturingssysteem van je telefoon gepland.",
+    privacyCard4Title: "Volledig Eigenaarschap van de Gebruiker",
+    privacyCard4Desc: "Je hebt te allen tijde volledige controle over je data. Het wissen van app-gegevens verwijdert alles permanent.",
+    privacyFooterNote: "Vragen over ons privacybeleid? Neem contact op via"
   }
 };
-
-let currentLanguage = DEFAULT_LANGUAGE;
 
 function getStoredLanguage() {
   try {
@@ -752,28 +1003,24 @@ function getStoredLanguage() {
 }
 
 function t(key, fallback = "") {
-  const dict = translations[currentLanguage] || translations.en;
-  if (dict && dict[key] !== undefined) {
-    return dict[key];
-  }
-  const enDict = translations.en;
-  if (enDict && enDict[key] !== undefined) {
-    return enDict[key];
-  }
-  return fallback;
+  const lang = getStoredLanguage();
+  const dict = translations[lang] || translations[DEFAULT_LANGUAGE];
+  return (dict && dict[key] !== undefined) ? dict[key] : fallback;
 }
 
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGUAGES.includes(lang)) {
     lang = DEFAULT_LANGUAGE;
   }
-  currentLanguage = lang;
+
   try {
     localStorage.setItem("dailyflow_language", lang);
   } catch (e) {}
+
   document.documentElement.lang = lang;
 
-  const dict = translations[lang] || translations.en;
+  const dict = translations[lang] || translations[DEFAULT_LANGUAGE];
+  if (!dict) return;
 
   // 1. Text elements with data-i18n
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -783,19 +1030,19 @@ function applyLanguage(lang) {
     }
   });
 
-  // 2. Placeholder elements with data-i18n-placeholder
+  // 2. Placeholder attributes with data-i18n-placeholder
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
     if (dict[key] !== undefined) {
-      el.placeholder = dict[key];
+      el.setAttribute("placeholder", dict[key]);
     }
   });
 
-  // 3. Title elements with data-i18n-title
+  // 3. Title attributes with data-i18n-title
   document.querySelectorAll("[data-i18n-title]").forEach((el) => {
     const key = el.getAttribute("data-i18n-title");
     if (dict[key] !== undefined) {
-      el.title = dict[key];
+      el.setAttribute("title", dict[key]);
     }
   });
 
@@ -839,7 +1086,13 @@ function applyLanguage(lang) {
     expenseCategoryDisplay.textContent = dict[key] || val;
   }
 
-  // 8. Re-render dynamic components safely if functions exist
+  // 8. Update calendar weekdays row if exists
+  const monthWeekdaysEl = document.querySelector(".month-weekdays");
+  if (monthWeekdaysEl && dict.calendarWeekdays) {
+    monthWeekdaysEl.innerHTML = dict.calendarWeekdays.map((w) => `<span>${w}</span>`).join("");
+  }
+
+  // 9. Re-render dynamic components safely if functions exist
   if (typeof renderCustomDatePicker === "function") {
     try { renderCustomDatePicker(); } catch (e) {}
   }
@@ -857,6 +1110,12 @@ function applyLanguage(lang) {
   }
   if (typeof renderTasks === "function") {
     try { renderTasks(); } catch (e) {}
+  }
+  if (typeof updateStats === "function") {
+    try { updateStats(); } catch (e) {}
+  }
+  if (typeof updateTimeSelection === "function") {
+    try { updateTimeSelection(); } catch (e) {}
   }
 
   window.dispatchEvent(new CustomEvent("languagechange", { detail: { lang } }));
