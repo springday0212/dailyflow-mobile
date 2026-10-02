@@ -972,8 +972,13 @@ function setAppView(view) {
 }
 
 menuButton.addEventListener("click", () => setDrawerVisibility(!sidebarDrawer.classList.contains("is-open")));
-drawerClose.addEventListener("click", () => setDrawerVisibility(false));
+drawerClose?.addEventListener("click", () => setDrawerVisibility(false));
 drawerOverlay.addEventListener("click", () => setDrawerVisibility(false));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && sidebarDrawer && sidebarDrawer.classList.contains("is-open")) {
+    setDrawerVisibility(false);
+  }
+});
 focusBack.addEventListener("click", () => setAppView("dashboard"));
 financeBack.addEventListener("click", () => setAppView("dashboard"));
 sidebarLinks.forEach((link) => link.addEventListener("click", () => setAppView(link.dataset.view)));
