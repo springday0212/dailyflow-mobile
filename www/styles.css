@@ -107,13 +107,17 @@ body.dark { --paper: #17221e; --surface: #202d28; --ink: #edf5ef; --muted: #9baa
   outline: 3px solid rgba(91, 191, 140, .35);
   outline-offset: 3px;
 }
-.lang-picker-popup {
+.lang-picker-popup,
+.custom-select-popup.lang-picker-popup,
+#langPickerPopup {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
-  left: auto;
-  width: auto;
+  right: 0 !important;
+  left: auto !important;
+  width: max-content;
   min-width: 175px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
 }
 .drawer-overlay { position: fixed; z-index: 20; inset: 0; background: rgba(29,41,38,.38); backdrop-filter: blur(3px); }.drawer-overlay[hidden] { display: none; }
 .sidebar-drawer {
@@ -1397,6 +1401,12 @@ body.is-capacitor .native-bento-ad,
 .custom-select-popup.is-open {
   display: flex !important;
 }
+.custom-select-popup.lang-picker-popup {
+  right: 0 !important;
+  left: auto !important;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+}
 
 @keyframes customSelectPop {
   from { opacity: 0; transform: translateY(-4px) scale(0.98); }
@@ -2583,6 +2593,11 @@ body.modal-open { overflow: hidden; }
   }
   .custom-select-popup {
     max-width: calc(100vw - 44px);
+  }
+  .custom-select-popup.lang-picker-popup {
+    right: 0 !important;
+    left: auto !important;
+    max-width: calc(100vw - 32px);
   }
   .priority-wrap .custom-select-trigger {
     min-height: 46px;
