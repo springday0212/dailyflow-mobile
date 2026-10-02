@@ -684,7 +684,13 @@ if (presetWeekend) {
 
 function renderMonthPicker() {
   if (!monthTitle || !monthDays) return;
-  monthTitle.textContent = pickerMonth.toLocaleDateString("en-US", { month: "long" });
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  const months = dict.dpMonths || [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  monthTitle.textContent = months[pickerMonth.getMonth()] || pickerMonth.toLocaleDateString("en-US", { month: "long" });
   renderYearOptions();
   const firstDay = new Date(pickerMonth.getFullYear(), pickerMonth.getMonth(), 1).getDay();
   const daysInMonth = new Date(pickerMonth.getFullYear(), pickerMonth.getMonth() + 1, 0).getDate();
@@ -805,7 +811,9 @@ if (continueButton) {
     }
     continueButton.textContent = "Saved ✓";
     window.setTimeout(() => {
-      continueButton.textContent = "Save to Tasks";
+      const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+      const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+      continueButton.textContent = dict.saveToTasks || "Save to Tasks";
       if (calendarNote) calendarNote.value = "";
       setCalendarVisibility(false);
     }, 500);
@@ -813,7 +821,9 @@ if (continueButton) {
 }
 
 function renderCalendarDates() {
-  const dateLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  const dateLabels = dict.dpWeekdays || ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const today = new Date();
   const monday = new Date(today);
   const dayOffset = (today.getDay() + 6) % 7;
@@ -981,7 +991,12 @@ function updatePomodoroDisplay() {
   const minutes = Math.floor(pomodoroRemaining / 60);
   const seconds = pomodoroRemaining % 60;
   pomodoroTime.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-  pomodoroStatus.textContent = pomodoroIsBreak ? "Break Time" : "Focus Time";
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  pomodoroStatus.textContent = pomodoroIsBreak ? (dict.pomodoroStatusBreak || "Break Time") : (dict.pomodoroStatusFocus || "Focus Time");
+  if (!pomodoroTimer && pomodoroStart) {
+    pomodoroStart.textContent = dict.pomodoroStart || "Start";
+  }
   const progress = pomodoroTotal ? pomodoroRemaining / pomodoroTotal : 0;
   pomodoroProgress.style.strokeDasharray = String(pomodoroCircumference);
   pomodoroProgress.style.strokeDashoffset = String(pomodoroCircumference * (1 - progress));
@@ -1022,14 +1037,16 @@ function tickPomodoro() {
 }
 
 pomodoroStart.addEventListener("click", () => {
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
   if (pomodoroTimer) {
     clearInterval(pomodoroTimer);
     pomodoroTimer = null;
-    pomodoroStart.textContent = "Start";
+    pomodoroStart.textContent = dict.pomodoroStart || "Start";
     return;
   }
   pomodoroTimer = window.setInterval(tickPomodoro, 1000);
-  pomodoroStart.textContent = "Pause";
+  pomodoroStart.textContent = dict.pomodoroPause || "Pause";
 });
 pomodoroReset.addEventListener("click", () => {
   clearInterval(pomodoroTimer);
@@ -1037,7 +1054,9 @@ pomodoroReset.addEventListener("click", () => {
   pomodoroIsBreak = false;
   pomodoroTotal = pomodoroFocusMinutes * 60;
   pomodoroRemaining = pomodoroTotal;
-  pomodoroStart.textContent = "Start";
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  pomodoroStart.textContent = dict.pomodoroStart || "Start";
   updatePomodoroDisplay();
 });
 pomodoroModes.forEach((mode) => mode.addEventListener("click", () => {
@@ -1089,13 +1108,30 @@ function saveExpenses() {
   } catch (e) {}
 }
 
+function getCategoryLabel(cat) {
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+  switch (cat) {
+    case "Transfers": return dict.categoryTransfers || "Transfers";
+    case "Shopping": return dict.categoryShopping || "Shopping";
+    case "Food & Beverages": return dict.categoryFood || "Food & Beverages";
+    case "Utility/Bills": return dict.categoryUtility || "Utility/Bills";
+    case "Entertainment": return dict.categoryEntertainment || "Entertainment";
+    case "Vacation": return dict.categoryVacation || "Vacation";
+    default: return cat;
+  }
+}
+
 function renderFinance() {
   const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+
   financeTotal.textContent = formatMoney(total);
   currencySelect.value = selectedCurrency;
   budgetInput.value = monthlyBudget || "";
   if (budgetBadgeVal) {
-    budgetBadgeVal.textContent = monthlyBudget > 0 ? formatMoney(monthlyBudget) : "Set";
+    budgetBadgeVal.textContent = monthlyBudget > 0 ? formatMoney(monthlyBudget) : (dict.budgetSet || "Set");
   }
   if (budgetCurrencySymbol) {
     budgetCurrencySymbol.textContent = getCurrencySymbol();
@@ -1105,7 +1141,7 @@ function renderFinance() {
   const isOverBudget = monthlyBudget > 0 && total > monthlyBudget;
   financeSummary.classList.toggle("budget-exceeded", isOverBudget);
   if (!monthlyBudget) {
-    financeBudgetStatus.textContent = "Set a monthly budget";
+    financeBudgetStatus.textContent = dict.financeStatusNoBudget || "Set a monthly budget";
   } else if (isOverBudget) {
     financeBudgetStatus.textContent = `Over budget by ${formatMoney(total - monthlyBudget)} (${Math.round((total / monthlyBudget) * 100)}%)`;
   } else {
@@ -1120,13 +1156,15 @@ function renderFinance() {
     segment.style.strokeDashoffset = String(-gaugeOffset);
     gaugeOffset += segmentLength;
   });
-  financeCount.textContent = `${expenses.length} ${expenses.length === 1 ? "item" : "items"}`;
+  const countWord = expenses.length === 1 ? (dict.financeItemCountSingle || "item") : (dict.financeItemCountPlural || "items");
+  financeCount.textContent = `${expenses.length} ${countWord}`;
   financeCategories.innerHTML = financeCategoryNames.map((category, index) => {
     const categoryTotal = expenses.filter((expense) => expense.category === category).reduce((sum, expense) => sum + expense.amount, 0);
     const percentage = total ? Math.round((categoryTotal / total) * 100) : 0;
-    return `<div class="finance-category"><div class="finance-category-head"><strong>${category}</strong><span>${formatMoney(categoryTotal)} · ${percentage}%</span></div><div class="finance-bar"><span style="width:${percentage}%; background:${financeCategoryColors[index]}"></span></div></div>`;
+    const catLabel = getCategoryLabel(category);
+    return `<div class="finance-category"><div class="finance-category-head"><strong>${catLabel}</strong><span>${formatMoney(categoryTotal)} · ${percentage}%</span></div><div class="finance-bar"><span style="width:${percentage}%; background:${financeCategoryColors[index]}"></span></div></div>`;
   }).join("");
-  expenseList.innerHTML = expenses.length ? expenses.map((expense) => `<div class="expense-row"><div class="expense-info"><strong>${escapeHtml(expense.title)}</strong><span>${expense.category} · ${formatExpenseDate(expense.date || expense.createdAt)}</span></div><div class="expense-total">${formatMoney(expense.amount)}<button class="expense-delete" type="button" data-expense-id="${expense.id}" aria-label="Delete expense">×</button></div></div>`).join("") : `<p class="finance-empty">No expenses yet.</p>`;
+  expenseList.innerHTML = expenses.length ? expenses.map((expense) => `<div class="expense-row"><div class="expense-info"><strong>${escapeHtml(expense.title)}</strong><span>${getCategoryLabel(expense.category)} · ${formatExpenseDate(expense.date || expense.createdAt)}</span></div><div class="expense-total">${formatMoney(expense.amount)}<button class="expense-delete" type="button" data-expense-id="${expense.id}" aria-label="Delete expense">×</button></div></div>`).join("") : `<p class="finance-empty">No expenses yet.</p>`;
 }
 
 currencySelect.addEventListener("change", () => {
@@ -1246,19 +1284,22 @@ function renderCustomDatePicker() {
   const todayBtn = document.querySelector("#customDpToday");
   if (!grid || !title) return;
 
-  const enMonths = [
+  const lang = (typeof getStoredLanguage === "function" ? getStoredLanguage() : "en");
+  const dict = (window.translations && window.translations[lang]) || (window.translations && window.translations.en) || {};
+
+  const months = dict.dpMonths || [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-  title.textContent = `${enMonths[customDpCurrentMonth.getMonth()]} ${customDpCurrentMonth.getFullYear()}`;
+  title.textContent = `${months[customDpCurrentMonth.getMonth()]} ${customDpCurrentMonth.getFullYear()}`;
 
   if (weekdaysEl) {
-    const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+    const weekdays = dict.dpWeekdays || ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
     weekdaysEl.innerHTML = weekdays.map((w) => `<span>${w}</span>`).join("");
   }
 
-  if (clearBtn) clearBtn.textContent = "Clear";
-  if (todayBtn) todayBtn.textContent = "Today";
+  if (clearBtn) clearBtn.textContent = dict.dpClear || "Clear";
+  if (todayBtn) todayBtn.textContent = dict.dpToday || "Today";
 
   const year = customDpCurrentMonth.getFullYear();
   const month = customDpCurrentMonth.getMonth();
@@ -1487,6 +1528,9 @@ function closeAllCustomPopups() {
       trigger.setAttribute("aria-expanded", "false");
     }
   });
+  if (typeof closeLangPicker === "function") {
+    closeLangPicker();
+  }
 }
 
 function setCustomSelectValue(selectId, value) {
@@ -1732,6 +1776,7 @@ function initApp() {
   try { checkNativePlatform(); } catch (e) {}
   try { applyTheme(getStoredTheme()); } catch (e) { console.error("Theme init error:", e); }
   try { initThemeTimer(); } catch (e) { console.error("Theme timer error:", e); }
+  try { if (typeof initI18n === "function") initI18n(); } catch (e) { console.error("i18n init error:", e); }
   try { initQuickNotes(); } catch (e) { console.error("Quick notes error:", e); }
   try { renderCalendarDates(); } catch (e) { console.error("Calendar dates error:", e); }
   try { renderMonthPicker(); } catch (e) { console.error("Month picker error:", e); }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=3.4">
+  <link rel="stylesheet" href="./styles.css?v=3.5">
   <script>
     try {
       if (typeof window.Capacitor !== "undefined" && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
@@ -34,11 +34,11 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="topbar-left">
-        <button class="menu-btn" id="menuButton" type="button" aria-label="Open navigation" aria-expanded="false">
+        <button class="menu-btn" id="menuButton" type="button" aria-label="Open navigation" data-i18n-aria="openNavigation" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
         <div class="brand">
-        <button class="brand-sun" id="themeToggle" type="button" title="Choose theme" aria-label="Choose theme">
+        <button class="brand-sun" id="themeToggle" type="button" title="Choose theme" aria-label="Choose theme" data-i18n-title="chooseTheme" data-i18n-aria="chooseTheme">
           <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -54,6 +54,39 @@
         <span>DailyFlow<span class="brand-dot">.</span></span>
         </div>
       </div>
+      <div class="topbar-actions">
+        <div class="custom-select-wrap lang-picker-wrap" id="langPickerWrap">
+          <button class="lang-btn" id="langPickerTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select language" title="Select language" data-i18n-aria="selectLanguage" data-i18n-title="selectLanguage">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </button>
+          <div class="custom-select-popup lang-picker-popup" id="langPickerPopup" role="listbox" aria-label="Select language" hidden style="display: none;">
+            <button type="button" class="custom-select-option selected" data-lang="en" role="option" aria-selected="true">
+              <span>English</span>
+              <span class="custom-select-check" aria-hidden="true">✓</span>
+            </button>
+            <button type="button" class="custom-select-option" data-lang="pt" role="option" aria-selected="false">
+              <span>Português</span>
+              <span class="custom-select-check" aria-hidden="true">✓</span>
+            </button>
+            <button type="button" class="custom-select-option" data-lang="de" role="option" aria-selected="false">
+              <span>Deutsch</span>
+              <span class="custom-select-check" aria-hidden="true">✓</span>
+            </button>
+            <button type="button" class="custom-select-option" data-lang="fr" role="option" aria-selected="false">
+              <span>Français</span>
+              <span class="custom-select-check" aria-hidden="true">✓</span>
+            </button>
+            <button type="button" class="custom-select-option" data-lang="nl" role="option" aria-selected="false">
+              <span>Nederlands</span>
+              <span class="custom-select-check" aria-hidden="true">✓</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main class="dashboard" id="dashboardView">
@@ -61,8 +94,8 @@
         <div class="welcome-intro">
           <aside class="focus-panel quick-notes-card">
             <div class="quick-notes-content">
-              <p class="eyebrow">QUICK NOTES</p>
-              <textarea id="quickNotes" placeholder="Write something to remember..." maxlength="500" aria-label="Quick notes"></textarea>
+              <p class="eyebrow" data-i18n="quickNotesEyebrow">QUICK NOTES</p>
+              <textarea id="quickNotes" placeholder="Write something to remember..." data-i18n-placeholder="quickNotesPlaceholder" maxlength="500" aria-label="Quick notes"></textarea>
             </div>
           </aside>
         </div>
@@ -76,9 +109,9 @@
             </svg>
           </span>
           <span class="calendar-widget-content">
-            <span class="eyebrow">THIS WEEK</span>
+            <span class="eyebrow" data-i18n="calendarEyebrow">THIS WEEK</span>
             <span class="calendar-dates" id="calendarDates" aria-hidden="true"></span>
-            <span class="focus-footer"><span class="focus-line"></span><span>Plan · Focus · Achieve</span></span>
+            <span class="focus-footer"><span class="focus-line"></span><span data-i18n="calendarTagline">Plan · Focus · Achieve</span></span>
           </span>
         </button>
       </section>
@@ -86,19 +119,19 @@
       <section class="stats-grid" aria-label="Task summary">
         <div class="stat-card accent-card">
           <div class="stat-icon">✦</div>
-          <div><strong id="totalCount">0</strong><span>total tasks</span></div>
+          <div><strong id="totalCount">0</strong><span data-i18n="statTotalTasks">total tasks</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon muted-icon">◷</div>
-          <div><strong id="activeCount">0</strong><span>in progress</span></div>
+          <div><strong id="activeCount">0</strong><span data-i18n="statInProgress">in progress</span></div>
         </div>
         <div class="stat-card">
           <div class="stat-summary">
             <div class="stat-icon green-icon">✓</div>
-            <div><strong id="doneCount">0</strong><span>completed</span></div>
+            <div><strong id="doneCount">0</strong><span data-i18n="statCompleted">completed</span></div>
           </div>
           <div class="completion-card">
-            <div class="completion-copy"><strong id="completionPercent">0%</strong><span>completed</span></div>
+            <div class="completion-copy"><strong id="completionPercent">0%</strong><span data-i18n="statCompleted">completed</span></div>
             <div class="progress-track"><span id="progressBar"></span></div>
           </div>
         </div>
@@ -108,16 +141,16 @@
         <div class="task-panel">
           <div class="panel-heading">
             <div>
-              <h2>Tasks</h2>
-              <p id="listDescription">Planned for today</p>
+              <h2 data-i18n="tasksTitle">Tasks</h2>
+              <p id="listDescription" data-i18n="listDescription">Planned for today</p>
             </div>
-            <button class="clear-button" id="clearCompleted" type="button">Clear completed</button>
+            <button class="clear-button" id="clearCompleted" type="button" data-i18n="clearCompleted">Clear completed</button>
           </div>
 
           <form class="add-task-form" id="taskForm">
             <label class="input-wrap" for="taskInput">
               <span class="plus-symbol">＋</span>
-              <input id="taskInput" type="text" placeholder="Add a new task..." autocomplete="off" maxlength="120" required>
+              <input id="taskInput" type="text" placeholder="Add a new task..." data-i18n-placeholder="newTaskPlaceholder" autocomplete="off" maxlength="120" required>
             </label>
             <div class="custom-select-wrap priority-wrap" id="taskPriorityWrap">
               <select id="priorityInput" tabindex="-1" aria-hidden="true" style="display: none;">
@@ -135,39 +168,39 @@
               </button>
               <div class="custom-select-popup" id="taskPriorityPopup" role="listbox" aria-label="Task priority" hidden style="display: none;">
                 <button type="button" class="custom-select-option" data-value="low" role="option" aria-selected="false">
-                  <span>Low priority</span>
+                  <span data-i18n="priorityLow">Low priority</span>
                   <span class="custom-select-check" aria-hidden="true">✓</span>
                 </button>
                 <button type="button" class="custom-select-option selected" data-value="medium" role="option" aria-selected="true">
-                  <span>Medium priority</span>
+                  <span data-i18n="priorityMedium">Medium priority</span>
                   <span class="custom-select-check" aria-hidden="true">✓</span>
                 </button>
                 <button type="button" class="custom-select-option" data-value="high" role="option" aria-selected="false">
-                  <span>High priority</span>
+                  <span data-i18n="priorityHigh">High priority</span>
                   <span class="custom-select-check" aria-hidden="true">✓</span>
                 </button>
               </div>
             </div>
-            <button class="add-button" type="submit">Add <span>↗</span></button>
+            <button class="add-button" type="submit"><span data-i18n="addBtn">Add</span> <span>↗</span></button>
           </form>
 
           <div class="toolbar">
             <div class="filters" role="group" aria-label="Task filters">
-              <button class="filter-button active" data-filter="all" type="button">All <span id="allFilterCount">0</span></button>
-              <button class="filter-button" data-filter="active" type="button">Active</button>
-              <button class="filter-button" data-filter="completed" type="button">Completed</button>
+              <button class="filter-button active" data-filter="all" type="button"><span data-i18n="filterAll">All</span> <span id="allFilterCount">0</span></button>
+              <button class="filter-button" data-filter="active" type="button" data-i18n="filterActive">Active</button>
+              <button class="filter-button" data-filter="completed" type="button" data-i18n="filterCompleted">Completed</button>
             </div>
             <label class="search-box" for="searchInput">
               <span>⌕</span>
-              <input id="searchInput" type="search" placeholder="Search tasks...">
+              <input id="searchInput" type="search" placeholder="Search tasks..." data-i18n-placeholder="searchPlaceholder">
             </label>
           </div>
 
           <div class="task-list" id="taskList" aria-live="polite"></div>
           <div class="empty-state" id="emptyState" hidden>
             <span class="empty-icon">✓</span>
-            <h3>All caught up</h3>
-            <p>You can start by adding a new task.</p>
+            <h3 data-i18n="emptyStateTitle">All caught up</h3>
+            <p data-i18n="emptyStateDesc">You can start by adding a new task.</p>
           </div>
         </div>
       </section>
@@ -191,8 +224,8 @@
             <span class="web-download-dot"></span>
             <span>GOOGLE PLAY</span>
           </div>
-          <h3 class="web-download-title">Get DailyFlow for Android</h3>
-          <p class="web-download-desc">Organize your tasks, focus timers, and budget directly on your phone.</p>
+          <h3 class="web-download-title" data-i18n="webDownloadTitle">Get DailyFlow for Android</h3>
+          <p class="web-download-desc" data-i18n="webDownloadDesc">Organize your tasks, focus timers, and budget directly on your phone.</p>
         </div>
         <div class="web-download-actions">
           <a class="google-play-badge" 
@@ -207,7 +240,7 @@
               <path d="M402.8 175.3L92.9 0C75-10.2 59-8.9 49.3 1.4L313.7 265.7l89.1-89.1z" fill="#00E676"/>
             </svg>
             <div class="google-play-badge-text">
-              <span class="gp-tagline">GET IT ON</span>
+              <span class="gp-tagline" data-i18n="gpTagline">GET IT ON</span>
               <strong class="gp-brand">Google Play</strong>
             </div>
           </a>
@@ -237,19 +270,19 @@
     <section class="calendar-dialog" role="dialog" aria-modal="true" aria-labelledby="calendarTitle">
       <div class="bottom-sheet-drag" aria-hidden="true"><span class="drag-bar"></span></div>
       <div class="picker-header">
-        <div><p class="eyebrow">SCHEDULE</p><h2 id="calendarTitle">Select date and time</h2></div>
+        <div><p class="eyebrow" data-i18n="calendarScheduleEyebrow">SCHEDULE</p><h2 id="calendarTitle" data-i18n="calendarTitle">Select date and time</h2></div>
         <button class="calendar-close" type="button" data-calendar-close aria-label="Close calendar">×</button>
       </div>
 
       <div class="picker-tabs" role="tablist" aria-label="Picker view selection">
         <button class="picker-tab active" id="pickerTabDate" type="button" role="tab" aria-selected="true" data-tab="date">
           <span class="picker-tab-icon">📅</span>
-          <span class="picker-tab-text">Date</span>
+          <span class="picker-tab-text" data-i18n="tabDate">Date</span>
           <span class="picker-tab-badge" id="pickerDateBadge">Today</span>
         </button>
         <button class="picker-tab" id="pickerTabTime" type="button" role="tab" aria-selected="false" data-tab="time">
           <span class="picker-tab-icon">⏰</span>
-          <span class="picker-tab-text">Time</span>
+          <span class="picker-tab-text" data-i18n="tabTime">Time</span>
           <span class="picker-tab-badge" id="pickerTimeBadge">10:00 AM</span>
         </button>
       </div>
@@ -257,9 +290,9 @@
       <div class="picker-body">
         <div class="month-picker" id="monthPickerSection">
           <div class="quick-presets date-presets" role="group" aria-label="Quick dates">
-            <button class="preset-chip active" id="presetToday" type="button" data-date-preset="today">Today</button>
-            <button class="preset-chip" id="presetTomorrow" type="button" data-date-preset="tomorrow">Tomorrow</button>
-            <button class="preset-chip" id="presetWeekend" type="button" data-date-preset="weekend">This Weekend</button>
+            <button class="preset-chip active" id="presetToday" type="button" data-date-preset="today" data-i18n="presetToday">Today</button>
+            <button class="preset-chip" id="presetTomorrow" type="button" data-date-preset="tomorrow" data-i18n="presetTomorrow">Tomorrow</button>
+            <button class="preset-chip" id="presetWeekend" type="button" data-date-preset="weekend" data-i18n="presetWeekend">This Weekend</button>
           </div>
           <div class="month-heading">
             <button id="previousMonth" class="month-nav-btn" type="button" aria-label="Previous month">‹</button>
@@ -269,7 +302,7 @@
             </div>
             <button id="nextMonth" class="month-nav-btn" type="button" aria-label="Next month">›</button>
           </div>
-          <button class="today-button" id="todayButton" type="button">Reset to Today</button>
+          <button class="today-button" id="todayButton" type="button" data-i18n="resetToToday">Reset to Today</button>
           <div class="month-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
           <div class="month-days" id="monthDays" role="grid" aria-label="Calendar days"></div>
         </div>
@@ -295,19 +328,19 @@
           </div>
           <div class="time-columns" aria-label="Choose time">
             <div class="time-column">
-              <div class="time-column-header"><span class="time-column-label">Hour (1-12)</span></div>
+              <div class="time-column-header"><span class="time-column-label" data-i18n="hourColLabel">Hour (1-12)</span></div>
               <div class="time-list" id="hourList" tabindex="0" aria-label="Hour selection"></div>
             </div>
             <div class="time-column">
-              <div class="time-column-header"><span class="time-column-label">Minute (00-59)</span></div>
+              <div class="time-column-header"><span class="time-column-label" data-i18n="minuteColLabel">Minute (00-59)</span></div>
               <div class="time-list" id="minuteList" tabindex="0" aria-label="Minute selection"></div>
             </div>
           </div>
         </div>
       </div>
       <div class="picker-footer">
-        <label class="calendar-note" for="calendarNote"><span>Add note</span><input id="calendarNote" type="text" maxlength="120" placeholder="Write a note for this time..." autocomplete="off"></label>
-        <div class="picker-footer-actions"><p id="selectionSummary" aria-live="polite">Today at 10:00 AM</p><button class="continue-button" id="continueButton" type="button">Save to Tasks</button></div>
+        <label class="calendar-note" for="calendarNote"><span data-i18n="calendarNoteLabel">Add note</span><input id="calendarNote" type="text" maxlength="120" placeholder="Write a note for this time..." data-i18n-placeholder="calendarNotePlaceholder" autocomplete="off"></label>
+        <div class="picker-footer-actions"><p id="selectionSummary" aria-live="polite">Today at 10:00 AM</p><button class="continue-button" id="continueButton" type="button" data-i18n="saveToTasks">Save to Tasks</button></div>
       </div>
     </section>
   </div>
@@ -315,32 +348,32 @@
     <div class="theme-backdrop" data-theme-close></div>
     <section class="theme-dialog" role="dialog" aria-modal="true" aria-labelledby="themeTitle">
       <div class="theme-dialog-header">
-        <div><p class="eyebrow">PERSONALIZE YOUR FLOW</p><h2 id="themeTitle">Theme Picker</h2></div>
+        <div><p class="eyebrow" data-i18n="themePickerEyebrow">PERSONALIZE YOUR FLOW</p><h2 id="themeTitle" data-i18n="themePickerTitle">Theme Picker</h2></div>
         <button class="theme-close" type="button" data-theme-close aria-label="Close theme picker">×</button>
       </div>
       <div class="theme-picker-view" id="themePickerView">
-        <p class="theme-dialog-copy">Match your workspace to the mood you want to work in.</p>
+        <p class="theme-dialog-copy" data-i18n="themePickerCopy">Match your workspace to the mood you want to work in.</p>
         <div class="theme-options" role="list" aria-label="Themes">
           <button class="theme-option theme-option-light" type="button" data-theme-choice="light" role="listitem">
             <span class="theme-option-preview"><span></span><i></i><b></b></span>
-            <span class="theme-option-info"><strong>Default Light Sage</strong><small>Soft &amp; calm</small></span>
+            <span class="theme-option-info"><strong data-i18n="themeDefaultTitle">Default Light Sage</strong><small data-i18n="themeDefaultSub">Soft &amp; calm</small></span>
             <span class="theme-option-check" aria-hidden="true">✓</span>
           </button>
           <button class="theme-option theme-option-dark" type="button" data-theme-choice="dark" role="listitem">
             <span class="theme-option-preview"><span></span><i></i><b></b></span>
-            <span class="theme-option-info"><strong>Dark Sage</strong><small>Deep &amp; focused</small></span>
+            <span class="theme-option-info"><strong data-i18n="themeDarkTitle">Dark Sage</strong><small data-i18n="themeDarkSub">Deep &amp; focused</small></span>
             <span class="theme-option-check" aria-hidden="true">✓</span>
           </button>
           <button class="theme-option theme-option-matcha" type="button" data-theme-choice="matcha" role="listitem">
-            <span class="theme-lock-badge">🔒 Unlock for 24 Hours</span>
+            <span class="theme-lock-badge" data-i18n="themeUnlockBadge">🔒 Unlock for 24 Hours</span>
             <span class="theme-option-preview"><span></span><i></i><b></b></span>
-            <span class="theme-option-info"><strong>Matcha Garden 🌸</strong><small>Fresh &amp; botanical</small></span>
+            <span class="theme-option-info"><strong data-i18n="themeMatchaTitle">Matcha Garden 🌸</strong><small data-i18n="themeMatchaSub">Fresh &amp; botanical</small></span>
             <span class="theme-option-check" aria-hidden="true">✓</span>
           </button>
           <button class="theme-option theme-option-cafe" type="button" data-theme-choice="cafe-royal" role="listitem">
-            <span class="theme-lock-badge">🔒 Unlock for 24 Hours</span>
+            <span class="theme-lock-badge" data-i18n="themeUnlockBadge">🔒 Unlock for 24 Hours</span>
             <span class="theme-option-preview"><span></span><i></i><b></b></span>
-            <span class="theme-option-info"><strong>Café Royal ♠️</strong><small>Warm &amp; vintage</small></span>
+            <span class="theme-option-info"><strong data-i18n="themeCafeTitle">Café Royal ♠️</strong><small data-i18n="themeCafeSub">Warm &amp; vintage</small></span>
             <span class="theme-option-check" aria-hidden="true">✓</span>
           </button>
         </div>
@@ -351,8 +384,8 @@
         <h3 id="themeConfirmTitle">A little more green today?</h3>
         <p id="themeConfirmCopy">Watch a short ad to use this theme for 24 hours.</p>
         <div class="theme-confirm-actions">
-          <button class="theme-secondary-button" id="themeConfirmCancel" type="button">Cancel</button>
-          <button class="theme-primary-button" id="themeWatchAd" type="button">Watch ad &amp; unlock</button>
+          <button class="theme-secondary-button" id="themeConfirmCancel" type="button" data-i18n="themeConfirmCancel">Cancel</button>
+          <button class="theme-primary-button" id="themeWatchAd" type="button" data-i18n="themeWatchAd">Watch ad &amp; unlock</button>
         </div>
       </div>
       <div class="theme-ad-view" id="themeAdView" hidden aria-live="polite">
@@ -367,36 +400,36 @@
   </div>
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
   <aside class="sidebar-drawer" id="sidebarDrawer" aria-label="Navigation" aria-hidden="true">
-    <div class="sidebar-header"><div><strong>DailyFlow</strong><span>Navigation</span></div><button class="drawer-close" id="drawerClose" type="button" aria-label="Close navigation">×</button></div>
+    <div class="sidebar-header"><div><strong>DailyFlow</strong><span data-i18n="sidebarNavigation">Navigation</span></div><button class="drawer-close" id="drawerClose" type="button" aria-label="Close navigation" data-i18n-aria="closeNavigation">×</button></div>
     <nav class="sidebar-nav">
-      <button class="sidebar-link active" type="button" data-view="dashboard"><span aria-hidden="true">▤</span>Dashboard / Tasks</button>
-      <button class="sidebar-link" type="button" data-view="focus"><span aria-hidden="true">◷</span>Pomodoro Focus</button>
-      <button class="sidebar-link" type="button" data-view="finance"><span aria-hidden="true">💳</span>Finance Tracker</button>
+      <button class="sidebar-link active" type="button" data-view="dashboard"><span aria-hidden="true">▤</span><span data-i18n="navDashboard">Dashboard / Tasks</span></button>
+      <button class="sidebar-link" type="button" data-view="focus"><span aria-hidden="true">◷</span><span data-i18n="navFocus">Pomodoro Focus</span></button>
+      <button class="sidebar-link" type="button" data-view="finance"><span aria-hidden="true">💳</span><span data-i18n="navFinance">Finance Tracker</span></button>
     </nav>
     <div class="sidebar-footer">
       <button class="sidebar-privacy-btn" id="privacyPolicyBtn" type="button">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
-        <span>Privacy Policy</span>
+        <span data-i18n="navPrivacy">Privacy Policy</span>
       </button>
     </div>
   </aside>
   <main class="focus-view" id="focusView" hidden>
-    <button class="focus-back" id="focusBack" type="button">← Dashboard</button>
+    <button class="focus-back" id="focusBack" type="button" data-i18n="focusBack">← Dashboard</button>
     <section class="pomodoro-shell" aria-labelledby="pomodoroTitle">
-      <p class="eyebrow">DAILYFLOW FOCUS</p>
-      <h1 id="pomodoroTitle">Pomodoro Focus</h1>
+      <p class="eyebrow" data-i18n="pomodoroEyebrow">DAILYFLOW FOCUS</p>
+      <h1 id="pomodoroTitle" data-i18n="pomodoroTitle">Pomodoro Focus</h1>
       <div class="pomodoro-modes" role="group" aria-label="Focus duration">
-        <button class="pomodoro-mode active" type="button" data-focus="25" data-break="5"><strong>Classic</strong><span>25 / 5</span></button>
-        <button class="pomodoro-mode" type="button" data-focus="45" data-break="15"><strong>Study</strong><span>45 / 15</span></button>
-        <button class="pomodoro-mode" type="button" data-focus="50" data-break="10"><strong>Deep Work</strong><span>50 / 10</span></button>
+        <button class="pomodoro-mode active" type="button" data-focus="25" data-break="5"><strong data-i18n="modeClassic">Classic</strong><span>25 / 5</span></button>
+        <button class="pomodoro-mode" type="button" data-focus="45" data-break="15"><strong data-i18n="modeStudy">Study</strong><span>45 / 15</span></button>
+        <button class="pomodoro-mode" type="button" data-focus="50" data-break="10"><strong data-i18n="modeDeepWork">Deep Work</strong><span>50 / 10</span></button>
       </div>
       <div class="pomodoro-ring" aria-live="polite">
         <svg viewBox="0 0 260 260" aria-hidden="true"><circle class="ring-track" cx="130" cy="130" r="112"></circle><circle class="ring-progress" id="pomodoroProgress" cx="130" cy="130" r="112"></circle></svg>
-        <div class="pomodoro-time"><strong id="pomodoroTime">25:00</strong><span id="pomodoroStatus">Focus Time</span></div>
+        <div class="pomodoro-time"><strong id="pomodoroTime">25:00</strong><span id="pomodoroStatus" data-i18n="pomodoroStatusFocus">Focus Time</span></div>
       </div>
-      <div class="pomodoro-controls"><button class="pomodoro-start" id="pomodoroStart" type="button">Start</button><button class="pomodoro-reset" id="pomodoroReset" type="button">Reset</button></div>
+      <div class="pomodoro-controls"><button class="pomodoro-start" id="pomodoroStart" type="button" data-i18n="pomodoroStart">Start</button><button class="pomodoro-reset" id="pomodoroReset" type="button" data-i18n="pomodoroReset">Reset</button></div>
       <!-- DailyFlow Kart Reklamı -->
       <aside class="native-bento-ad" aria-label="Advertisement">
         <div class="native-bento-ad__header"><span class="native-bento-ad__label">Ad</span></div>
@@ -412,12 +445,12 @@
     </section>
   </main>
   <main class="finance-view" id="finance-view" hidden>
-    <button class="finance-back" id="financeBack" type="button">← Dashboard</button>
+    <button class="finance-back" id="financeBack" type="button" data-i18n="financeBack">← Dashboard</button>
     <section class="finance-shell" aria-labelledby="financeTitle">
-      <div class="finance-heading"><p class="eyebrow">MONEY CONTROL</p><h1 id="financeTitle">Finance Tracker</h1><p>Keep your everyday spending visible and intentional.</p></div>
+      <div class="finance-heading"><p class="eyebrow" data-i18n="financeEyebrow">MONEY CONTROL</p><h1 id="financeTitle" data-i18n="financeTitle">Finance Tracker</h1><p data-i18n="financeSubtitle">Keep your everyday spending visible and intentional.</p></div>
       <div class="finance-summary">
         <div class="finance-summary-header">
-          <div class="finance-badge">EXPENSES</div>
+          <div class="finance-badge" data-i18n="financeBadge">EXPENSES</div>
           <div class="finance-header-controls">
             <label class="currency-picker" for="currencySelect">
               <span class="sr-only">Currency</span>
@@ -433,7 +466,7 @@
             </label>
             <button class="budget-toggle-btn" id="budgetToggleBtn" type="button" aria-expanded="false" aria-controls="budgetEditorCard" aria-label="Set or edit monthly budget">
               <span class="budget-toggle-icon">🎯</span>
-              <span class="budget-toggle-text">Budget: <strong id="budgetBadgeVal">Set</strong></span>
+              <span class="budget-toggle-text"><span data-i18n="budgetLabel">Budget:</span> <strong id="budgetBadgeVal" data-i18n="budgetSet">Set</strong></span>
               <span class="budget-toggle-action">✎</span>
             </button>
           </div>
@@ -442,7 +475,7 @@
         <div class="budget-editor-card" id="budgetEditorCard" hidden>
           <div class="budget-editor-inner">
             <div class="budget-editor-title">
-              <span>🎯 Monthly Budget</span>
+              <span data-i18n="budgetEditorTitle">🎯 Monthly Budget</span>
               <button type="button" class="budget-editor-close" id="budgetEditorClose" aria-label="Close budget editor">×</button>
             </div>
             <div class="budget-picker-wrap">
@@ -450,9 +483,9 @@
                 <span class="sr-only">Monthly budget</span>
                 <div class="budget-input-wrapper">
                   <span class="budget-currency-symbol" id="budgetCurrencySymbol">$</span>
-                  <input id="budgetInput" type="number" min="0" step="0.01" placeholder="Set monthly budget" inputmode="decimal">
+                  <input id="budgetInput" type="number" min="0" step="0.01" placeholder="Set monthly budget" data-i18n-placeholder="budgetInputPlaceholder" inputmode="decimal">
                 </div>
-                <button id="budgetSave" type="button">Save Budget</button>
+                <button id="budgetSave" type="button" data-i18n="budgetSave">Save Budget</button>
               </label>
             </div>
             <div class="budget-quick-chips" role="group" aria-label="Quick budget increments">
@@ -460,7 +493,7 @@
               <button type="button" class="budget-chip" data-budget-add="250">+250</button>
               <button type="button" class="budget-chip" data-budget-add="500">+500</button>
               <button type="button" class="budget-chip" data-budget-add="1000">+1,000</button>
-              <button type="button" class="budget-chip budget-chip-clear" data-budget-reset="true">Clear</button>
+              <button type="button" class="budget-chip budget-chip-clear" data-budget-reset="true" data-i18n="budgetClear">Clear</button>
             </div>
           </div>
         </div>
@@ -477,8 +510,8 @@
           </svg>
           <div class="finance-gauge-center">
             <strong id="financeTotal">$0</strong>
-            <span>This month</span>
-            <small id="financeBudgetStatus">Set a monthly budget</small>
+            <span data-i18n="financeThisMonth">This month</span>
+            <small id="financeBudgetStatus" data-i18n="financeStatusNoBudget">Set a monthly budget</small>
           </div>
         </div>
       </div>
@@ -487,11 +520,11 @@
         <div class="finance-form-grid">
           <div class="finance-field title-field">
             <label for="expenseTitle" class="sr-only">Expense title</label>
-            <input id="expenseTitle" type="text" placeholder="Expense title (e.g. Groceries)" maxlength="60" required>
+            <input id="expenseTitle" type="text" placeholder="Expense title (e.g. Groceries)" data-i18n-placeholder="expenseTitlePlaceholder" maxlength="60" required>
           </div>
           <div class="finance-field amount-field">
             <label for="expenseAmount" class="sr-only">Amount</label>
-            <input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="Amount" inputmode="decimal" required>
+            <input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="Amount" data-i18n-placeholder="expenseAmountPlaceholder" inputmode="decimal" required>
           </div>
           <div class="finance-field category-field custom-select-wrap" id="expenseCategoryWrap">
             <label for="expenseCategoryTrigger" class="sr-only">Expense category</label>
@@ -504,7 +537,7 @@
               <option value="Vacation">Vacation</option>
             </select>
             <button type="button" class="custom-select-trigger" id="expenseCategoryTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Expense category">
-              <span class="custom-select-val" id="expenseCategoryDisplay">Transfers</span>
+              <span class="custom-select-val" id="expenseCategoryDisplay" data-i18n="categoryTransfers">Transfers</span>
               <span class="custom-select-chevron" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
@@ -513,27 +546,27 @@
             </button>
             <div class="custom-select-popup" id="expenseCategoryPopup" role="listbox" aria-label="Expense category" hidden style="display: none;">
               <button type="button" class="custom-select-option selected" data-value="Transfers" role="option" aria-selected="true">
-                <span>Transfers</span>
+                <span data-i18n="categoryTransfers">Transfers</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
               <button type="button" class="custom-select-option" data-value="Shopping" role="option" aria-selected="false">
-                <span>Shopping</span>
+                <span data-i18n="categoryShopping">Shopping</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
               <button type="button" class="custom-select-option" data-value="Food &amp; Beverages" role="option" aria-selected="false">
-                <span>Food &amp; Beverages</span>
+                <span data-i18n="categoryFood">Food &amp; Beverages</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
               <button type="button" class="custom-select-option" data-value="Utility/Bills" role="option" aria-selected="false">
-                <span>Utility/Bills</span>
+                <span data-i18n="categoryUtility">Utility/Bills</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
               <button type="button" class="custom-select-option" data-value="Entertainment" role="option" aria-selected="false">
-                <span>Entertainment</span>
+                <span data-i18n="categoryEntertainment">Entertainment</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
               <button type="button" class="custom-select-option" data-value="Vacation" role="option" aria-selected="false">
-                <span>Vacation</span>
+                <span data-i18n="categoryVacation">Vacation</span>
                 <span class="custom-select-check" aria-hidden="true">✓</span>
               </button>
             </div>
@@ -575,18 +608,18 @@
               </div>
               <div class="custom-dp-grid" id="customDpGrid" role="grid" aria-label="Days"></div>
               <div class="custom-dp-footer">
-                <button type="button" class="custom-dp-action" id="customDpClear">Clear</button>
-                <button type="button" class="custom-dp-action" id="customDpToday">Today</button>
+                <button type="button" class="custom-dp-action" id="customDpClear" data-i18n="dpClear">Clear</button>
+                <button type="button" class="custom-dp-action" id="customDpToday" data-i18n="dpToday">Today</button>
               </div>
             </div>
           </div>
         </div>
         <button type="submit" class="finance-submit-btn" aria-label="Add expense">
           <span class="btn-icon">+</span>
-          <span class="btn-text">Add Expense</span>
+          <span class="btn-text" data-i18n="financeAddExpense">Add Expense</span>
         </button>
       </form>
-      <div class="finance-history"><div class="finance-section-heading"><h2>Recent expenses</h2><span id="financeCount">0 items</span></div><div id="expenseList"></div></div>
+      <div class="finance-history"><div class="finance-section-heading"><h2 data-i18n="recentExpenses">Recent expenses</h2><span id="financeCount">0 items</span></div><div id="expenseList"></div></div>
       <!-- DailyFlow Kart Reklamı -->
       <aside class="native-bento-ad" aria-label="Advertisement">
         <div class="native-bento-ad__header"><span class="native-bento-ad__label">Ad</span></div>
@@ -611,10 +644,10 @@
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
-            <span>Privacy &amp; Data Security</span>
+            <span data-i18n="privacyBadge">Privacy &amp; Data Security</span>
           </div>
-          <h2 id="privacyTitle">Privacy Policy</h2>
-          <p class="privacy-subtitle">DailyFlow is built with an offline-first, zero-tracking philosophy.</p>
+          <h2 id="privacyTitle" data-i18n="privacyTitle">Privacy Policy</h2>
+          <p class="privacy-subtitle" data-i18n="privacySubtitle">DailyFlow is built with an offline-first, zero-tracking philosophy.</p>
         </div>
         <button class="privacy-close" id="privacyClose" type="button" data-privacy-close aria-label="Close privacy policy">×</button>
       </header>
@@ -623,29 +656,29 @@
           <div class="privacy-card">
             <div class="privacy-card-icon" aria-hidden="true">🔒</div>
             <div class="privacy-card-content">
-              <strong>100% Local Device Storage</strong>
-              <p>All your tasks, daily quick notes, Pomodoro records, and finance transactions are saved exclusively on your local device storage. Your personal information never leaves your phone or browser.</p>
+              <strong data-i18n="privacyCard1Title">100% Local Device Storage</strong>
+              <p data-i18n="privacyCard1Desc">All your tasks, daily quick notes, Pomodoro records, and finance transactions are saved exclusively on your local device storage. Your personal information never leaves your phone or browser.</p>
             </div>
           </div>
           <div class="privacy-card">
             <div class="privacy-card-icon" aria-hidden="true">🛡️</div>
             <div class="privacy-card-content">
-              <strong>Zero Tracking &amp; No Remote Servers</strong>
-              <p>DailyFlow does not operate remote user tracking databases or transmit telemetry. We never collect, monitor, share, or sell any personal or financial data to third parties.</p>
+              <strong data-i18n="privacyCard2Title">Zero Tracking &amp; No Remote Servers</strong>
+              <p data-i18n="privacyCard2Desc">DailyFlow does not operate remote user tracking databases or transmit telemetry. We never collect, monitor, share, or sell any personal or financial data to third parties.</p>
             </div>
           </div>
           <div class="privacy-card">
             <div class="privacy-card-icon" aria-hidden="true">🔔</div>
             <div class="privacy-card-content">
-              <strong>On-Device Local Notifications</strong>
-              <p>Task reminders and alarms are scheduled directly through your device's operating system (Local Notifications). No external cloud servers receive or process your reminder schedule.</p>
+              <strong data-i18n="privacyCard3Title">On-Device Local Notifications</strong>
+              <p data-i18n="privacyCard3Desc">Task reminders and alarms are scheduled directly through your device's operating system (Local Notifications). No external cloud servers receive or process your reminder schedule.</p>
             </div>
           </div>
           <div class="privacy-card">
             <div class="privacy-card-icon" aria-hidden="true">🗑️</div>
             <div class="privacy-card-content">
-              <strong>Complete User Ownership</strong>
-              <p>You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.</p>
+              <strong data-i18n="privacyCard4Title">Complete User Ownership</strong>
+              <p data-i18n="privacyCard4Desc">You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.</p>
             </div>
           </div>
         </div>
@@ -655,7 +688,8 @@
       </div>
     </section>
   </div>
-  <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span>Expense deleted</span><button id="undoExpense" type="button">Undo</button></div>
-  <script src="./script.js?v=3.4"></script>
+  <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span data-i18n="expenseToastDeleted">Expense deleted</span><button id="undoExpense" type="button" data-i18n="undo">Undo</button></div>
+  <script src="./js/i18n.js?v=3.5"></script>
+  <script src="./script.js?v=3.5"></script>
 </body>
 </html>

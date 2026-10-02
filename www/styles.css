@@ -73,6 +73,48 @@ body.dark { --paper: #17221e; --surface: #202d28; --ink: #edf5ef; --muted: #9baa
 .menu-btn span { display: block; width: 16px; height: 1.5px; border-radius: 2px; background: var(--ink); transition: transform .2s, opacity .2s; }
 .menu-btn:hover { border-color: var(--mint-strong); background: var(--mint); }
 .menu-btn:focus-visible, .drawer-close:focus-visible, .sidebar-link:focus-visible, .sidebar-privacy-btn:focus-visible, .privacy-close:focus-visible, .focus-back:focus-visible, .pomodoro-mode:focus-visible, .pomodoro-start:focus-visible, .pomodoro-reset:focus-visible { outline: 3px solid rgba(91,191,140,.35); outline-offset: 3px; }
+
+/* --- Language Picker (Topbar) --- */
+.lang-picker-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  padding: 0;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  user-select: none;
+  touch-action: manipulation;
+}
+.lang-btn:hover {
+  border-color: var(--mint-strong);
+  background: var(--mint);
+  transform: rotate(15deg);
+}
+.lang-btn:active {
+  transform: scale(0.92);
+}
+.lang-btn:focus-visible {
+  outline: 3px solid rgba(91, 191, 140, .35);
+  outline-offset: 3px;
+}
+.lang-picker-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+  width: auto;
+  min-width: 175px;
+}
 .drawer-overlay { position: fixed; z-index: 20; inset: 0; background: rgba(29,41,38,.38); backdrop-filter: blur(3px); }.drawer-overlay[hidden] { display: none; }
 .sidebar-drawer { position: fixed; z-index: 21; inset: 0 auto 0 0; width: min(320px, 86vw); padding: 28px 20px; border-right: 1px solid var(--line); background: var(--surface); box-shadow: 18px 0 45px rgba(31,53,43,.12); transform: translateX(-105%); transition: transform .28s ease; display: flex; flex-direction: column; }.sidebar-drawer.is-open { transform: translateX(0); }
 .sidebar-header { display: flex; align-items: start; justify-content: space-between; padding: 0 8px 28px; border-bottom: 1px solid var(--line); }.sidebar-header strong, .sidebar-header span { display: block; }.sidebar-header strong { font: 800 22px "Manrope", sans-serif; }.sidebar-header span { margin-top: 6px; color: var(--muted); font-size: 12px; }.drawer-close { width: 34px; height: 34px; border-radius: 50%; color: var(--muted); background: transparent; font-size: 25px; line-height: 1; }.drawer-close:hover { color: var(--ink); background: var(--peach); }
@@ -1393,6 +1435,15 @@ body.dark .custom-select-option.selected {
 body.dark .custom-select-option.selected .custom-select-check {
   color: #101b20 !important;
 }
+body.dark .lang-btn {
+  background: #202d28 !important;
+  border-color: var(--line) !important;
+  color: #edf5ef !important;
+}
+body.dark .lang-btn:hover {
+  background: rgba(118, 184, 150, 0.18) !important;
+  border-color: var(--mint-strong) !important;
+}
 
 /* Matcha Garden Theme Support */
 body[data-theme="matcha"] .custom-date-trigger {
@@ -1478,6 +1529,15 @@ body[data-theme="matcha"] .custom-select-option.selected {
 body[data-theme="matcha"] .custom-select-option.selected .custom-select-check {
   color: #ffffff !important;
 }
+body[data-theme="matcha"] .lang-btn {
+  background: #fbf4fa !important;
+  border-color: rgba(222, 130, 198, 0.25) !important;
+  color: #2c1d28 !important;
+}
+body[data-theme="matcha"] .lang-btn:hover {
+  background: #efccea !important;
+  border-color: #de82c6 !important;
+}
 
 /* Cafe Royal Theme Support */
 body[data-theme="cafe-royal"] .custom-date-trigger {
@@ -1562,6 +1622,15 @@ body[data-theme="cafe-royal"] .custom-select-option.selected {
 }
 body[data-theme="cafe-royal"] .custom-select-option.selected .custom-select-check {
   color: #ffffff !important;
+}
+body[data-theme="cafe-royal"] .lang-btn {
+  background: #362417 !important;
+  border-color: rgba(244, 235, 225, 0.3) !important;
+  color: #f4ebe1 !important;
+}
+body[data-theme="cafe-royal"] .lang-btn:hover {
+  background: #4a3b32 !important;
+  border-color: #8b1e1e !important;
 }
 
 .finance-toast {
