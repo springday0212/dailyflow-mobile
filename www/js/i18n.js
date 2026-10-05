@@ -1136,62 +1136,10 @@ function closeLangPicker() {
 }
 
 function initI18n() {
-  const trigger = document.querySelector("#langPickerTrigger");
-  const popup = document.querySelector("#langPickerPopup");
-
-  if (trigger && popup) {
-    // Toggle on trigger click
-    trigger.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const isOpen = !popup.hidden && popup.classList.contains("is-open");
-      if (isOpen) {
-        closeLangPicker();
-      } else {
-        if (typeof closeAllCustomPopups === "function") {
-          closeAllCustomPopups();
-        }
-        if (typeof setCustomDatePickerVisibility === "function") {
-          setCustomDatePickerVisibility(false);
-        }
-        popup.hidden = false;
-        popup.style.display = "flex";
-        popup.classList.add("is-open");
-        trigger.setAttribute("aria-expanded", "true");
-        trigger.classList.add("active");
-      }
-    });
-
-    // Option clicks
-    popup.querySelectorAll(".custom-select-option").forEach((opt) => {
-      opt.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const selectedLang = opt.getAttribute("data-lang");
-        if (selectedLang) {
-          applyLanguage(selectedLang);
-        }
-        closeLangPicker();
-      });
-    });
-
-    // Close on outside click
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest("#langPickerWrap")) {
-        closeLangPicker();
-      }
-    });
-
-    // Close on escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeLangPicker();
-      }
-    });
-  }
-
-  // Apply stored language
   applyLanguage(getStoredLanguage());
+  if (typeof initLanguagePicker === "function") {
+    initLanguagePicker();
+  }
 }
 
 // Expose globally

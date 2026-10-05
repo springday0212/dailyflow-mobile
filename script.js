@@ -1554,8 +1554,9 @@ function initCustomDatePicker() {
 
 let customSelectsInitialized = false;
 
-function closeAllCustomPopups() {
+function closeAllCustomPopups(excludeLang = false) {
   document.querySelectorAll(".custom-select-wrap").forEach((wrap) => {
+    if (excludeLang && wrap.classList.contains("lang-picker-wrap")) return;
     const popup = wrap.querySelector(".custom-select-popup");
     const trigger = wrap.querySelector(".custom-select-trigger");
     if (popup) {
@@ -1568,9 +1569,98 @@ function closeAllCustomPopups() {
       trigger.setAttribute("aria-expanded", "false");
     }
   });
-  if (typeof closeLangPicker === "function") {
+  if (!excludeLang && typeof closeLangPicker === "function") {
     closeLangPicker();
   }
+}
+
+// ==========================================================================
+// GLOBAL LANGUAGE PICKER CONTROLLER
+// ==========================================================================
+let langPickerInitialized = false;
+
+function initLanguagePicker() {
+  const langButton = document.querySelector("#langPickerTrigger");
+  const dropdown = document.querySelector("#langPickerPopup");
+
+  if (!langButton || !dropdown || langPickerInitialized) return;
+  langPickerInitialized = true;
+
+  // Küre butonunun tıklama olayında e.stopPropagation kullanarak olayın dışarıya sızmasını engelle
+  langButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isOpen = !dropdown.hidden && dropdown.classList.contains("is-open");
+    if (isOpen) {
+      if (typeof closeLangPicker === "function") {
+        closeLangPicker();
+      } else {
+        dropdown.hidden = true;
+        dropdown.style.display = "none";
+        dropdown.classList.remove("is-open");
+        langButton.classList.remove("active");
+        langButton.setAttribute("aria-expanded", "false");
+      }
+    } else {
+      closeAllCustomPopups(true);
+      if (typeof setCustomDatePickerVisibility === "function") {
+        setCustomDatePickerVisibility(false);
+      }
+      dropdown.hidden = false;
+      dropdown.style.display = "flex";
+      dropdown.classList.add("is-open");
+      langButton.classList.add("active");
+      langButton.setAttribute("aria-expanded", "true");
+    }
+  });
+
+  // Seçenek seçimi
+  dropdown.querySelectorAll(".custom-select-option").forEach((opt) => {
+    opt.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const selectedLang = opt.getAttribute("data-lang");
+      if (selectedLang && typeof applyLanguage === "function") {
+        applyLanguage(selectedLang);
+      }
+      if (typeof closeLangPicker === "function") {
+        closeLangPicker();
+      } else {
+        dropdown.hidden = true;
+        dropdown.style.display = "none";
+        dropdown.classList.remove("is-open");
+        langButton.classList.remove("active");
+        langButton.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+
+  // Menü dışına tıklandığında menüyü kapatan dinleyici (küre butonuna tıklandığı anda geri kapatmasını kesin engelle)
+  document.addEventListener("click", (e) => {
+    if (!dropdown.hidden && dropdown.classList.contains("is-open")) {
+      if (!dropdown.contains(e.target) && !langButton.contains(e.target)) {
+        if (typeof closeLangPicker === "function") {
+          closeLangPicker();
+        } else {
+          dropdown.hidden = true;
+          dropdown.style.display = "none";
+          dropdown.classList.remove("is-open");
+          langButton.classList.remove("active");
+          langButton.setAttribute("aria-expanded", "false");
+        }
+      }
+    }
+  });
+
+  // Escape tuşu ile kapatma
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !dropdown.hidden && dropdown.classList.contains("is-open")) {
+      if (typeof closeLangPicker === "function") {
+        closeLangPicker();
+      }
+    }
+  });
 }
 
 function setCustomSelectValue(selectId, value) {
@@ -1817,6 +1907,7 @@ function initApp() {
   try { applyTheme(getStoredTheme()); } catch (e) { console.error("Theme init error:", e); }
   try { initThemeTimer(); } catch (e) { console.error("Theme timer error:", e); }
   try { if (typeof initI18n === "function") initI18n(); } catch (e) { console.error("i18n init error:", e); }
+  try { initLanguagePicker(); } catch (e) { console.error("Language picker error:", e); }
   try { initQuickNotes(); } catch (e) { console.error("Quick notes error:", e); }
   try { renderCalendarDates(); } catch (e) { console.error("Calendar dates error:", e); }
   try { renderMonthPicker(); } catch (e) { console.error("Month picker error:", e); }
