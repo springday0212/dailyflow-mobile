@@ -3096,273 +3096,250 @@ body.finance-active .app-footer {
 }
 
 /* ==========================================================================
-   SUBPAGE (ABOUT, USE CASES, FAQ, CONTACT, TERMS) DESIGN SYSTEM
+   SUBPAGE (ABOUT, USE CASES, FAQ, CONTACT, TERMS) - REFINED MINIMAL DESIGN
    ========================================================================== */
 .subpage-shell {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: radial-gradient(circle at 87% 8%, rgba(183, 232, 207, .35), transparent 28%), var(--paper);
-  overflow-x: hidden;
-  width: 100%;
-  box-sizing: border-box;
+  background: radial-gradient(circle at 87% 8%, rgba(183, 232, 207, .45), transparent 28%), var(--paper);
 }
 
 body.dark .subpage-shell {
-  background: radial-gradient(circle at 87% 8%, rgba(51, 112, 78, .22), transparent 28%), var(--paper);
+  background: radial-gradient(circle at 87% 8%, rgba(51, 112, 78, .28), transparent 28%), var(--paper);
 }
 
 body[data-theme="matcha"] .subpage-shell {
-  background: radial-gradient(circle at 87% 8%, rgba(142, 204, 159, 0.28), transparent 28%), var(--paper);
+  background: radial-gradient(circle at 87% 8%, rgba(142, 204, 159, 0.25), transparent 28%), var(--paper);
 }
 
 body[data-theme="cafe-royal"] .subpage-shell {
-  background: radial-gradient(circle at 87% 8%, rgba(139, 30, 30, 0.15), transparent 28%), var(--paper);
+  background: radial-gradient(circle at 87% 8%, rgba(139, 30, 30, 0.12), transparent 28%), var(--paper);
 }
 
 .subpage-topbar {
-  max-width: 1040px;
-  width: 100%;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 28px 0;
+  width: 100%;
+  height: 82px;
+  padding: 0 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  gap: 16px;
 }
 
 .back-home-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 20px;
+  gap: 7px;
+  padding: 8px 15px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface);
-  color: var(--ink);
+  color: var(--muted);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 13px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+  font: 700 12.5px/1 "Manrope", sans-serif;
+  letter-spacing: -0.2px;
+  transition: all .18s ease;
+}
+
+.back-home-link svg {
+  color: var(--mint-deep);
+  transition: transform .18s ease;
 }
 
 .back-home-link:hover {
-  transform: translateX(-3px);
+  color: var(--ink);
   border-color: var(--mint-strong);
-  background: var(--mint);
-  color: var(--mint-deep);
+  background: var(--paper);
 }
 
-body.dark .back-home-link:hover {
-  background: var(--mint-deep);
-  color: #ffffff;
+.back-home-link:hover svg {
+  transform: translateX(-2px);
 }
 
-body[data-theme="matcha"] .back-home-link:hover {
-  background: rgba(61, 139, 75, 0.18);
-  border-color: #3d8b4b;
+body.dark .back-home-link svg {
+  color: var(--mint-strong);
+}
+
+body[data-theme="matcha"] .back-home-link svg {
   color: #3d8b4b;
 }
 
-body[data-theme="cafe-royal"] .back-home-link:hover {
-  background: rgba(139, 30, 30, 0.15);
-  border-color: #8b1e1e;
+body[data-theme="cafe-royal"] .back-home-link svg {
   color: #8b1e1e;
 }
 
 .subpage-main {
-  max-width: 860px;
+  max-width: 820px;
   width: 100%;
   margin: 0 auto;
-  padding: 44px 28px 64px;
+  padding: 24px 28px 60px;
   flex: 1 0 auto;
   box-sizing: border-box;
 }
 
 .subpage-hero {
-  margin-bottom: 36px;
+  margin-bottom: 28px;
 }
 
-.subpage-eyebrow {
-  display: inline-block;
-  margin: 0 0 10px;
-  color: var(--mint-deep);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-body.dark .subpage-eyebrow {
-  color: var(--mint-strong);
-}
-
-body[data-theme="matcha"] .subpage-eyebrow {
-  color: #3d8b4b;
-}
-
-body[data-theme="cafe-royal"] .subpage-eyebrow {
-  color: #8b1e1e;
-}
-
-.subpage-title {
-  margin: 0 0 14px;
-  font: 800 clamp(28px, 4.5vw, 42px)/1.15 "Manrope", sans-serif;
-  letter-spacing: -1.5px;
-  color: var(--ink);
-}
-
-.subpage-lead {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--muted);
-}
-
-/* Subpage Content Cards */
-.subpage-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 32px 36px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow);
-  box-sizing: border-box;
-}
-
-.subpage-card:last-child {
-  margin-bottom: 0;
-}
-
-.subpage-card h2,
-.subpage-card h3 {
-  font-family: "Manrope", sans-serif;
-  letter-spacing: -0.6px;
-  color: var(--ink);
-  margin-top: 0;
-}
-
-.subpage-card h2 {
-  font-size: 22px;
-  margin-bottom: 14px;
-}
-
-.subpage-card h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.subpage-card p {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--ink);
-  margin: 0 0 16px;
-}
-
-.subpage-card p:last-child {
-  margin-bottom: 0;
-}
-
-.subpage-card ul,
-.subpage-card ol {
-  margin: 0 0 18px 22px;
-  padding: 0;
-  color: var(--ink);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.subpage-card li {
+.subpage-hero .eyebrow {
   margin-bottom: 8px;
 }
 
-/* Use cases grid */
-.use-case-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+.subpage-hero h1 {
+  margin: 0;
+  font: 800 clamp(28px, 3.8vw, 42px)/1.12 "Manrope", sans-serif;
+  letter-spacing: -1.6px;
+  color: var(--ink);
 }
 
-.use-case-card {
+.subpage-hero .subtitle {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 680px;
+}
+
+/* Elegant single paper panel */
+.subpage-panel {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 32px 36px;
+}
+
+.subpage-section {
+  min-width: 0;
+}
+
+.subpage-section h2 {
+  margin: 0 0 10px;
+  font: 800 19px "Manrope", sans-serif;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+}
+
+.subpage-section h3 {
+  margin: 0 0 8px;
+  font: 700 16px "Manrope", sans-serif;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+
+.subpage-section p {
+  margin: 0 0 14px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink);
+  opacity: 0.9;
+}
+
+.subpage-section p:last-child {
+  margin-bottom: 0;
+}
+
+.subpage-section ul,
+.subpage-section ol {
+  margin: 0 0 14px 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  opacity: 0.9;
+}
+
+.subpage-section li {
+  margin-bottom: 6px;
+}
+
+.subpage-divider {
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin: 26px 0;
+}
+
+/* Use cases layout */
+.use-case-item {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   align-items: flex-start;
-  padding: 30px 32px;
 }
 
-.use-case-badge {
+.use-case-icon {
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  font-size: 24px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
   flex-shrink: 0;
   background: var(--mint);
   color: var(--mint-deep);
+  margin-top: 2px;
 }
 
-body.dark .use-case-badge {
-  background: rgba(91, 191, 140, 0.22);
+body.dark .use-case-icon {
+  background: rgba(91, 191, 140, 0.2);
   color: var(--mint-strong);
 }
 
-body[data-theme="matcha"] .use-case-badge {
-  background: rgba(61, 139, 75, 0.16);
+body[data-theme="matcha"] .use-case-icon {
+  background: rgba(61, 139, 75, 0.15);
   color: #3d8b4b;
 }
 
-body[data-theme="cafe-royal"] .use-case-badge {
-  background: rgba(139, 30, 30, 0.14);
+body[data-theme="cafe-royal"] .use-case-icon {
+  background: rgba(139, 30, 30, 0.12);
   color: #8b1e1e;
 }
 
-.use-case-content {
+.use-case-body {
   flex: 1;
+  min-width: 0;
 }
 
-.use-case-content h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font: 800 20px "Manrope", sans-serif;
-  letter-spacing: -0.5px;
+.use-case-body h2 {
+  margin: 0 0 8px;
+  font: 800 18px "Manrope", sans-serif;
+  letter-spacing: -0.4px;
+  color: var(--ink);
 }
 
-/* FAQ accordion / details */
-.faq-list {
+/* Minimal FAQ inside panel */
+.faq-container {
   display: grid;
-  gap: 16px;
 }
 
 .faq-item {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: var(--shadow);
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0;
 }
 
-.faq-item[open] {
-  border-color: var(--mint-strong);
-  box-shadow: 0 6px 20px rgba(91, 191, 140, 0.08);
+.faq-item:first-child {
+  padding-top: 0;
+}
+
+.faq-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .faq-question {
-  padding: 20px 24px;
   cursor: pointer;
-  font: 700 16px/1.4 "Manrope", sans-serif;
-  color: var(--ink);
+  list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  list-style: none;
-  min-height: 48px;
+  gap: 14px;
+  font: 700 15px/1.4 "Manrope", sans-serif;
+  color: var(--ink);
   user-select: none;
 }
 
@@ -3370,118 +3347,143 @@ body[data-theme="cafe-royal"] .use-case-badge {
   display: none;
 }
 
-.faq-question::after {
-  content: "+";
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--muted);
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.faq-item[open] .faq-question::after {
-  content: "−";
-  color: var(--mint-deep);
-}
-
-body[data-theme="matcha"] .faq-item[open] .faq-question::after {
-  color: #3d8b4b;
-}
-
-body[data-theme="cafe-royal"] .faq-item[open] .faq-question::after {
-  color: #8b1e1e;
-}
-
-.faq-answer {
-  padding: 0 24px 22px;
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--ink);
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
-  padding-top: 14px;
-}
-
-body.dark .faq-answer {
-  border-top-color: rgba(255, 255, 255, 0.05);
-}
-
-/* Contact box */
-.contact-highlight-box {
-  background: rgba(183, 232, 207, 0.22);
-  border: 1.5px dashed var(--mint-strong);
-  border-radius: 14px;
-  padding: 28px 24px;
-  margin: 24px 0;
-  text-align: center;
-}
-
-body.dark .contact-highlight-box {
-  background: rgba(91, 191, 140, 0.1);
-}
-
-body[data-theme="matcha"] .contact-highlight-box {
-  background: rgba(61, 139, 75, 0.1);
-  border-color: #3d8b4b;
-}
-
-body[data-theme="cafe-royal"] .contact-highlight-box {
-  background: rgba(139, 30, 30, 0.08);
-  border-color: #8b1e1e;
-}
-
-.contact-email-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 800;
-  font-family: "Manrope", sans-serif;
-  color: var(--mint-deep);
-  text-decoration: none;
-  margin-top: 8px;
-  padding: 12px 24px;
-  border-radius: 999px;
-  background: var(--surface);
+.faq-toggle-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   border: 1px solid var(--line);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  min-height: 48px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: transform .2s ease, border-color .2s ease, color .2s ease;
 }
 
-.contact-email-link:hover {
-  transform: translateY(-2px);
+.faq-item[open] .faq-toggle-icon {
+  transform: rotate(45deg);
+  color: var(--mint-deep);
   border-color: var(--mint-strong);
 }
 
-body[data-theme="matcha"] .contact-email-link {
+.faq-answer {
+  padding-top: 10px;
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--muted);
+}
+
+.faq-answer p {
+  margin: 0 0 10px;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-answer ul {
+  margin: 0 0 10px 18px;
+  padding: 0;
+}
+
+/* Contact card */
+.contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 22px;
+  border-radius: 13px;
+  background: rgba(183, 232, 207, 0.22);
+  border: 1px solid rgba(91, 191, 140, 0.35);
+  margin: 20px 0 24px;
+}
+
+body.dark .contact-card {
+  background: rgba(51, 112, 78, 0.22);
+  border-color: rgba(91, 191, 140, 0.4);
+}
+
+body[data-theme="matcha"] .contact-card {
+  background: rgba(61, 139, 75, 0.12);
+  border-color: rgba(61, 139, 75, 0.28);
+}
+
+body[data-theme="cafe-royal"] .contact-card {
+  background: rgba(139, 30, 30, 0.08);
+  border-color: rgba(139, 30, 30, 0.22);
+}
+
+.contact-card-label {
+  font: 700 11px "Manrope", sans-serif;
+  letter-spacing: 1px;
+  color: var(--mint-deep);
+  text-transform: uppercase;
+  margin: 0 0 3px;
+}
+
+body.dark .contact-card-label {
+  color: var(--mint-strong);
+}
+
+body[data-theme="matcha"] .contact-card-label {
   color: #3d8b4b;
 }
 
-body[data-theme="cafe-royal"] .contact-email-link {
+body[data-theme="cafe-royal"] .contact-card-label {
   color: #8b1e1e;
 }
 
-@media (max-width: 768px) {
+.contact-card-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.contact-email-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font: 700 13px "Manrope", sans-serif;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all .18s ease;
+}
+
+.contact-email-btn:hover {
+  border-color: var(--mint-strong);
+  color: var(--mint-deep);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
   .subpage-topbar {
-    padding: 16px 18px 0;
+    height: auto;
+    min-height: calc(56px + max(24px, env(safe-area-inset-top, 24px)) + 16px);
+    padding-top: calc(env(safe-area-inset-top, 24px) + 16px);
+    padding-top: calc(max(24px, env(safe-area-inset-top, 24px)) + 16px);
+    padding-bottom: 12px;
+    padding-inline: 18px;
   }
   .subpage-main {
-    padding: 24px 18px 48px;
+    padding: 16px 18px 48px;
   }
-  .subpage-card {
-    padding: 22px 20px;
+  .subpage-panel {
+    padding: 22px 18px;
   }
-  .use-case-card {
+  .use-case-item {
+    gap: 12px;
+  }
+  .contact-card {
     flex-direction: column;
-    padding: 22px 20px;
-    gap: 16px;
-  }
-  .faq-question {
-    padding: 16px 18px;
-    font-size: 15px;
-  }
-  .faq-answer {
-    padding: 0 18px 18px;
-    font-size: 14px;
+    align-items: flex-start;
   }
 }
 
