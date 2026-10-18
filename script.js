@@ -1004,6 +1004,14 @@ if (privacyPolicyBtn) {
   privacyPolicyBtn.addEventListener("click", () => setPrivacyModalVisibility(true));
 }
 
+const footerPrivacyBtn = document.querySelector("#footerPrivacyBtn");
+if (footerPrivacyBtn) {
+  footerPrivacyBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    setPrivacyModalVisibility(true);
+  });
+}
+
 if (privacyModal) {
   privacyModal.addEventListener("click", (event) => {
     if (event.target.closest("[data-privacy-close]")) {

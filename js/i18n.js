@@ -168,7 +168,17 @@ const translations = {
     privacyCard3Desc: "Task reminders and alarms are scheduled directly through your device's operating system (Local Notifications). No external cloud servers receive or process your reminder schedule.",
     privacyCard4Title: "Complete User Ownership",
     privacyCard4Desc: "You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.",
-    privacyFooterNote: "Questions or inquiries about our privacy practices? Contact us at"
+    privacyFooterNote: "Questions or inquiries about our privacy practices? Contact us at",
+
+    // Footer (Web)
+    footerAbout: "About Us",
+    footerUseCases: "Use Cases",
+    footerFaq: "FAQ",
+    footerContact: "Contact",
+    footerTerms: "Terms of Service",
+    footerTagline: "Minimal, offline-first daily productivity and finance tracker. 100% local on-device storage with zero tracking.",
+    footerAllRights: "All rights reserved.",
+    footerBuiltWith: "Built for privacy • 100% on-device local storage"
   },
 
   tr: {
@@ -332,7 +342,17 @@ const translations = {
     privacyCard3Desc: "Görev hatırlatıcıları ve alarmlar doğrudan cihazınızın işletim sistemi (Yerel Bildirimler) üzerinden zamanlanır. Hiçbir harici bulut sunucusu hatırlatma takviminizi almaz veya işlemez.",
     privacyCard4Title: "Kullanıcıya Ait Tam Kontrol",
     privacyCard4Desc: "Verileriniz üzerinde her zaman tam kontrole sahipsiniz. Uygulama verilerini temizlemek veya uygulamayı kaldırmak, depolanan tüm kayıtları cihazınızdan kalıcı olarak siler.",
-    privacyFooterNote: "Gizlilik uygulamalarımızla ilgili soru veya talepleriniz için bize ulaşın:"
+    privacyFooterNote: "Gizlilik uygulamalarımızla ilgili soru veya talepleriniz için bize ulaşın:",
+
+    // Footer (Web)
+    footerAbout: "Hakkımızda",
+    footerUseCases: "Kullanım Senaryoları",
+    footerFaq: "SSS",
+    footerContact: "İletişim",
+    footerTerms: "Kullanım Şartları",
+    footerTagline: "Minimal, çevrimdışı öncelikli günlük verimlilik ve bütçe takipçisi. Sıfır takip ile %100 yerel cihaz depolaması.",
+    footerAllRights: "Tüm hakları saklıdır.",
+    footerBuiltWith: "Gizlilik odaklı • %100 cihaz içi yerel depolama"
   },
 
   pt: {
@@ -496,7 +516,17 @@ const translations = {
     privacyCard3Desc: "Lembretes e alarmes de tarefas são programados diretamente pelo sistema operacional do dispositivo (Notificações Locais).",
     privacyCard4Title: "Controle Total do Usuário",
     privacyCard4Desc: "Você tem soberania total sobre seus dados. Limpar os dados do aplicativo ou desinstalá-lo exclui permanentemente todos os registros do seu dispositivo.",
-    privacyFooterNote: "Dúvidas ou solicitações sobre nossas práticas de privacidade? Entre em contato pelo e-mail"
+    privacyFooterNote: "Dúvidas ou solicitações sobre nossas práticas de privacidade? Entre em contato pelo e-mail",
+
+    // Footer (Web)
+    footerAbout: "Sobre Nós",
+    footerUseCases: "Casos de Uso",
+    footerFaq: "Perguntas Frequentes",
+    footerContact: "Contato",
+    footerTerms: "Termos de Serviço",
+    footerTagline: "Produtividade diária e controle financeiro minimalista e offline-first. Armazenamento 100% local no dispositivo com zero rastreamento.",
+    footerAllRights: "Todos os direitos reservados.",
+    footerBuiltWith: "Criado com privacidade • 100% de armazenamento local no dispositivo"
   },
 
   de: {
@@ -660,7 +690,17 @@ const translations = {
     privacyCard3Desc: "Erinnerungen und Alarme werden direkt über das Betriebssystem Ihres Geräts gesteuert.",
     privacyCard4Title: "Volle Datenhoheit des Nutzers",
     privacyCard4Desc: "Sie haben jederzeit die volle Kontrolle über Ihre Daten. Das Löschen von App-Daten entfernt alle Einträge dauerhaft.",
-    privacyFooterNote: "Fragen zum Datenschutz? Kontaktieren Sie uns unter"
+    privacyFooterNote: "Fragen zum Datenschutz? Kontaktieren Sie uns unter",
+
+    // Footer (Web)
+    footerAbout: "Über uns",
+    footerUseCases: "Anwendungsfälle",
+    footerFaq: "FAQ",
+    footerContact: "Kontakt",
+    footerTerms: "Nutzungsbedingungen",
+    footerTagline: "Minimaler, offline-orientierter Produktivitäts- und Finanzticker. 100% lokaler Speicher auf dem Gerät ohne jegliches Tracking.",
+    footerAllRights: "Alle Rechte vorbehalten.",
+    footerBuiltWith: "Entwickelt für Datenschutz • 100% lokaler Gerätespeicher"
   },
 
   fr: {
@@ -824,7 +864,17 @@ const translations = {
     privacyCard3Desc: "Les rappels et alarmes de tâches sont gérés directement par le système d'exploitation de votre téléphone.",
     privacyCard4Title: "Souveraineté Totale de l'Utilisateur",
     privacyCard4Desc: "Vous avez un contrôle absolu sur vos données. La désinstallation supprime définitivement tous les enregistrements.",
-    privacyFooterNote: "Des questions sur notre politique de confidentialité ? Contactez-nous à"
+    privacyFooterNote: "Des questions sur notre politique de confidentialité ? Contactez-nous à",
+
+    // Footer (Web)
+    footerAbout: "À propos de nous",
+    footerUseCases: "Cas d'utilisation",
+    footerFaq: "FAQ",
+    footerContact: "Contact",
+    footerTerms: "Conditions d'utilisation",
+    footerTagline: "Suivi quotidien de productivité et de finances minimaliste et hors-ligne d'abord. Stockage 100% local sur l'appareil sans aucun suivi.",
+    footerAllRights: "Tous droits réservés.",
+    footerBuiltWith: "Conçu pour la confidentialité • Stockage 100% local sur l'appareil"
   },
 
   nl: {
@@ -988,7 +1038,17 @@ const translations = {
     privacyCard3Desc: "Herinneringen en alarmen worden rechtstreeks via het besturingssysteem van je telefoon gepland.",
     privacyCard4Title: "Volledig Eigenaarschap van de Gebruiker",
     privacyCard4Desc: "Je hebt te allen tijde volledige controle over je data. Het wissen van app-gegevens verwijdert alles permanent.",
-    privacyFooterNote: "Vragen over ons privacybeleid? Neem contact op via"
+    privacyFooterNote: "Vragen over ons privacybeleid? Neem contact op via",
+
+    // Footer (Web)
+    footerAbout: "Over ons",
+    footerUseCases: "Gebruiksvoorbeelden",
+    footerFaq: "Veelgestelde vragen",
+    footerContact: "Contact",
+    footerTerms: "Servicevoorwaarden",
+    footerTagline: "Minimalistische, offline-first dagelijkse productiviteits- en financiëntracker. 100% lokale apparaat-opslag met nul tracking.",
+    footerAllRights: "Alle rechten voorbehouden.",
+    footerBuiltWith: "Gebouwd voor privacy • 100% lokale apparaat-opslag"
   }
 };
 

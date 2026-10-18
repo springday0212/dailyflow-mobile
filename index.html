@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=3.9">
+  <link rel="stylesheet" href="./styles.css?v=4.0">
   <script>
     try {
       if (typeof window.Capacitor !== "undefined" && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
@@ -268,6 +268,30 @@
         </div>
       </section>
     </main>
+    <footer class="app-footer" id="appFooter" role="contentinfo" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand-section">
+          <div class="footer-brand">
+            <strong>DailyFlow<span class="brand-dot">.</span></strong>
+          </div>
+          <p class="footer-tagline" data-i18n="footerTagline">Minimal, offline-first daily productivity and finance tracker. 100% local on-device storage with zero tracking.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <ul class="footer-links">
+            <li><a href="about.html" class="footer-link" data-i18n="footerAbout">About Us</a></li>
+            <li><a href="use-cases.html" class="footer-link" data-i18n="footerUseCases">Use Cases</a></li>
+            <li><a href="faq.html" class="footer-link" data-i18n="footerFaq">FAQ</a></li>
+            <li><a href="contact.html" class="footer-link" data-i18n="footerContact">Contact</a></li>
+            <li><button type="button" class="footer-link footer-privacy-btn" id="footerPrivacyBtn" data-i18n="navPrivacy">Privacy Policy</button></li>
+            <li><a href="terms.html" class="footer-link" data-i18n="footerTerms">Terms of Service</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 DailyFlow. <span data-i18n="footerAllRights">All rights reserved.</span></p>
+        <p class="footer-privacy-note" data-i18n="footerBuiltWith">Built for privacy &bull; 100% on-device local storage</p>
+      </div>
+    </footer>
   </div>
   <div class="calendar-modal" id="calendarModal" hidden>
     <div class="calendar-backdrop" data-calendar-close></div>
@@ -697,7 +721,7 @@
     </section>
   </div>
   <div class="finance-toast" id="financeToast" role="status" aria-live="polite" hidden><span data-i18n="expenseToastDeleted">Expense deleted</span><button id="undoExpense" type="button" data-i18n="undo">Undo</button></div>
-  <script src="./js/i18n.js?v=3.9"></script>
-  <script src="./script.js?v=3.9"></script>
+  <script src="./js/i18n.js?v=4.0"></script>
+  <script src="./script.js?v=4.0"></script>
 </body>
 </html>

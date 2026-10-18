@@ -731,7 +731,13 @@ body.is-capacitor #webDownloadCard,
 .is-capacitor .web-download-card,
 html.is-capacitor .native-bento-ad,
 body.is-capacitor .native-bento-ad,
-.is-capacitor .native-bento-ad {
+.is-capacitor .native-bento-ad,
+html.is-capacitor footer,
+body.is-capacitor footer,
+.is-capacitor footer,
+html.is-capacitor .app-footer,
+body.is-capacitor .app-footer,
+.is-capacitor .app-footer {
   display: none !important;
 }
 html.is-capacitor .topbar,
@@ -2944,4 +2950,147 @@ body[data-theme="cafe-royal"] .privacy-footer-note {
 }
 body[data-theme="cafe-royal"] .privacy-footer-note strong {
   color: #8b1e1e;
+}
+
+/* ==========================================================================
+   WEB-ONLY FOOTER COMPONENT (dailyflowweb.com)
+   ========================================================================== */
+.app-footer {
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+body.dark .app-footer {
+  background: rgba(23, 34, 30, 0.55);
+}
+
+body[data-theme="matcha"] .app-footer {
+  background: rgba(255, 255, 255, 0.55);
+  border-top-color: rgba(64, 116, 77, 0.18);
+}
+
+body[data-theme="cafe-royal"] .app-footer {
+  background: rgba(54, 36, 23, 0.35);
+  border-top-color: rgba(54, 36, 23, 0.25);
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 28px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.footer-brand-section {
+  max-width: 440px;
+}
+
+.footer-brand strong {
+  font: 800 21px "Manrope", sans-serif;
+  letter-spacing: -0.6px;
+  color: var(--ink);
+}
+
+.footer-tagline {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.footer-nav {
+  display: flex;
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.footer-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  transition: color 0.18s ease;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-link:hover {
+  color: var(--mint-deep);
+}
+
+body[data-theme="matcha"] .footer-link:hover {
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .footer-link:hover {
+  color: #8b1e1e;
+}
+
+.footer-bottom {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 28px 32px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+/* Explicit hide rule for mobile capacitor and app views */
+body.is-capacitor .app-footer,
+html.is-capacitor .app-footer,
+body.pomodoro-active .app-footer,
+body.finance-active .app-footer {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    margin-top: 32px;
+  }
+  .footer-inner {
+    flex-direction: column;
+    padding: 28px 18px 20px;
+    gap: 20px;
+  }
+  .footer-links {
+    gap: 10px 18px;
+  }
+  .footer-bottom {
+    padding: 16px 18px 28px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
