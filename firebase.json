@@ -4,7 +4,24 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "android/**",
+      "tests/**",
+      "test-results/**",
+      "playwright-report/**",
+      "package*.json",
+      "playwright.config.js",
+      "capacitor.config.json",
+      "PROJECT_RULES.md",
+      "GEMINI.md",
+      "**/*.bat",
+      "**/*.cmd",
+      "**/*.ps1",
+      "**/*.sh",
+      "**/*.exe",
+      "**/*.jar",
+      "**/*.jks",
+      "**/*.keystore"
     ]
   }
 }
