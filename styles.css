@@ -3094,3 +3094,394 @@ body.finance-active .app-footer {
     gap: 8px;
   }
 }
+
+/* ==========================================================================
+   SUBPAGE (ABOUT, USE CASES, FAQ, CONTACT, TERMS) DESIGN SYSTEM
+   ========================================================================== */
+.subpage-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: radial-gradient(circle at 87% 8%, rgba(183, 232, 207, .35), transparent 28%), var(--paper);
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.dark .subpage-shell {
+  background: radial-gradient(circle at 87% 8%, rgba(51, 112, 78, .22), transparent 28%), var(--paper);
+}
+
+body[data-theme="matcha"] .subpage-shell {
+  background: radial-gradient(circle at 87% 8%, rgba(142, 204, 159, 0.28), transparent 28%), var(--paper);
+}
+
+body[data-theme="cafe-royal"] .subpage-shell {
+  background: radial-gradient(circle at 87% 8%, rgba(139, 30, 30, 0.15), transparent 28%), var(--paper);
+}
+
+.subpage-topbar {
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  gap: 16px;
+}
+
+.back-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.back-home-link:hover {
+  transform: translateX(-3px);
+  border-color: var(--mint-strong);
+  background: var(--mint);
+  color: var(--mint-deep);
+}
+
+body.dark .back-home-link:hover {
+  background: var(--mint-deep);
+  color: #ffffff;
+}
+
+body[data-theme="matcha"] .back-home-link:hover {
+  background: rgba(61, 139, 75, 0.18);
+  border-color: #3d8b4b;
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .back-home-link:hover {
+  background: rgba(139, 30, 30, 0.15);
+  border-color: #8b1e1e;
+  color: #8b1e1e;
+}
+
+.subpage-main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 44px 28px 64px;
+  flex: 1 0 auto;
+  box-sizing: border-box;
+}
+
+.subpage-hero {
+  margin-bottom: 36px;
+}
+
+.subpage-eyebrow {
+  display: inline-block;
+  margin: 0 0 10px;
+  color: var(--mint-deep);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+body.dark .subpage-eyebrow {
+  color: var(--mint-strong);
+}
+
+body[data-theme="matcha"] .subpage-eyebrow {
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .subpage-eyebrow {
+  color: #8b1e1e;
+}
+
+.subpage-title {
+  margin: 0 0 14px;
+  font: 800 clamp(28px, 4.5vw, 42px)/1.15 "Manrope", sans-serif;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+}
+
+.subpage-lead {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* Subpage Content Cards */
+.subpage-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+}
+
+.subpage-card:last-child {
+  margin-bottom: 0;
+}
+
+.subpage-card h2,
+.subpage-card h3 {
+  font-family: "Manrope", sans-serif;
+  letter-spacing: -0.6px;
+  color: var(--ink);
+  margin-top: 0;
+}
+
+.subpage-card h2 {
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+
+.subpage-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.subpage-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+
+.subpage-card p:last-child {
+  margin-bottom: 0;
+}
+
+.subpage-card ul,
+.subpage-card ol {
+  margin: 0 0 18px 22px;
+  padding: 0;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.subpage-card li {
+  margin-bottom: 8px;
+}
+
+/* Use cases grid */
+.use-case-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.use-case-card {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 30px 32px;
+}
+
+.use-case-badge {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 24px;
+  flex-shrink: 0;
+  background: var(--mint);
+  color: var(--mint-deep);
+}
+
+body.dark .use-case-badge {
+  background: rgba(91, 191, 140, 0.22);
+  color: var(--mint-strong);
+}
+
+body[data-theme="matcha"] .use-case-badge {
+  background: rgba(61, 139, 75, 0.16);
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .use-case-badge {
+  background: rgba(139, 30, 30, 0.14);
+  color: #8b1e1e;
+}
+
+.use-case-content {
+  flex: 1;
+}
+
+.use-case-content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font: 800 20px "Manrope", sans-serif;
+  letter-spacing: -0.5px;
+}
+
+/* FAQ accordion / details */
+.faq-list {
+  display: grid;
+  gap: 16px;
+}
+
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.faq-item[open] {
+  border-color: var(--mint-strong);
+  box-shadow: 0 6px 20px rgba(91, 191, 140, 0.08);
+}
+
+.faq-question {
+  padding: 20px 24px;
+  cursor: pointer;
+  font: 700 16px/1.4 "Manrope", sans-serif;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  min-height: 48px;
+  user-select: none;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question::after {
+  content: "+";
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.faq-item[open] .faq-question::after {
+  content: "−";
+  color: var(--mint-deep);
+}
+
+body[data-theme="matcha"] .faq-item[open] .faq-question::after {
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .faq-item[open] .faq-question::after {
+  color: #8b1e1e;
+}
+
+.faq-answer {
+  padding: 0 24px 22px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink);
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  padding-top: 14px;
+}
+
+body.dark .faq-answer {
+  border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Contact box */
+.contact-highlight-box {
+  background: rgba(183, 232, 207, 0.22);
+  border: 1.5px dashed var(--mint-strong);
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+body.dark .contact-highlight-box {
+  background: rgba(91, 191, 140, 0.1);
+}
+
+body[data-theme="matcha"] .contact-highlight-box {
+  background: rgba(61, 139, 75, 0.1);
+  border-color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .contact-highlight-box {
+  background: rgba(139, 30, 30, 0.08);
+  border-color: #8b1e1e;
+}
+
+.contact-email-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: "Manrope", sans-serif;
+  color: var(--mint-deep);
+  text-decoration: none;
+  margin-top: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  min-height: 48px;
+}
+
+.contact-email-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--mint-strong);
+}
+
+body[data-theme="matcha"] .contact-email-link {
+  color: #3d8b4b;
+}
+
+body[data-theme="cafe-royal"] .contact-email-link {
+  color: #8b1e1e;
+}
+
+@media (max-width: 768px) {
+  .subpage-topbar {
+    padding: 16px 18px 0;
+  }
+  .subpage-main {
+    padding: 24px 18px 48px;
+  }
+  .subpage-card {
+    padding: 22px 20px;
+  }
+  .use-case-card {
+    flex-direction: column;
+    padding: 22px 20px;
+    gap: 16px;
+  }
+  .faq-question {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+  .faq-answer {
+    padding: 0 18px 18px;
+    font-size: 14px;
+  }
+}
+

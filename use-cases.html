@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f7f2">
+  <title>Use Cases &amp; Workflows | DailyFlow</title>
+  <meta name="description" content="Explore how DailyFlow optimizes your everyday workflow: Minimalist to-do lists, pastel finance budgeting, visual event calendars, and deep focus timers.">
+  <link rel="canonical" href="https://dailyflowweb.com/use-cases.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=4.0">
+  <script>
+    try {
+      const theme = localStorage.getItem("dotoday-theme");
+      if (theme === "dark") document.documentElement.classList.add("dark");
+      else if (theme === "matcha" || theme === "cafe-royal") document.documentElement.setAttribute("data-theme", theme);
+    } catch(e) {}
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const theme = localStorage.getItem("dotoday-theme");
+        if (theme === "dark") document.body.classList.add("dark");
+        else if (theme === "matcha" || theme === "cafe-royal") document.body.dataset.theme = theme;
+      } catch(e) {}
+    });
+  </script>
+  <!-- Google AdSense (Web Only) -->
+  <script>
+    try {
+      var isNative = typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform();
+      if (!isNative) {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5552615496678026";
+        s.crossOrigin = "anonymous";
+        document.head.appendChild(s);
+      }
+    } catch(e) {}
+  </script>
+</head>
+<body>
+  <div class="subpage-shell">
+    <header class="subpage-topbar">
+      <a href="index.html" class="brand" aria-label="DailyFlow Home">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span>DailyFlow<span class="brand-dot">.</span></span>
+      </a>
+      <a href="index.html" class="back-home-link">
+        <span aria-hidden="true">&larr;</span> Back to DailyFlow
+      </a>
+    </header>
+
+    <main class="subpage-main">
+      <div class="subpage-hero">
+        <span class="subpage-eyebrow">WORKFLOWS &amp; TOOL HIGHLIGHTS</span>
+        <h1 class="subpage-title">Real-World Use Cases for Daily Productivity.</h1>
+        <p class="subpage-lead">Whether balancing professional sprints, maintaining personal finance discipline, or structuring study routines, DailyFlow provides an integrated toolkit tailored for focused execution.</p>
+      </div>
+
+      <div class="use-case-grid">
+        <!-- 1. Task List -->
+        <article class="subpage-card use-case-card">
+          <div class="use-case-badge" aria-hidden="true">&#x2713;</div>
+          <div class="use-case-content">
+            <h3>1. Minimalist Daily Task Management</h3>
+            <p><strong>Clarity over clutter.</strong> Traditional to-do apps encourage overwhelming backlogs that lead to procrastination. DailyFlow emphasizes high-impact daily priorities:</p>
+            <ul>
+              <li><strong>Urgency Triaging:</strong> Assign High, Medium, or Low priorities with distinct pastel badges to distinguish critical deliverables from secondary tasks.</li>
+              <li><strong>Dynamic Filtering:</strong> Instant search and tabbed filtering allow you to view active vs. completed tasks in real time without page reloads.</li>
+              <li><strong>Planned For Today:</strong> Clean visual counters track your completion rate, providing tangible feedback as you move closer to a zero-inbox day.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 2. Pastel Finance Tracker -->
+        <article class="subpage-card use-case-card">
+          <div class="use-case-badge" aria-hidden="true">&#x1F4B3;</div>
+          <div class="use-case-content">
+            <h3>2. Mindful Personal Expense &amp; Budget Tracking</h3>
+            <p><strong>Financial awareness without invasive bank linking.</strong> Most budgeting applications demand access to your online banking credentials. DailyFlow offers a private, mindful alternative:</p>
+            <ul>
+              <li><strong>Intuitive Categorization:</strong> Seamlessly log expenses under Transfers, Shopping, Food &amp; Beverages, Utility Bills, Entertainment, or Vacation.</li>
+              <li><strong>Custom Pastel Dropdowns:</strong> Clean, custom-designed selection menus replace harsh browser selects with soft tactile ergonomics.</li>
+              <li><strong>Instant Running Balances:</strong> Monitor your daily and cumulative spending balance instantly. Your financial figures never leave your device.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 3. Event Calendar -->
+        <article class="subpage-card use-case-card">
+          <div class="use-case-badge" aria-hidden="true">&#x1F4C5;</div>
+          <div class="use-case-content">
+            <h3>3. Interactive Event Scheduling &amp; Date Picker</h3>
+            <p><strong>Timeline orientation with zero friction.</strong> Time management requires a clear spatial overview of the week and month ahead:</p>
+            <ul>
+              <li><strong>Custom Date &amp; Time Selection:</strong> Our proprietary date picker component eliminates rigid browser inputs, offering intuitive day-by-day navigation with quick "Today" and "Clear" presets.</li>
+              <li><strong>Schedule Overview:</strong> Connect specific deliverables to exact calendar dates to keep project milestones aligned.</li>
+              <li><strong>Multi-Language Date Awareness:</strong> Date components dynamically adapt to English, Turkish, Portuguese, German, French, and Dutch layouts.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 4. Focus Pomodoro -->
+        <article class="subpage-card use-case-card">
+          <div class="use-case-badge" aria-hidden="true">&#x23F1;</div>
+          <div class="use-case-content">
+            <h3>4. Distraction-Free Deep Focus (Pomodoro)</h3>
+            <p><strong>Sustained mental concentration.</strong> Cognitive science proves that structured work and rest intervals significantly reduce mental fatigue:</p>
+            <ul>
+              <li><strong>25/5 Classic Rhythm:</strong> Toggle effortlessly between dedicated 25-minute focus sprints and relaxing 5-minute reset intervals.</li>
+              <li><strong>Minimalist Visual Atmosphere:</strong> Clean circular timers and soft ambient artwork provide a calming visual anchor that keeps multitasking at bay.</li>
+              <li><strong>Instant Pause &amp; Reset:</strong> Full keyboard and touch-friendly controls ensure seamless operation during demanding cognitive sessions.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="app-footer" id="appFooter" role="contentinfo" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand-section">
+          <div class="footer-brand">
+            <strong>DailyFlow<span class="brand-dot">.</span></strong>
+          </div>
+          <p class="footer-tagline">Minimal, offline-first daily productivity and finance tracker. 100% local on-device storage with zero tracking.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <ul class="footer-links">
+            <li><a href="about.html" class="footer-link">About Us</a></li>
+            <li><a href="use-cases.html" class="footer-link">Use Cases</a></li>
+            <li><a href="faq.html" class="footer-link">FAQ</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+            <li><a href="index.html#privacyModal" class="footer-link">Privacy Policy</a></li>
+            <li><a href="terms.html" class="footer-link">Terms of Service</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 DailyFlow. All rights reserved.</p>
+        <p class="footer-privacy-note">Built for privacy &bull; 100% on-device local storage</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+

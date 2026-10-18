@@ -1012,6 +1012,10 @@ if (footerPrivacyBtn) {
   });
 }
 
+if (window.location.hash === "#privacyModal" || window.location.hash === "#privacy") {
+  setPrivacyModalVisibility(true);
+}
+
 if (privacyModal) {
   privacyModal.addEventListener("click", (event) => {
     if (event.target.closest("[data-privacy-close]")) {

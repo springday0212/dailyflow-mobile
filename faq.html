@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f7f2">
+  <title>Frequently Asked Questions | DailyFlow</title>
+  <meta name="description" content="Frequently asked questions about DailyFlow: local data storage, offline usage, privacy guarantees, theme customization, and Android APK downloads.">
+  <link rel="canonical" href="https://dailyflowweb.com/faq.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=4.0">
+  <script>
+    try {
+      const theme = localStorage.getItem("dotoday-theme");
+      if (theme === "dark") document.documentElement.classList.add("dark");
+      else if (theme === "matcha" || theme === "cafe-royal") document.documentElement.setAttribute("data-theme", theme);
+    } catch(e) {}
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const theme = localStorage.getItem("dotoday-theme");
+        if (theme === "dark") document.body.classList.add("dark");
+        else if (theme === "matcha" || theme === "cafe-royal") document.body.dataset.theme = theme;
+      } catch(e) {}
+    });
+  </script>
+  <!-- Google AdSense (Web Only) -->
+  <script>
+    try {
+      var isNative = typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform();
+      if (!isNative) {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5552615496678026";
+        s.crossOrigin = "anonymous";
+        document.head.appendChild(s);
+      }
+    } catch(e) {}
+  </script>
+</head>
+<body>
+  <div class="subpage-shell">
+    <header class="subpage-topbar">
+      <a href="index.html" class="brand" aria-label="DailyFlow Home">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span>DailyFlow<span class="brand-dot">.</span></span>
+      </a>
+      <a href="index.html" class="back-home-link">
+        <span aria-hidden="true">&larr;</span> Back to DailyFlow
+      </a>
+    </header>
+
+    <main class="subpage-main">
+      <div class="subpage-hero">
+        <span class="subpage-eyebrow">HELP &amp; FREQUENTLY ASKED QUESTIONS</span>
+        <h1 class="subpage-title">Answers to Common Questions.</h1>
+        <p class="subpage-lead">Everything you need to know about DailyFlow's privacy standards, offline capabilities, theme selections, and mobile availability.</p>
+      </div>
+
+      <div class="faq-list">
+        <!-- FAQ 1 -->
+        <details class="faq-item" open>
+          <summary class="faq-question">Where is my data stored, and can DailyFlow see my entries?</summary>
+          <div class="faq-answer">
+            <p><strong>Your data is stored 100% locally on your own device.</strong> DailyFlow uses standard browser storage (localStorage) on web and secure native sandboxed storage on mobile. We operate zero cloud databases, run no telemetry trackers, and maintain no user profiles. Your tasks, notes, budget entries, and timers never leave your device, meaning even the developers of DailyFlow cannot access or view your information.</p>
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="faq-item">
+          <summary class="faq-question">Does DailyFlow work without an internet connection?</summary>
+          <div class="faq-answer">
+            <p><strong>Yes, DailyFlow is designed as an offline-first application.</strong> Once you load DailyFlow in your browser or install the mobile application, all features operate completely independent of an internet connection. You can add tasks, check off completed goals, schedule dates, log expenses, and run Pomodoro timers while on a flight, in a subway, or anywhere with poor signal.</p>
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="faq-item">
+          <summary class="faq-question">How do I switch themes and customize color schemes?</summary>
+          <div class="faq-answer">
+            <p>To change themes, tap the <strong>theme icon (sun/palette)</strong> in the top navigation bar. You can choose from four distinct environments:</p>
+            <ul>
+              <li><strong>Default Sage Light:</strong> Crisp, calming off-white with pastel mint accents.</li>
+              <li><strong>Sage Dark:</strong> Deep charcoal and sage green engineered to reduce eye strain in low-light settings.</li>
+              <li><strong>Matcha Garden:</strong> A fresh, botanical theme with organic green hues.</li>
+              <li><strong>Café Royal:</strong> A cozy, vintage atmosphere with warm burgundy and deep espresso tones.</li>
+            </ul>
+            <p>Your theme preference is automatically remembered and applied across all pages.</p>
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="faq-item">
+          <summary class="faq-question">Where can I download the DailyFlow mobile app?</summary>
+          <div class="faq-answer">
+            <p>DailyFlow is available for Android as a native application built using modern Capacitor architecture. You can download the official release directly from Google Play or install it via APK package. The mobile app includes native status bar safe-area support, device notification scheduling, and the exact same offline, zero-tracking guarantee.</p>
+          </div>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="faq-item">
+          <summary class="faq-question">How do task reminders and notifications work?</summary>
+          <div class="faq-answer">
+            <p>Reminders are scheduled directly through your device's native operating system local notifications API. Because reminders are scheduled on-device, they do not rely on push servers or third-party webhooks. Your alarms trigger reliably at the exact scheduled minute, even when the browser or application is closed.</p>
+          </div>
+        </details>
+
+        <!-- FAQ 6 -->
+        <details class="faq-item">
+          <summary class="faq-question">How can I clear or delete my stored information?</summary>
+          <div class="faq-answer">
+            <p>You have complete ownership over your data. You can delete individual tasks or expenses at any time with a single click. If you wish to wipe all data completely, simply clear your browser's site data/cookies for <code>dailyflowweb.com</code> or clear application storage in Android Settings. All records are instantly and permanently purged without residual cloud copies.</p>
+          </div>
+        </details>
+      </div>
+    </main>
+
+    <footer class="app-footer" id="appFooter" role="contentinfo" aria-label="Site footer">
+      <div class="footer-inner">
+        <div class="footer-brand-section">
+          <div class="footer-brand">
+            <strong>DailyFlow<span class="brand-dot">.</span></strong>
+          </div>
+          <p class="footer-tagline">Minimal, offline-first daily productivity and finance tracker. 100% local on-device storage with zero tracking.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <ul class="footer-links">
+            <li><a href="about.html" class="footer-link">About Us</a></li>
+            <li><a href="use-cases.html" class="footer-link">Use Cases</a></li>
+            <li><a href="faq.html" class="footer-link">FAQ</a></li>
+            <li><a href="contact.html" class="footer-link">Contact</a></li>
+            <li><a href="index.html#privacyModal" class="footer-link">Privacy Policy</a></li>
+            <li><a href="terms.html" class="footer-link">Terms of Service</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 DailyFlow. All rights reserved.</p>
+        <p class="footer-privacy-note">Built for privacy &bull; 100% on-device local storage</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+
