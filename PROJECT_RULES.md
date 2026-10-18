@@ -32,3 +32,11 @@ Bu belge, projede değişiklik yapan yapay zeka ajanları (Antigravity vb.) içi
 1. **İncele ve Farkı Belirle:** Bir komut aldığında önce sadece o komutun etkilediği dosyaları belirle.
 2. **Minimal Müdahale:** İstenen işlevi çözebilecek en az satır kodla çöz.
 3. **Senkronizasyon:** `www/` dizinine veya Android klasörüne senkronizasyon gerekiyorsa, bunu yalnızca kullanıcı açıkça talep ettiğinde veya derleme aşamasında yap.
+---
+
+## Otomatik Sürüm Kontrolü ve Dağıtım (Auto-Deploy Protocol)
+* **Otomatik Yayınlama Şartı:** Kullanıcıdan gelen herhangi bir arayüz, stil, metin, sayfa veya özellik ekleme/düzeltme görevi başarıyla tamamlandığında, ajanın süreci tamamlamak için ayrıca bir onay beklemesine gerek yoktur.
+* **Standart Kapanış Adımları:** Her görevin sonunda sırasıyla şu iki işlem terminalde otomatik yürütülmelidir:
+  1. Değiştirilen dosyaları Git'e ekle, yapılan işi özetleyen kısa bir commit mesajı yaz ve GitHub uzak deposuna push'la (`git push origin main`).
+  2. Web sitesini Firebase Hosting üzerinde doğrudan canlıya al (`firebase deploy`).
+* **Kapanış Bildirimi:** Ajan, yanıtının sonunda değişikliklerin başarıyla GitHub'a gönderildiğini ve Firebase üzerinden canlıya alındığını (Deploy complete) onaylayan kısa bir özet sunmalıdır.

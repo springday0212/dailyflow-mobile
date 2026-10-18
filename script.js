@@ -1867,7 +1867,6 @@ function checkNativePlatform() {
       if (downloadCard) {
         downloadCard.remove();
       }
-      document.querySelectorAll(".native-bento-ad").forEach((ad) => ad.remove());
     }
   } catch (e) {
     console.warn("Platform check error:", e);
@@ -1878,40 +1877,7 @@ function checkNativePlatform() {
 // GOOGLE ADSENSE WEB CONTROLLER
 // ==========================================================================
 function initAdSense() {
-  try {
-    const isNative = typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform();
-    if (isNative) return;
-
-    const adElements = document.querySelectorAll(".native-bento-ad ins.adsbygoogle:not([data-adsbygoogle-status])");
-    if (!adElements.length) return;
-
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target.offsetWidth > 0) {
-            try {
-              (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (err) {
-              console.warn("AdSense push error:", err);
-            }
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: "120px" });
-
-      adElements.forEach((el) => observer.observe(el));
-    } else {
-      adElements.forEach((el) => {
-        if (el.offsetWidth > 0) {
-          try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } catch (err) {}
-        }
-      });
-    }
-  } catch (e) {
-    console.warn("AdSense init error:", e);
-  }
+  // Pure content flow - AdSense Auto Ads are handled via script tag in head
 }
 
 function initApp() {
