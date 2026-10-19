@@ -894,8 +894,14 @@ const sidebarDrawer = document.querySelector("#sidebarDrawer");
 const dashboardView = document.querySelector("#dashboardView");
 const focusView = document.querySelector("#focusView");
 const financeView = document.querySelector("#finance-view");
+const notebookView = document.querySelector("#notebook-view");
 const focusBack = document.querySelector("#focusBack");
 const financeBack = document.querySelector("#financeBack");
+const notebookBack = document.querySelector("#notebookBack");
+const notebookInput = document.querySelector("#notebookInput");
+const notebookFocusBtn = document.querySelector("#notebookFocusBtn");
+const notebookBox = document.querySelector("#notebookBox");
+const notebookTabs = document.querySelectorAll(".notebook-tabs .tab-btn");
 const sidebarLinks = document.querySelectorAll(".sidebar-link");
 const pomodoroTime = document.querySelector("#pomodoroTime");
 const pomodoroStatus = document.querySelector("#pomodoroStatus");
@@ -959,11 +965,14 @@ function setDrawerVisibility(isOpen) {
 function setAppView(view) {
   const isFocus = view === "focus";
   const isFinance = view === "finance";
-  dashboardView.hidden = isFocus || isFinance;
+  const isNotebook = view === "notebook";
+  dashboardView.hidden = isFocus || isFinance || isNotebook;
   focusView.hidden = !isFocus;
   financeView.hidden = !isFinance;
+  if (notebookView) notebookView.hidden = !isNotebook;
   document.body.classList.toggle("pomodoro-active", isFocus);
   document.body.classList.toggle("finance-active", isFinance);
+  document.body.classList.toggle("notebook-active", isNotebook);
   sidebarLinks.forEach((link) => link.classList.toggle("active", link.dataset.view === view));
   setDrawerVisibility(false);
   if (typeof initAdSense === "function") {
@@ -981,6 +990,7 @@ document.addEventListener("keydown", (e) => {
 });
 focusBack.addEventListener("click", () => setAppView("dashboard"));
 financeBack.addEventListener("click", () => setAppView("dashboard"));
+notebookBack?.addEventListener("click", () => setAppView("dashboard"));
 sidebarLinks.forEach((link) => link.addEventListener("click", () => setAppView(link.dataset.view)));
 
 // ==========================================================================
@@ -1880,6 +1890,91 @@ function initAdSense() {
   // Pure content flow - AdSense Auto Ads are handled via script tag in head
 }
 
+// ==========================================================================
+// NOTEBOOK (SEKMELİ BEYAZ KARELİ DEFTER) MODULE
+// ==========================================================================
+const tabThemes = {
+  "1": { grid: "rgba(224, 7, 15, 0.14)", margin: "rgba(224, 7, 15, 0.50)" },
+  "2": { grid: "rgba(202, 195, 7, 0.18)", margin: "rgba(202, 195, 7, 0.58)" },
+  "3": { grid: "rgba(150, 177, 232, 0.25)", margin: "rgba(150, 177, 232, 0.65)" },
+  "4": { grid: "rgba(233, 144, 162, 0.20)", margin: "rgba(233, 144, 162, 0.52)" },
+  "5": { grid: "rgba(3, 142, 87, 0.16)", margin: "rgba(3, 142, 87, 0.48)" }
+};
+
+let currentNotebookTab = "1";
+
+function setNotebookTabTheme(tabId) {
+  const theme = tabThemes[tabId];
+  if (theme) {
+    if (notebookBox) {
+      notebookBox.style.setProperty("--grid-line-color", theme.grid);
+      notebookBox.style.setProperty("--margin-line-color", theme.margin);
+    }
+    document.documentElement.style.setProperty("--grid-line-color", theme.grid);
+    document.documentElement.style.setProperty("--margin-line-color", theme.margin);
+  }
+}
+
+function loadNotebookTabContent(tabId) {
+  if (!notebookInput) return;
+  const savedText = localStorage.getItem("dailyflow_notebook_tab_" + tabId) || "";
+  notebookInput.value = savedText;
+  setNotebookTabTheme(tabId);
+}
+
+function initNotebook() {
+  if (!notebookInput || !notebookBox) return;
+
+  notebookInput.addEventListener("input", () => {
+    try {
+      localStorage.setItem("dailyflow_notebook_tab_" + currentNotebookTab, notebookInput.value);
+    } catch (e) {
+      console.warn("Notebook save error:", e);
+    }
+  });
+
+  if (notebookTabs && notebookTabs.length > 0) {
+    notebookTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        notebookTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentNotebookTab = tab.getAttribute("data-tab") || "1";
+        loadNotebookTabContent(currentNotebookTab);
+        notebookInput.focus();
+      });
+    });
+  }
+
+  if (notebookFocusBtn) {
+    notebookFocusBtn.addEventListener("click", () => {
+      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFs) {
+        if (notebookBox.requestFullscreen) {
+          notebookBox.requestFullscreen().catch((err) => console.log(err));
+        } else if (notebookBox.webkitRequestFullscreen) {
+          notebookBox.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch((err) => console.log(err));
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    });
+
+    const updateFsBtn = () => {
+      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      notebookFocusBtn.textContent = isFs ? "⤦" : "⤢";
+      notebookFocusBtn.title = isFs ? "Tam Ekrandan Çık" : "Tam Ekran Modu";
+    };
+    document.addEventListener("fullscreenchange", updateFsBtn);
+    document.addEventListener("webkitfullscreenchange", updateFsBtn);
+  }
+
+  loadNotebookTabContent(currentNotebookTab);
+}
+
 function initApp() {
   try { checkNativePlatform(); } catch (e) {}
   try { applyTheme(getStoredTheme()); } catch (e) { console.error("Theme init error:", e); }
@@ -1892,6 +1987,7 @@ function initApp() {
   try { renderTimePicker(); } catch (e) { console.error("Time picker error:", e); }
   try { renderTasks(); } catch (e) { console.error("Tasks error:", e); }
   try { renderFinance(); } catch (e) { console.error("Finance error:", e); }
+  try { initNotebook(); } catch (e) { console.error("Notebook error:", e); }
   try { initCustomDatePicker(); } catch (e) { console.error("Custom datepicker error:", e); }
   try { initCustomSelects(); } catch (e) { console.error("Custom selects error:", e); }
   try { initAdSense(); } catch (e) {}

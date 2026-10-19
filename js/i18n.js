@@ -12,6 +12,7 @@ const translations = {
     navDashboard: "Dashboard / Tasks",
     navFocus: "Pomodoro Focus",
     navFinance: "Finance Tracker",
+    navNotebook: "Notebook",
     navPrivacy: "Privacy Policy",
     sidebarNavigation: "Navigation",
     openNavigation: "Open navigation",
@@ -93,6 +94,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Dashboard",
+    notebookBack: "← Dashboard",
     financeEyebrow: "MONEY CONTROL",
     financeTitle: "Finance Tracker",
     financeSubtitle: "Keep your everyday spending visible and intentional.",
@@ -186,6 +188,7 @@ const translations = {
     navDashboard: "Gösterge Paneli / Görevler",
     navFocus: "Pomodoro Odak",
     navFinance: "Finans Takibi",
+    navNotebook: "Not Defteri",
     navPrivacy: "Gizlilik Politikası",
     sidebarNavigation: "Navigasyon",
     openNavigation: "Menüyü aç",
@@ -267,6 +270,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Gösterge Paneli",
+    notebookBack: "← Gösterge Paneli",
     financeEyebrow: "PARA YÖNETİMİ",
     financeTitle: "Finans Takibi",
     financeSubtitle: "Günlük harcamalarınızı görünür ve kontrollü tutun.",
@@ -360,6 +364,7 @@ const translations = {
     navDashboard: "Painel / Tarefas",
     navFocus: "Foco Pomodoro",
     navFinance: "Controle Financeiro",
+    navNotebook: "Caderno",
     navPrivacy: "Política de Privacidade",
     sidebarNavigation: "Navegação",
     openNavigation: "Abrir navegação",
@@ -441,6 +446,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Painel",
+    notebookBack: "← Painel",
     financeEyebrow: "CONTROLE FINANCEIRO",
     financeTitle: "Controle Financeiro",
     financeSubtitle: "Mantenha seus gastos diários visíveis e conscientes.",
@@ -534,6 +540,7 @@ const translations = {
     navDashboard: "Übersicht / Aufgaben",
     navFocus: "Pomodoro-Fokus",
     navFinance: "Finanz-Tracker",
+    navNotebook: "Notizbuch",
     navPrivacy: "Datenschutzerklärung",
     sidebarNavigation: "Navigation",
     openNavigation: "Navigation öffnen",
@@ -615,6 +622,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Übersicht",
+    notebookBack: "← Übersicht",
     financeEyebrow: "FINANZKONTROLLE",
     financeTitle: "Finanz-Tracker",
     financeSubtitle: "Behalten Sie Ihre alltäglichen Ausgaben sichtbar und bewusst im Blick.",
@@ -708,6 +716,7 @@ const translations = {
     navDashboard: "Tableau de bord / Tâches",
     navFocus: "Focus Pomodoro",
     navFinance: "Suivi Financier",
+    navNotebook: "Carnet de notes",
     navPrivacy: "Politique de Confidentialité",
     sidebarNavigation: "Navigation",
     openNavigation: "Ouvrir le menu",
@@ -789,6 +798,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Tableau de bord",
+    notebookBack: "← Tableau de bord",
     financeEyebrow: "GESTION DE L'ARGENT",
     financeTitle: "Suivi Financier",
     financeSubtitle: "Gardez vos dépenses quotidiennes visibles et maîtrisées.",
@@ -882,6 +892,7 @@ const translations = {
     navDashboard: "Dashboard / Taken",
     navFocus: "Pomodoro-Focus",
     navFinance: "Financiën-Tracker",
+    navNotebook: "Notitieboek",
     navPrivacy: "Privacybeleid",
     sidebarNavigation: "Navigatie",
     openNavigation: "Navigatie openen",
@@ -963,6 +974,7 @@ const translations = {
 
     // Finance View
     financeBack: "← Dashboard",
+    notebookBack: "← Dashboard",
     financeEyebrow: "GELDBEHEER",
     financeTitle: "Financiën-Tracker",
     financeSubtitle: "Houd je dagelijkse uitgaven overzichtelijk en bewust.",
