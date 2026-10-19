@@ -197,6 +197,14 @@ body.dark { --paper: #17221e; --surface: #202d28; --ink: #edf5ef; --muted: #9baa
   font-size: 18px;
   line-height: 1;
 }
+.sidebar-link .sidebar-icon svg,
+.sidebar-svg-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
 .sidebar-link .sidebar-text,
 .sidebar-link > [data-i18n] {
   flex: 1 1 auto;
