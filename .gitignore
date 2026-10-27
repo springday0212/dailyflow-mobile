@@ -74,3 +74,10 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Android Keystore, Signing and Security Backups
+*.jks
+*.keystore
+*.pem
+key.properties
+*.security_bak

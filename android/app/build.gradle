@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file('key.properties')
+def keystoreProperties = new Properties()
+def hasKeyProperties = keystorePropertiesFile.canRead()
+if (hasKeyProperties) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "com.dailyflow.official"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -18,18 +25,46 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('dailyflow-release.jks')
-            storePassword 'dailyflow2026'
-            keyAlias 'dailyflow'
-            keyPassword 'dailyflow2026'
+            if (hasKeyProperties) {
+                def keyPath = keystoreProperties['storeFile']
+                def keyFile = keyPath ? (file(keyPath).exists() ? file(keyPath) : rootProject.file(keyPath)) : null
+                if (keyFile != null && keyFile.exists()) {
+                    storeFile = keyFile
+                    storePassword = keystoreProperties['storePassword']
+                    keyAlias = keystoreProperties['keyAlias']
+                    keyPassword = keystoreProperties['keyPassword']
+                } else {
+                    throw new GradleException("DailyFlow Hata: key.properties icinde belirtilen anahtar dosyasi ('${keyPath}') bulunamadi!")
+                }
+            }
         }
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (hasKeyProperties) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig null
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    def isReleaseRequested = taskGraph.allTasks.any { 
+        it.name.contains("Release") && (it.name.startsWith("assemble") || it.name.startsWith("bundle") || it.name.startsWith("package"))
+    }
+    if (isReleaseRequested && !hasKeyProperties) {
+        throw new GradleException(
+            "\n================================================================================\n" +
+            "[DailyFlow Derleme Hatasi] Release paketi olusturulamadi!\n" +
+            "'android/key.properties' dosyasi bulunamadi veya okunamadi.\n" +
+            "Imzasiz veya hatali bir release paketi dagitilmasini onlemek icin derleme durduruldu.\n" +
+            "Lutfen 'android/key.properties' dosyasini olusturup imzalama bilgilerini girin.\n" +
+            "================================================================================\n"
+        )
     }
 }
 
