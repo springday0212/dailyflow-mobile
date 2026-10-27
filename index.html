@@ -292,12 +292,10 @@
 
       <div class="picker-tabs" role="tablist" aria-label="Picker view selection">
         <button class="picker-tab active" id="pickerTabDate" type="button" role="tab" aria-selected="true" data-tab="date">
-          <span class="picker-tab-icon">📅</span>
           <span class="picker-tab-text" data-i18n="tabDate">Date</span>
           <span class="picker-tab-badge" id="pickerDateBadge">Today</span>
         </button>
         <button class="picker-tab" id="pickerTabTime" type="button" role="tab" aria-selected="false" data-tab="time">
-          <span class="picker-tab-icon">⏰</span>
           <span class="picker-tab-text" data-i18n="tabTime">Time</span>
           <span class="picker-tab-badge" id="pickerTimeBadge">10:00 AM</span>
         </button>
@@ -531,6 +529,16 @@
       </nav>
     </div>
     <div class="sidebar-footer">
+      <button class="sidebar-privacy-btn" id="termsOfServiceBtn" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <span data-i18n="navTerms">Terms of Service</span>
+      </button>
       <button class="sidebar-privacy-btn" id="privacyPolicyBtn" type="button">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -743,8 +751,6 @@
         <!-- Beyaz Kareli Defter Sayfası -->
         <div class="notebook-page">
           <textarea id="notebookInput" class="notebook-textarea" spellcheck="false"></textarea>
-          <!-- Tam Ekran Butonu -->
-          <button class="focus-btn" id="notebookFocusBtn" title="Tam Ekran Modu" aria-label="Fullscreen">⤢</button>
         </div>
 
         <!-- Renkli Sekmeler -->
@@ -808,6 +814,63 @@
         </div>
         <div class="privacy-footer-note">
           <p>Questions or inquiries about our privacy practices? Contact us at <strong>ctrlshiftplay01@gmail.com</strong>.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="privacy-modal" id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" hidden>
+    <div class="privacy-backdrop" data-terms-close aria-hidden="true"></div>
+    <section class="privacy-dialog" role="document">
+      <div class="privacy-sheet-drag" aria-hidden="true"><span class="privacy-drag-bar"></span></div>
+      <header class="privacy-header">
+        <div class="privacy-header-left">
+          <div class="privacy-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <span data-i18n="termsBadge">Legal &amp; Compliance</span>
+          </div>
+          <h2 id="termsTitle" data-i18n="termsTitle">Terms of Service</h2>
+          <p class="privacy-subtitle" data-i18n="termsSubtitle">DailyFlow is provided as a self-hosted, local-first productivity tool.</p>
+        </div>
+        <button class="privacy-close" id="termsClose" type="button" data-terms-close aria-label="Close terms of service">×</button>
+      </header>
+      <div class="privacy-body">
+        <div class="privacy-grid">
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">📜</div>
+            <div class="privacy-card-content">
+              <strong data-i18n="termsCard1Title">Acceptance of Terms</strong>
+              <p data-i18n="termsCard1Desc">By using DailyFlow, you agree to these terms.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">💾</div>
+            <div class="privacy-card-content">
+              <strong data-i18n="termsCard2Title">Local Storage &amp; Offline Use</strong>
+              <p data-i18n="termsCard2Desc">All data is managed locally on your device. You are responsible for your own data management and backups.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">☁️</div>
+            <div class="privacy-card-content">
+              <strong data-i18n="termsCard3Title">No Cloud / No Server Liability</strong>
+              <p data-i18n="termsCard3Desc">DailyFlow does not store, backup, or recover personal data on external servers.</p>
+            </div>
+          </div>
+          <div class="privacy-card">
+            <div class="privacy-card-icon" aria-hidden="true">🎯</div>
+            <div class="privacy-card-content">
+              <strong data-i18n="termsCard4Title">Fair &amp; Personal Use</strong>
+              <p data-i18n="termsCard4Desc">Intended for individual, personal productivity and organization.</p>
+            </div>
+          </div>
+        </div>
+        <div class="privacy-footer-note">
+          <p><span data-i18n="termsFooterNote">Questions regarding terms? Contact us at</span> <strong>ctrlshiftplay01@gmail.com</strong>.</p>
         </div>
       </div>
     </section>

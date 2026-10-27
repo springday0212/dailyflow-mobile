@@ -899,7 +899,6 @@ const focusBack = document.querySelector("#focusBack");
 const financeBack = document.querySelector("#financeBack");
 const notebookBack = document.querySelector("#notebookBack");
 const notebookInput = document.querySelector("#notebookInput");
-const notebookFocusBtn = document.querySelector("#notebookFocusBtn");
 const notebookBox = document.querySelector("#notebookBox");
 const notebookTabs = document.querySelectorAll(".notebook-tabs .tab-btn");
 const sidebarLinks = document.querySelectorAll(".sidebar-link");
@@ -994,24 +993,51 @@ notebookBack?.addEventListener("click", () => setAppView("dashboard"));
 sidebarLinks.forEach((link) => link.addEventListener("click", () => setAppView(link.dataset.view)));
 
 // ==========================================================================
-// PRIVACY POLICY MODAL CONTROLLER
+// PRIVACY POLICY & TERMS OF SERVICE MODAL CONTROLLERS
 // ==========================================================================
 const privacyPolicyBtn = document.querySelector("#privacyPolicyBtn");
 const privacyModal = document.querySelector("#privacyModal");
+const termsOfServiceBtn = document.querySelector("#termsOfServiceBtn");
+const termsModal = document.querySelector("#terms-modal");
+
+function updateBodyModalOpenState() {
+  const isAnyOpen = Boolean(
+    (privacyModal && !privacyModal.hidden) ||
+    (termsModal && !termsModal.hidden)
+  );
+  document.body.classList.toggle("modal-open", isAnyOpen);
+}
 
 function setPrivacyModalVisibility(isVisible) {
   if (!privacyModal) return;
   privacyModal.hidden = !isVisible;
-  document.body.classList.toggle("modal-open", isVisible);
+  updateBodyModalOpenState();
   if (isVisible) {
+    if (termsModal && !termsModal.hidden) termsModal.hidden = true;
     setDrawerVisibility(false);
     const closeBtn = privacyModal.querySelector(".privacy-close");
     if (closeBtn) closeBtn.focus();
   }
 }
 
+function setTermsModalVisibility(isVisible) {
+  if (!termsModal) return;
+  termsModal.hidden = !isVisible;
+  updateBodyModalOpenState();
+  if (isVisible) {
+    if (privacyModal && !privacyModal.hidden) privacyModal.hidden = true;
+    setDrawerVisibility(false);
+    const closeBtn = termsModal.querySelector(".privacy-close, [data-terms-close]");
+    if (closeBtn) closeBtn.focus();
+  }
+}
+
 if (privacyPolicyBtn) {
   privacyPolicyBtn.addEventListener("click", () => setPrivacyModalVisibility(true));
+}
+
+if (termsOfServiceBtn) {
+  termsOfServiceBtn.addEventListener("click", () => setTermsModalVisibility(true));
 }
 
 const footerPrivacyBtn = document.querySelector("#footerPrivacyBtn");
@@ -1024,6 +1050,8 @@ if (footerPrivacyBtn) {
 
 if (window.location.hash === "#privacyModal" || window.location.hash === "#privacy") {
   setPrivacyModalVisibility(true);
+} else if (window.location.hash === "#terms-modal" || window.location.hash === "#termsModal" || window.location.hash === "#terms") {
+  setTermsModalVisibility(true);
 }
 
 if (privacyModal) {
@@ -1034,9 +1062,22 @@ if (privacyModal) {
   });
 }
 
+if (termsModal) {
+  termsModal.addEventListener("click", (event) => {
+    if (event.target.closest("[data-terms-close]")) {
+      setTermsModalVisibility(false);
+    }
+  });
+}
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && privacyModal && !privacyModal.hidden) {
-    setPrivacyModalVisibility(false);
+  if (event.key === "Escape") {
+    if (privacyModal && !privacyModal.hidden) {
+      setPrivacyModalVisibility(false);
+    }
+    if (termsModal && !termsModal.hidden) {
+      setTermsModalVisibility(false);
+    }
   }
 });
 
@@ -1869,14 +1910,27 @@ undoExpense.addEventListener("click", () => {
 // ==========================================================================
 function checkNativePlatform() {
   try {
-    const isNative = (typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform());
-    if (isNative) {
+    const isCapacitor = (typeof window.Capacitor !== "undefined" && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform());
+    const isCordova = typeof window.cordova !== "undefined";
+    const isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isCapacitor || isCordova || isStandalone) {
       document.documentElement.classList.add("is-capacitor");
       document.body.classList.add("is-capacitor");
       const downloadCard = document.getElementById("webDownloadCard");
       if (downloadCard) {
         downloadCard.remove();
       }
+      const footer = document.getElementById("appFooter");
+      if (footer) {
+        footer.remove();
+      }
+    }
+
+    if (isMobileDevice) {
+      document.documentElement.classList.add("is-mobile");
+      document.body.classList.add("is-mobile");
     }
   } catch (e) {
     console.warn("Platform check error:", e);
@@ -1943,33 +1997,6 @@ function initNotebook() {
         notebookInput.focus();
       });
     });
-  }
-
-  if (notebookFocusBtn) {
-    notebookFocusBtn.addEventListener("click", () => {
-      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
-      if (!isFs) {
-        if (notebookBox.requestFullscreen) {
-          notebookBox.requestFullscreen().catch((err) => console.log(err));
-        } else if (notebookBox.webkitRequestFullscreen) {
-          notebookBox.webkitRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen().catch((err) => console.log(err));
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        }
-      }
-    });
-
-    const updateFsBtn = () => {
-      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
-      notebookFocusBtn.textContent = isFs ? "⤦" : "⤢";
-      notebookFocusBtn.title = isFs ? "Tam Ekrandan Çık" : "Tam Ekran Modu";
-    };
-    document.addEventListener("fullscreenchange", updateFsBtn);
-    document.addEventListener("webkitfullscreenchange", updateFsBtn);
   }
 
   loadNotebookTabContent(currentNotebookTab);

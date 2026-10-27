@@ -13,6 +13,7 @@ const translations = {
     navFocus: "Pomodoro Focus",
     navFinance: "Finance Tracker",
     navNotebook: "Notebook",
+    navTerms: "Terms of Service",
     navPrivacy: "Privacy Policy",
     sidebarNavigation: "Navigation",
     openNavigation: "Open navigation",
@@ -172,6 +173,20 @@ const translations = {
     privacyCard4Desc: "You have full sovereignty over your data at all times. Clearing application data or uninstalling the app permanently purges all stored entries from your device.",
     privacyFooterNote: "Questions or inquiries about our privacy practices? Contact us at",
 
+    // Terms of Service Modal
+    termsBadge: "Legal & Compliance",
+    termsTitle: "Terms of Service",
+    termsSubtitle: "DailyFlow is provided as a self-hosted, local-first productivity tool.",
+    termsCard1Title: "Acceptance of Terms",
+    termsCard1Desc: "By using DailyFlow, you agree to these terms.",
+    termsCard2Title: "Local Storage & Offline Use",
+    termsCard2Desc: "All data is managed locally on your device. You are responsible for your own data management and backups.",
+    termsCard3Title: "No Cloud / No Server Liability",
+    termsCard3Desc: "DailyFlow does not store, backup, or recover personal data on external servers.",
+    termsCard4Title: "Fair & Personal Use",
+    termsCard4Desc: "Intended for individual, personal productivity and organization.",
+    termsFooterNote: "Questions regarding terms? Contact us at",
+
     // Footer (Web)
     footerAbout: "About Us",
     footerUseCases: "Use Cases",
@@ -189,6 +204,7 @@ const translations = {
     navFocus: "Pomodoro Odak",
     navFinance: "Finans Takibi",
     navNotebook: "Not Defteri",
+    navTerms: "Kullanım Şartları",
     navPrivacy: "Gizlilik Politikası",
     sidebarNavigation: "Navigasyon",
     openNavigation: "Menüyü aç",
@@ -348,6 +364,20 @@ const translations = {
     privacyCard4Desc: "Verileriniz üzerinde her zaman tam kontrole sahipsiniz. Uygulama verilerini temizlemek veya uygulamayı kaldırmak, depolanan tüm kayıtları cihazınızdan kalıcı olarak siler.",
     privacyFooterNote: "Gizlilik uygulamalarımızla ilgili soru veya talepleriniz için bize ulaşın:",
 
+    // Terms of Service Modal
+    termsBadge: "Yasal & Koşullar",
+    termsTitle: "Kullanım Şartları",
+    termsSubtitle: "DailyFlow, yerel odaklı ve bağımsız bir kişisel üretkenlik aracı olarak sunulur.",
+    termsCard1Title: "Şartların Kabulü",
+    termsCard1Desc: "DailyFlow'u kullanarak bu kullanım koşullarını kabul etmiş sayılırsınız.",
+    termsCard2Title: "Yerel Depolama ve Çevrimdışı Kullanım",
+    termsCard2Desc: "Tüm veriler cihazınızda yerel olarak saklanır. Verilerinizin yönetimi ve yedeklenmesi tamamen sizin sorumluluğunuzdadır.",
+    termsCard3Title: "Bulut / Sunucu Sorumluluğu Yoktur",
+    termsCard3Desc: "DailyFlow, harici sunucularda kişisel veri depolamaz, yedeklemez veya kurtarmaz.",
+    termsCard4Title: "Adil ve Bireysel Kullanım",
+    termsCard4Desc: "Bireysel ve kişisel üretkenlik ve organizasyon amaçları için tasarlanmıştır.",
+    termsFooterNote: "Kullanım şartları ile ilgili sorularınız için bize ulaşın:",
+
     // Footer (Web)
     footerAbout: "Hakkımızda",
     footerUseCases: "Kullanım Senaryoları",
@@ -365,6 +395,7 @@ const translations = {
     navFocus: "Foco Pomodoro",
     navFinance: "Controle Financeiro",
     navNotebook: "Caderno",
+    navTerms: "Termos de Serviço",
     navPrivacy: "Política de Privacidade",
     sidebarNavigation: "Navegação",
     openNavigation: "Abrir navegação",
@@ -524,6 +555,20 @@ const translations = {
     privacyCard4Desc: "Você tem soberania total sobre seus dados. Limpar os dados do aplicativo ou desinstalá-lo exclui permanentemente todos os registros do seu dispositivo.",
     privacyFooterNote: "Dúvidas ou solicitações sobre nossas práticas de privacidade? Entre em contato pelo e-mail",
 
+    // Terms of Service Modal
+    termsBadge: "Legal & Conformidade",
+    termsTitle: "Termos de Serviço",
+    termsSubtitle: "DailyFlow é fornecido como uma ferramenta de produtividade local e independente.",
+    termsCard1Title: "Aceitação dos Termos",
+    termsCard1Desc: "Ao usar o DailyFlow, você concorda com estes termos.",
+    termsCard2Title: "Armazenamento Local e Uso Offline",
+    termsCard2Desc: "Todos os dados são gerenciados localmente no seu dispositivo. Você é responsável pelo gerenciamento e backups de seus dados.",
+    termsCard3Title: "Sem Responsabilidade de Nuvem / Servidor",
+    termsCard3Desc: "O DailyFlow não armazena, faz backup ou recupera dados pessoais em servidores externos.",
+    termsCard4Title: "Uso Justo e Pessoal",
+    termsCard4Desc: "Destinado à produtividade e organização individual e pessoal.",
+    termsFooterNote: "Dúvidas sobre os termos? Entre em contato pelo e-mail",
+
     // Footer (Web)
     footerAbout: "Sobre Nós",
     footerUseCases: "Casos de Uso",
@@ -541,6 +586,7 @@ const translations = {
     navFocus: "Pomodoro-Fokus",
     navFinance: "Finanz-Tracker",
     navNotebook: "Notizbuch",
+    navTerms: "Nutzungsbedingungen",
     navPrivacy: "Datenschutzerklärung",
     sidebarNavigation: "Navigation",
     openNavigation: "Navigation öffnen",
@@ -700,6 +746,20 @@ const translations = {
     privacyCard4Desc: "Sie haben jederzeit die volle Kontrolle über Ihre Daten. Das Löschen von App-Daten entfernt alle Einträge dauerhaft.",
     privacyFooterNote: "Fragen zum Datenschutz? Kontaktieren Sie uns unter",
 
+    // Terms of Service Modal
+    termsBadge: "Rechtliches & Konformität",
+    termsTitle: "Nutzungsbedingungen",
+    termsSubtitle: "DailyFlow wird als lokales und unabhängiges Produktivitätswerkzeug bereitgestellt.",
+    termsCard1Title: "Annahme der Bedingungen",
+    termsCard1Desc: "Durch die Nutzung von DailyFlow stimmen Sie diesen Bedingungen zu.",
+    termsCard2Title: "Lokale Speicherung & Offline-Nutzung",
+    termsCard2Desc: "Alle Daten werden lokal auf Ihrem Gerät verwaltet. Sie sind für Ihre Daten und Backups selbst verantwortlich.",
+    termsCard3Title: "Keine Cloud- / Server-Haftung",
+    termsCard3Desc: "DailyFlow speichert, sichert oder stellt keine personenbezogenen Daten auf externen Servern wieder her.",
+    termsCard4Title: "Faire & persönliche Nutzung",
+    termsCard4Desc: "Für die individuelle, persönliche Produktivität und Organisation bestimmt.",
+    termsFooterNote: "Fragen zu den Nutzungsbedingungen? Kontaktieren Sie uns unter",
+
     // Footer (Web)
     footerAbout: "Über uns",
     footerUseCases: "Anwendungsfälle",
@@ -717,6 +777,7 @@ const translations = {
     navFocus: "Focus Pomodoro",
     navFinance: "Suivi Financier",
     navNotebook: "Carnet de notes",
+    navTerms: "Conditions d'utilisation",
     navPrivacy: "Politique de Confidentialité",
     sidebarNavigation: "Navigation",
     openNavigation: "Ouvrir le menu",
@@ -876,6 +937,20 @@ const translations = {
     privacyCard4Desc: "Vous avez un contrôle absolu sur vos données. La désinstallation supprime définitivement tous les enregistrements.",
     privacyFooterNote: "Des questions sur notre politique de confidentialité ? Contactez-nous à",
 
+    // Terms of Service Modal
+    termsBadge: "Légal & Conformité",
+    termsTitle: "Conditions d'utilisation",
+    termsSubtitle: "DailyFlow est fourni comme un outil de productivité local et autonome.",
+    termsCard1Title: "Acceptation des conditions",
+    termsCard1Desc: "En utilisant DailyFlow, vous acceptez les présentes conditions.",
+    termsCard2Title: "Stockage local et utilisation hors ligne",
+    termsCard2Desc: "Toutes les données sont gérées localement sur votre appareil. Vous êtes responsable de la gestion et des sauvegardes de vos données.",
+    termsCard3Title: "Aucune responsabilité cloud / serveur",
+    termsCard3Desc: "DailyFlow ne stocke, ne sauvegarde ni ne récupère de données personnelles sur des serveurs externes.",
+    termsCard4Title: "Usage loyal et personnel",
+    termsCard4Desc: "Destiné à la productivité et à l'organisation individuelle et personnelle.",
+    termsFooterNote: "Des questions sur les conditions ? Contactez-nous à",
+
     // Footer (Web)
     footerAbout: "À propos de nous",
     footerUseCases: "Cas d'utilisation",
@@ -893,6 +968,7 @@ const translations = {
     navFocus: "Pomodoro-Focus",
     navFinance: "Financiën-Tracker",
     navNotebook: "Notitieboek",
+    navTerms: "Servicevoorwaarden",
     navPrivacy: "Privacybeleid",
     sidebarNavigation: "Navigatie",
     openNavigation: "Navigatie openen",
@@ -1051,6 +1127,20 @@ const translations = {
     privacyCard4Title: "Volledig Eigenaarschap van de Gebruiker",
     privacyCard4Desc: "Je hebt te allen tijde volledige controle over je data. Het wissen van app-gegevens verwijdert alles permanent.",
     privacyFooterNote: "Vragen over ons privacybeleid? Neem contact op via",
+
+    // Terms of Service Modal
+    termsBadge: "Juridisch & Naleving",
+    termsTitle: "Servicevoorwaarden",
+    termsSubtitle: "DailyFlow wordt aangeboden als een lokale en onafhankelijke productiviteitstool.",
+    termsCard1Title: "Aanvaarding van voorwaarden",
+    termsCard1Desc: "Door DailyFlow te gebruiken, gaat u akkoord met deze voorwaarden.",
+    termsCard2Title: "Lokale opslag & offline gebruik",
+    termsCard2Desc: "Alle gegevens worden lokaal op uw apparaat beheerd. U bent zelf verantwoordelijk voor uw gegevens en back-ups.",
+    termsCard3Title: "Geen cloud- / serveraansprakelijkheid",
+    termsCard3Desc: "DailyFlow bewaart, back-upt of herstelt geen persoonlijke gegevens op externe servers.",
+    termsCard4Title: "Eerlijk & persoonlijk gebruik",
+    termsCard4Desc: "Bedoeld voor individuele, persoonlijke productiviteit en organisatie.",
+    termsFooterNote: "Vragen over de voorwaarden? Neem contact op via",
 
     // Footer (Web)
     footerAbout: "Over ons",
