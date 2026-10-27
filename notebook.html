@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>DailyFlow - Minimalist Notebook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-canvas: #0e1312;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0fdf4;
+      --text-muted: #859a93;
+      
+      /* Kağıt Açık Mod */
+      --paper-cream: #faf7f2;
+      --paper-text: #232d29;
+      --paper-sub: #78857f;
+      --paper-line: rgba(52, 85, 75, 0.1);
+      --dot-color: rgba(52, 85, 75, 0.16);
+      --paper-margin: rgba(239, 68, 68, 0.28);
+      --toolbar-bg: rgba(0, 0, 0, 0.025);
+      --btn-hover: rgba(0, 0, 0, 0.06);
+
+      /* Defter Satır Birimi (Baseline Grid Unit) */
+      --grid-unit: 32px;
+
+      /* Buton Aktif Vurgusu */
+      --btn-active-bg: #34d399;
+      --btn-active-text: #064e3b;
+
+      /* Pastel Sekmeler */
+      --tab-01: #a7f3d0;
+      --tab-01-dark: #064e3b;
+      --tab-02: #e9db8a;
+      --tab-02-dark: #634305;
+      --tab-03: #b9d1ea;
+      --tab-03-dark: #223f66;
+      --tab-04: #e7bcc9;
+      --tab-04-dark: #66263b;
+      --tab-05: #bfb5e0;
+      --tab-05-dark: #372861;
+    }
+
+    /* Kağıt Gece / Dark Mod */
+    .sheet-dark-mode {
+      --paper-cream: #18201d !important;
+      --paper-text: #ecfdf5 !important;
+      --paper-sub: #94a39d !important;
+      --paper-line: rgba(255, 255, 255, 0.07) !important;
+      --dot-color: rgba(255, 255, 255, 0.12) !important;
+      --paper-margin: rgba(248, 113, 113, 0.3) !important;
+      --toolbar-bg: rgba(255, 255, 255, 0.04) !important;
+      --btn-hover: rgba(255, 255, 255, 0.1) !important;
+      --btn-active-bg: #059669 !important;
+      --btn-active-text: #ffffff !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: calc(env(safe-area-inset-top, 20px) + 32px) 12px calc(env(safe-area-inset-bottom, 12px) + 16px) 12px;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(52, 211, 153, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.04) 0%, transparent 45%);
+    }
+
+    .app-frame {
+      width: 100%;
+      max-width: 420px;
+      height: calc(100vh - 76px);
+      max-height: 790px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Slide Drawer & Overlay */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: #141b18;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 101;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .drawer-panel.active {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drawer-close-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: none;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .drawer-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .drawer-nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .drawer-nav-item a:hover, .drawer-nav-item a.active {
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+    }
+
+    /* Defter Gövdesi */
+    .notebook-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 0;
+    }
+
+    .notebook-sheet {
+      flex: 1;
+      background-color: var(--paper-cream);
+      border-radius: 24px 24px 14px 14px;
+      box-shadow: 
+        0 20px 35px -10px rgba(0, 0, 0, 0.5),
+        0 1px 3px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-height: 0;
+      transition: background-color 0.25s ease;
+    }
+
+    /* Üst Toolbar */
+    .sheet-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background: var(--toolbar-bg);
+      gap: 6px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .toolbar-left-group {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(255, 255, 255, 0.65);
+      padding: 3px 5px;
+      border-radius: 9px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      height: 34px;
+      min-width: 0;
+    }
+
+    .sheet-dark-mode .toolbar-left-group {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-hamburger {
+      background: transparent;
+      border: none;
+      color: var(--paper-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 6px;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-hamburger:hover {
+      background: var(--btn-hover);
+    }
+
+    /* Toolbar Butonları ve Açık/Kapalı (Active State) Gösterimi */
+    .tb-btn {
+      background: transparent;
+      border: none;
+      color: var(--paper-text);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      height: 26px;
+      transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .tb-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    /* Buton basıldığında aktif olduğunu gösteren yeşil hap stili */
+    .tb-btn.active {
+      background: var(--btn-active-bg) !important;
+      color: var(--btn-active-text) !important;
+      box-shadow: 0 1px 4px rgba(52, 211, 153, 0.35);
+      transform: scale(0.97);
+    }
+
+    .tb-btn.active svg {
+      stroke: var(--btn-active-text) !important;
+    }
+
+    .tb-divider {
+      width: 1px;
+      height: 14px;
+      background: rgba(0, 0, 0, 0.12);
+      margin: 0 2px;
+      flex-shrink: 0;
+    }
+
+    .sheet-dark-mode .tb-divider {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .toolbar-right-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .icon-action-btn {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--paper-text);
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .sheet-dark-mode .icon-action-btn {
+      background: #202b27;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .icon-action-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Kağıt Yazı Alanı & Kaydırma Kutusu */
+    .sheet-body {
+      flex: 1;
+      position: relative;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    /* Kırmızı Sol Kenar Çizgisi */
+    .sheet-body::before {
+      content: '';
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 1.5px;
+      background-color: var(--paper-margin);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 
+       --- KUSURSUZ BASELINE VE ÇİZGİ KİLİDİ ---
+       Arka plan deseni doğrudan editor alanına `background-attachment: local` ile verilir.
+       Böylece kullanıcı metin yazdıkça veya yukarı/aşağı kaydırdıkça yazı ile çizgi kesinlikle birbirinden kopmaz!
+    */
+    .paper-editor {
+      width: 100%;
+      min-height: 100%;
+      outline: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      color: var(--paper-text);
+      caret-color: #10b981;
+      word-break: break-word;
+      
+      /* Sol marjin: Kırmızı çizgi 30px + 24px nefes payı = 54px */
+      padding: 16px 20px 40px 54px;
+      
+      /* Satır yüksekliği tam 32px kilitli */
+      line-height: var(--grid-unit);
+      
+      background-attachment: local;
+      background-repeat: repeat;
+    }
+
+    .paper-editor:empty:before {
+      content: attr(data-placeholder);
+      color: rgba(120, 133, 127, 0.4);
+      pointer-events: none;
+      display: block;
+      line-height: var(--grid-unit);
+    }
+
+    /* Desenler: 32px Adımlı ve local attachment ile kaydırma uyumlu */
+    .pattern-lined .paper-editor {
+      background-image: linear-gradient(to bottom, transparent 31px, var(--paper-line) 32px);
+      background-size: 100% var(--grid-unit);
+      background-position: 0 16px;
+    }
+
+    .pattern-grid .paper-editor {
+      background-image: 
+        linear-gradient(to right, var(--paper-line) 1px, transparent 1px),
+        linear-gradient(to bottom, transparent 31px, var(--paper-line) 32px);
+      background-size: 28px var(--grid-unit);
+      background-position: 0 16px;
+    }
+
+    .pattern-dots .paper-editor {
+      background-image: radial-gradient(var(--dot-color) 1.4px, transparent 1.4px);
+      background-size: 28px var(--grid-unit);
+      background-position: 0 16px;
+    }
+
+    .pattern-blank .paper-editor {
+      background-image: none;
+    }
+
+    /* Blok satırları: Sıfır marjinle tam 32px satır yüksekliğinde */
+    .paper-editor div,
+    .paper-editor p {
+      margin: 0;
+      padding: 0;
+      line-height: var(--grid-unit);
+      min-height: var(--grid-unit);
+    }
+
+    /* H1 Başlık: 32px baseline kilidi */
+    .paper-editor h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--paper-text);
+      margin: 0;
+      padding: 0;
+      line-height: var(--grid-unit);
+      min-height: var(--grid-unit);
+      display: block;
+    }
+
+    .paper-editor ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .paper-editor li {
+      margin: 0;
+      padding: 0;
+      line-height: var(--grid-unit);
+      min-height: var(--grid-unit);
+    }
+
+    /* Todo Bileşeni */
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      min-height: var(--grid-unit);
+      line-height: var(--grid-unit);
+      user-select: none;
+    }
+
+    .todo-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid #10b981;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.7);
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    .todo-checkbox:checked {
+      background: #10b981;
+    }
+
+    .todo-checkbox:checked::before {
+      content: "";
+      width: 7.5px;
+      height: 4px;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+      transform: rotate(-45deg) translate(0.5px, -1px);
+    }
+
+    .todo-text {
+      flex: 1;
+      outline: none;
+      line-height: var(--grid-unit);
+    }
+
+    .todo-checkbox:checked + .todo-text {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    /* Zaman Rozeti (Time Pill) */
+    .time-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #065f46;
+      background: rgba(16, 185, 129, 0.16);
+      padding: 0 7px;
+      height: 22px;
+      line-height: 22px;
+      border-radius: 6px;
+      margin-right: 6px;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+    .sheet-dark-mode .time-badge {
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.22);
+    }
+
+    /* Alt Temiz Boş Alan */
+    .sheet-footer-blank {
+      height: 16px;
+      background: transparent;
+    }
+
+    /* Pastel Sekmeler (01 - 05) */
+    .tabs-shelf {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      padding: 6px 2px 0 2px;
+      z-index: 2;
+    }
+
+    .tab-pill {
+      border: none;
+      padding: 9px 2px 11px 2px;
+      border-radius: 0 0 16px 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      transition: all 0.22s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      opacity: 0.82;
+      transform: translateY(-2px);
+    }
+
+    .tab-pill:hover {
+      opacity: 0.95;
+      transform: translateY(0);
+    }
+
+    .tab-pill.active {
+      opacity: 1;
+      transform: translateY(4px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-pill.active::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 15%;
+      right: 15%;
+      height: 3px;
+      background: currentColor;
+      border-radius: 2px;
+      opacity: 0.45;
+    }
+
+    .tab-num {
+      font-weight: 700;
+      font-size: 13.5px;
+      line-height: 1.1;
+    }
+
+    .tab-label {
+      font-size: 8.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.85;
+    }
+
+    .tab-1 { background-color: var(--tab-01); color: var(--tab-01-dark); }
+    .tab-2 { background-color: var(--tab-02); color: var(--tab-02-dark); }
+    .tab-3 { background-color: var(--tab-03); color: var(--tab-03-dark); }
+    .tab-4 { background-color: var(--tab-04); color: var(--tab-04-dark); }
+    .tab-5 { background-color: var(--tab-05); color: var(--tab-05-dark); }
+  </style>
+</head>
+<body>
+
+  <!-- Yan Slide Drawer Overlay -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Yan Slide Drawer Menüsü -->
+  <aside class="drawer-panel" id="drawerPanel">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        <span>DailyFlow</span>
+      </div>
+      <button class="drawer-close-btn" id="closeDrawerBtn" title="Close Menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="drawer-nav-list">
+      <li class="drawer-nav-item">
+        <a href="index.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          Dashboard'a Dön
+        </a>
+      </li>
+      <li class="drawer-nav-item">
+        <a href="#" class="active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          Not Defteri (Notebook)
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <div class="app-frame">
+    
+    <!-- Defter Gövdesi -->
+    <main class="notebook-container">
+      
+      <div class="notebook-sheet" id="notebookSheet">
+        
+        <!-- Üst Toolbar -->
+        <div class="sheet-toolbar">
+          
+          <div class="toolbar-left-group">
+            <button class="btn-hamburger" id="openDrawerBtn" title="Open Menu">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+
+            <div class="tb-divider"></div>
+
+            <!-- Focus kaybını önlemek için mousedown preventDefault eklendi -->
+            <button class="tb-btn" id="btnH1" onmousedown="handleAction(event, 'h1')" title="Heading 1">H1</button>
+            <button class="tb-btn" id="btnBold" onmousedown="handleAction(event, 'bold')" title="Bold"><strong>B</strong></button>
+            <button class="tb-btn" id="btnItalic" onmousedown="handleAction(event, 'italic')" title="Italic"><em>I</em></button>
+            
+            <div class="tb-divider"></div>
+
+            <button class="tb-btn" id="btnTodo" onmousedown="handleAction(event, 'todo')" title="Todo">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Todo
+            </button>
+            <button class="tb-btn" id="btnBullet" onmousedown="handleAction(event, 'bullet')" title="Bullet Item">
+              • Bullet
+            </button>
+            <button class="tb-btn" id="btnTime" onmousedown="handleAction(event, 'time')" title="Insert Time">
+              Time
+            </button>
+          </div>
+
+          <!-- Sağ Araçlar -->
+          <div class="toolbar-right-group">
+            <button class="icon-action-btn" id="toggleDarkModeBtn" title="Dark / Paper Mode">
+              <svg id="moonIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </button>
+
+            <button class="icon-action-btn" id="togglePatternBtn" title="Change Grid / Lines">
+              <svg id="patternIconSvg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Yazı Alanı: Çizgilerle Tam Kilitli Baseline Grid (32px) -->
+        <div class="sheet-body pattern-grid" id="sheetBody">
+          <div id="noteEditor" class="paper-editor" contenteditable="true" data-placeholder="Start typing your thoughts, notes or tasks..."></div>
+        </div>
+
+        <div class="sheet-footer-blank"></div>
+
+      </div>
+
+      <!-- Alt Pastel Sekmeler (01 - 05) -->
+      <nav class="tabs-shelf">
+        <button class="tab-pill tab-1 active" data-tab="1">
+          <span class="tab-num">01</span>
+          <span class="tab-label">Tasks</span>
+        </button>
+        <button class="tab-pill tab-2" data-tab="2">
+          <span class="tab-num">02</span>
+          <span class="tab-label">Ideas</span>
+        </button>
+        <button class="tab-pill tab-3" data-tab="3">
+          <span class="tab-num">03</span>
+          <span class="tab-label">Study</span>
+        </button>
+        <button class="tab-pill tab-4" data-tab="4">
+          <span class="tab-num">04</span>
+          <span class="tab-label">Drafts</span>
+        </button>
+        <button class="tab-pill tab-5" data-tab="5">
+          <span class="tab-num">05</span>
+          <span class="tab-label">Archive</span>
+        </button>
+      </nav>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Slide Drawer
+    const openDrawerBtn = document.getElementById('openDrawerBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerPanel = document.getElementById('drawerPanel');
+
+    function toggleDrawer(open) {
+      if (open) {
+        drawerOverlay.classList.add('active');
+        drawerPanel.classList.add('active');
+      } else {
+        drawerOverlay.classList.remove('active');
+        drawerPanel.classList.remove('active');
+      }
+    }
+
+    openDrawerBtn.addEventListener('click', () => toggleDrawer(true));
+    closeDrawerBtn.addEventListener('click', () => toggleDrawer(false));
+    drawerOverlay.addEventListener('click', () => toggleDrawer(false));
+
+    // 32px Kilitli Kağıt Desenleri
+    const patterns = ['pattern-grid', 'pattern-lined', 'pattern-dots', 'pattern-blank'];
+    const patternSvgs = {
+      'pattern-grid': `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line>`,
+      'pattern-lined': `<line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line>`,
+      'pattern-dots': `<circle cx="5" cy="5" r="1.5" fill="currentColor"></circle><circle cx="12" cy="5" r="1.5" fill="currentColor"></circle><circle cx="19" cy="5" r="1.5" fill="currentColor"></circle><circle cx="5" cy="12" r="1.5" fill="currentColor"></circle><circle cx="12" cy="12" r="1.5" fill="currentColor"></circle><circle cx="19" cy="12" r="1.5" fill="currentColor"></circle><circle cx="5" cy="19" r="1.5" fill="currentColor"></circle><circle cx="12" cy="19" r="1.5" fill="currentColor"></circle><circle cx="19" cy="19" r="1.5" fill="currentColor"></circle>`,
+      'pattern-blank': `<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>`
+    };
+
+    const defaultData = {
+      1: {
+        html: `<div><span class="time-badge">20:29</span> Review Play Store closed test feedback</div>
+               <div class="todo-item"><input type="checkbox" class="todo-checkbox" checked><span class="todo-text">Update Terms of Service & Onboarding</span></div>
+               <div class="todo-item"><input type="checkbox" class="todo-checkbox"><span class="todo-text">Polish pastel notebook theme for DailyFlow</span></div>
+               <div>Focus on offline-first productivity metrics</div>`,
+        pattern: "pattern-grid"
+      },
+      2: { html: "", pattern: "pattern-grid" },
+      3: { html: "", pattern: "pattern-dots" },
+      4: { html: "", pattern: "pattern-lined" },
+      5: { html: "", pattern: "pattern-blank" }
+    };
+
+    let activeTab = 1;
+    let notebookStore = JSON.parse(localStorage.getItem('dailyflow_perfect_notebook')) || defaultData;
+
+    const editorEl = document.getElementById('noteEditor');
+    const sheetBody = document.getElementById('sheetBody');
+    const sheetEl = document.getElementById('notebookSheet');
+    const tabButtons = document.querySelectorAll('.tab-pill');
+    const togglePatternBtn = document.getElementById('togglePatternBtn');
+    const patternIconSvg = document.getElementById('patternIconSvg');
+    const toggleDarkModeBtn = document.getElementById('toggleDarkModeBtn');
+
+    // Toolbar Durum Butonları Referansları
+    const btnH1 = document.getElementById('btnH1');
+    const btnBold = document.getElementById('btnBold');
+    const btnItalic = document.getElementById('btnItalic');
+    const btnBullet = document.getElementById('btnBullet');
+
+    function loadTab(tabNum) {
+      activeTab = tabNum;
+      const data = notebookStore[activeTab] || { html: "", pattern: "pattern-grid" };
+      editorEl.innerHTML = data.html || "";
+      setPattern(data.pattern || "pattern-grid");
+
+      tabButtons.forEach(btn => {
+        if (parseInt(btn.getAttribute('data-tab')) === activeTab) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      updateToolbarStates();
+    }
+
+    function saveActiveTab() {
+      if (!notebookStore[activeTab]) notebookStore[activeTab] = {};
+      notebookStore[activeTab].html = editorEl.innerHTML;
+      localStorage.setItem('dailyflow_perfect_notebook', JSON.stringify(notebookStore));
+    }
+
+    function setPattern(patternClass) {
+      sheetBody.className = "sheet-body " + patternClass;
+      if (patternSvgs[patternClass]) {
+        patternIconSvg.innerHTML = patternSvgs[patternClass];
+      }
+      if (notebookStore[activeTab]) {
+        notebookStore[activeTab].pattern = patternClass;
+        localStorage.setItem('dailyflow_perfect_notebook', JSON.stringify(notebookStore));
+      }
+    }
+
+    togglePatternBtn.addEventListener('click', () => {
+      const cur = notebookStore[activeTab]?.pattern || 'pattern-grid';
+      const idx = patterns.indexOf(cur);
+      const next = patterns[(idx + 1) % patterns.length];
+      setPattern(next);
+    });
+
+    toggleDarkModeBtn.addEventListener('click', () => {
+      sheetEl.classList.toggle('sheet-dark-mode');
+    });
+
+    editorEl.addEventListener('input', () => {
+      saveActiveTab();
+      updateToolbarStates();
+    });
+
+    editorEl.addEventListener('change', (e) => {
+      if (e.target.classList.contains('todo-checkbox')) {
+        if (e.target.checked) {
+          e.target.setAttribute('checked', 'checked');
+        } else {
+          e.target.removeAttribute('checked');
+        }
+        saveActiveTab();
+      }
+    });
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = parseInt(btn.getAttribute('data-tab'));
+        loadTab(t);
+      });
+    });
+
+    /* --- BUTON DURUMLARI (ACTIVE/INACTIVE TOGGLE) --- */
+    function updateToolbarStates() {
+      if (document.activeElement !== editorEl && !editorEl.contains(document.activeElement)) {
+        return;
+      }
+      // Bold aktif mi?
+      try {
+        const isBold = document.queryCommandState('bold');
+        btnBold.classList.toggle('active', isBold);
+
+        const isItalic = document.queryCommandState('italic');
+        btnItalic.classList.toggle('active', isItalic);
+
+        const isBullet = document.queryCommandState('insertUnorderedList');
+        btnBullet.classList.toggle('active', isBullet);
+
+        // H1 aktif mi kontrolü
+        const block = document.queryCommandValue('formatBlock');
+        const isH1 = block === 'h1' || block === 'H1';
+        btnH1.classList.toggle('active', isH1);
+      } catch(e) {}
+    }
+
+    // İmleç hareket ettikçe veya metin seçildikçe butonların durumunu güncelle
+    document.addEventListener('selectionchange', updateToolbarStates);
+    editorEl.addEventListener('keyup', updateToolbarStates);
+    editorEl.addEventListener('mouseup', updateToolbarStates);
+
+    /* --- BUTON TIKLAMALARI VE ODAK KORUMA --- */
+    function handleAction(event, action) {
+      // Focus'un yazı alanından çıkmasını engeller!
+      event.preventDefault();
+      editorEl.focus();
+
+      if (action === 'bold') {
+        document.execCommand('bold', false, null);
+      } else if (action === 'italic') {
+        document.execCommand('italic', false, null);
+      } else if (action === 'h1') {
+        const currentBlock = document.queryCommandValue('formatBlock');
+        if (currentBlock === 'h1' || currentBlock === 'H1') {
+          document.execCommand('formatBlock', false, '<div>');
+        } else {
+          document.execCommand('formatBlock', false, '<h1>');
+        }
+      } else if (action === 'bullet') {
+        document.execCommand('insertUnorderedList', false, null);
+      } else if (action === 'todo') {
+        insertTodoItem();
+      } else if (action === 'time') {
+        insertTimeBadge();
+      }
+
+      saveActiveTab();
+      updateToolbarStates();
+    }
+
+    function insertTodoItem() {
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return;
+      
+      const todoWrapper = document.createElement('div');
+      todoWrapper.className = 'todo-item';
+      todoWrapper.innerHTML = `<input type="checkbox" class="todo-checkbox"><span class="todo-text" placeholder="Görev...">Task item</span>`;
+      
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(todoWrapper);
+      
+      const textSpan = todoWrapper.querySelector('.todo-text');
+      const newRange = document.createRange();
+      newRange.selectNodeContents(textSpan);
+      newRange.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+
+    function insertTimeBadge() {
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return;
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      const badge = document.createElement('span');
+      badge.className = 'time-badge';
+      badge.textContent = timeStr;
+      
+      const space = document.createTextNode(' ');
+      const range = sel.getRangeAt(0);
+      
+      range.insertNode(space);
+      range.insertNode(badge);
+      
+      range.setStartAfter(space);
+      range.setEndAfter(space);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    loadTab(1);
+  </script>
+</body>
+</html>
