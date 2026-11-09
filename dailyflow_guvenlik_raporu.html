@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>DailyFlow - Güvenlik ve Test Raporu</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm 18mm 14mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2937;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 11pt;
+      line-height: 1.55;
+    }
+    .header-banner {
+      border-bottom: 2px solid #2d7a58;
+      padding-bottom: 12px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .brand-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #1b4d37;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .brand-sub {
+      font-size: 10pt;
+      color: #4b5563;
+      margin-top: 4px;
+    }
+    .meta-box {
+      text-align: right;
+      font-size: 9pt;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+    .meta-box strong {
+      color: #111827;
+    }
+    h2 {
+      font-size: 13pt;
+      color: #111827;
+      border-left: 4px solid #2d7a58;
+      padding-left: 10px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+    h3 {
+      font-size: 11.5pt;
+      color: #1f2937;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    p {
+      margin: 0 0 10px 0;
+      text-align: justify;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px 0;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 700;
+      color: #374151;
+    }
+    tr:nth-child(even) td {
+      background: #fafbf9;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-critical { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+    .badge-medium { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .badge-low { background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
+    .badge-fp { background: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
+    .badge-pass { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+
+    .card {
+      background: #fdfdfd;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 6px;
+    }
+    .card-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+    }
+    .code-box {
+      background: #1e2925;
+      color: #e5ede8;
+      padding: 9px 12px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 8.5pt;
+      margin: 8px 0;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+    .avoid-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .stat-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      flex: 1;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 10px 12px;
+      background: #f9fbf9;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #1b4d37;
+    }
+    .stat-label {
+      font-size: 8.5pt;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    ul, ol {
+      margin: 6px 0 10px 0;
+      padding-left: 20px;
+      font-size: 10pt;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    .callout {
+      background: #effaf4;
+      border-left: 4px solid #2d7a58;
+      padding: 8px 12px;
+      border-radius: 0 5px 5px 0;
+      font-size: 9.5pt;
+      color: #1a4230;
+      margin: 10px 0;
+    }
+    .footer-note {
+      font-size: 8.5pt;
+      color: #9ca3af;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 6px;
+      margin-top: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-banner">
+    <div>
+      <h1 class="brand-title">DailyFlow.</h1>
+      <div class="brand-sub">Kapsamlı Güvenlik (SAST) ve Çalışma Zamanı Test Raporu</div>
+    </div>
+    <div class="meta-box">
+      <div><strong>Tarih:</strong> 24 Ekim 2026</div>
+      <div><strong>Denetim Standardı:</strong> sast_scaner / sast_validator</div>
+      <div><strong>Sürüm / Dal:</strong> v1.4 (versionCode 6) / main</div>
+    </div>
+  </div>
+
+  <!-- YÖNETİCİ ÖZETİ -->
+  <div class="avoid-break">
+    <h2>1. Yönetici Özeti (Executive Summary)</h2>
+    <p>
+      Bu rapor, <strong>DailyFlow</strong> üretkenlik ve finans takip uygulamasının Web (<code>dailyflowweb.com</code>) ve Android mobil platformları için gerçekleştirilen statik kod güvenliği analizi (SAST), veri akışı doğrulaması ve Playwright destekli çoklu tarayıcı çalışma zamanı testlerinin bulgularını sunar.
+    </p>
+    <p>
+      Denetim sonucunda uygulamanın <strong>"Local-First / Offline-First"</strong> mimarisi sayesinde merkezi sunucu ve veritabanı taşımadığı; bu sebeple çok kullanıcılı yetkilendirme açıkları (IDOR, oturum sızıntıları, API yetki aşımları) gibi geleneksel tehditleri mimari olarak barındırmadığı teyit edilmiştir. İstemci tarafında DOM tabanlı XSS korumalarının çalıştığı Playwright testleriyle kanıtlanmıştır. Buna karşın, <strong>Android Release Keystore imza anahtarları ve parolalarının kaynak kontrolü (Git) geçmişinde yer alması</strong> acil müdahale gerektiren en kritik bulgu olarak tespit edilmiştir.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">24 / 24</div>
+        <div class="stat-label">Tarayıcı Test Başarısı</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #b91c1c;">1</div>
+        <div class="stat-label">Kritik Bulgu</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #b45309;">3</div>
+        <div class="stat-label">Orta Seviye Bulgu</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #0369a1;">2</div>
+        <div class="stat-label">Düşük / Tavsiye</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MİMARİ VE TEKNOLOJİ TESPİTİ -->
+  <div class="avoid-break">
+    <h2>2. Proje ve Mimari Tanıma (Sistem Mimarisi)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Bileşen</th>
+          <th style="width: 40%;">Kullanılan Teknoloji / Kütüphane</th>
+          <th style="width: 35%;">Güvenlik &amp; İzolasyon Modeli</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Web Frontend</strong></td>
+          <td>Vanilla JavaScript (ES6+), HTML5, Modern CSS3</td>
+          <td>Çerçevesiz saf DOM manipülasyonu; harici script bağımlılığı asgari düzeyde.</td>
+        </tr>
+        <tr>
+          <td><strong>Mobil Altyapı</strong></td>
+          <td>Capacitor 8 (Android WebView Wrapper)</td>
+          <td><code>@capacitor/local-notifications</code> ile çevrimdışı yerel bildirimler.</td>
+        </tr>
+        <tr>
+          <td><strong>Veri Depolama</strong></td>
+          <td>İstemci Taraflı <code>localStorage</code> (JSON)</td>
+          <td>Sunucusuz mimari; veriler tamamen kullanıcının cihazında saklanır.</td>
+        </tr>
+        <tr>
+          <td><strong>Kimlik &amp; Oturum</strong></td>
+          <td>Mevcut Değil (Hesapsız / Local-First)</td>
+          <td>Kayıt/Giriş sistemi yoktur; kullanıcı izolasyonu cihaz bazlıdır.</td>
+        </tr>
+        <tr>
+          <td><strong>Sunucu &amp; Dağıtım</strong></td>
+          <td>Firebase Hosting (Statik Web Dağıtımı)</td>
+          <td>Statik HTML/CSS/JS barındırma; veritabanı/bulut fonksiyonu içermez.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Veri İzolasyonu Tespiti:</strong> Kullanıcıların birbirlerinin görev veya finans kayıtlarına erişebileceği merkezi bir sunucu/API mevcut değildir. İzolasyon doğrudan tarayıcı depolama alanı ve cihaz kum havuzu (sandbox) seviyesinde sağlanmaktadır.
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ÇALIŞMA ZAMANI PLAYWRIGHT TESTLERİ -->
+  <h2>3. Gerçek Tarayıcı Çalışma Zamanı Testleri (Playwright E2E)</h2>
+  <p>
+    Tüm fonksiyonel ve güvenlik senaryoları, yerel Chromium, Firefox ve WebKit (Safari) motorlarında <strong>gerçek zamanlı olarak çalıştırılmış</strong> ve %100 başarıyla tamamlanmıştır.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 45%;">Test Senaryosu</th>
+        <th style="width: 20%;">Hedef Motorlar</th>
+        <th style="width: 15%;">Sonuç</th>
+        <th style="width: 20%;">Doğrulanan Özellik</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1. Görev Akışı (Ekle, Tamamla, Sil)</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Fonksiyonel bütünlük ve liste güncelleme</td>
+      </tr>
+      <tr>
+        <td>2. Görev Başlığında DOM XSS Injection</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td><code>escapeHtml()</code> filtresi zararlı yükü etkisizleştirdi</td>
+      </tr>
+      <tr>
+        <td>3. Harcama Başlığında DOM XSS Injection</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Harcama listesinde HTML kaçışı doğrulandı</td>
+      </tr>
+      <tr>
+        <td>4. Finans Yönetimi &amp; Negatif Girdi Kontrolü</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Undo Toast akışı ve negatif değerlerin reddi</td>
+      </tr>
+      <tr>
+        <td>5. Pomodoro Modları (25/45/50 dk)</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Zamanlayıcı ve süre göstergesi senkronizasyonu</td>
+      </tr>
+      <tr>
+        <td>6. Sekmeli Defter (Notebook) Kalıcılığı</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Sekmeler arası geçişte veri kaybı olmadığı teyit edildi</td>
+      </tr>
+      <tr>
+        <td>7. Mobil İzolasyon (375px vs 1200px)</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>Mobilde Footer ve İndirme kartının gizlendiği kanıtlandı</td>
+      </tr>
+      <tr>
+        <td>8. Konsol &amp; Sayfa Sağlığı Denetimi</td>
+        <td>Chromium, Firefox, WebKit</td>
+        <td><span class="badge badge-pass">GEÇTİ (PASSED)</span></td>
+        <td>0 kritik runtime JavaScript hatası</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SAST BULGULARI -->
+  <h2>4. SAST Kod Güvenliği ve Doğrulama Bulguları</h2>
+
+  <!-- BULGU 1 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 1: Android İmza Anahtarlarının (.jks) Git Geçmişinde Bulunması ve Parolaların Açıkça Tanımlanması</div>
+      <span class="badge badge-critical">KRİTİK / DOĞRULANDI</span>
+    </div>
+    <p><strong>CWE Sınıflandırması:</strong> CWE-798 (Use of Hard-coded Credentials), CWE-200 (Exposure of Sensitive Information)</p>
+    <p><strong>Etkilenen Dosyalar:</strong> <code>android/app/build.gradle</code>, <code>android/app/dailyflow-release.jks</code>, <code>android/app/dailyflow-release-key.jks</code>, <code>.gitignore</code></p>
+    <p><strong>Tespit Kanıtı:</strong></p>
+    <div class="code-box">
+// android/app/build.gradle (Satır 19-26)
+signingConfigs {
+    release {
+        storeFile file('dailyflow-release.jks')
+        storePassword '[GİZLENDİ / REDACTED_PASSWORD]'
+        keyAlias 'dailyflow'
+        keyPassword '[GİZLENDİ / REDACTED_PASSWORD]'
+    }
+}
+    </div>
+    <p>
+      <code>git log --all -p -- "*jks"</code> sorgulamasında anahtar dosyalarının geçmiş commit'lerde (<code>5413219...</code> ve <code>597cf62...</code>) Git geçmişine eklendiği doğrulanmıştır. Kök <code>.gitignore</code> dosyasında <code>*.jks</code> engellenmemiş, <code>android/.gitignore</code> dosyasında ise kural yorum satırı olarak kalmıştır.
+    </p>
+    <p><strong>Olası Etki:</strong> Depoya erişebilen herhangi bir saldırgan, Google Play'e yüklenen uygulamanın imza sertifikasını ve parolasını elde ederek kötü niyetli sahte güncelleme paketleri oluşturabilir.</p>
+    <p><strong>Önerilen Düzeltme:</strong> Keystore parolaları <code>key.properties</code> veya CI/CD Secrets ortamına taşınmalı; <code>.gitignore</code> içine <code>*.jks</code> eklenmeli; Git geçmişindeki anahtarlar <code>git-filter-repo</code> ile temizlenmeli ve Google Play App Signing üzerinden anahtar rotasyonu talep edilmelidir.</p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- BULGU 2 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 2: Android Manifest Üzerinde allowBackup ve usesCleartextTraffic İzinleri</div>
+      <span class="badge badge-medium">ORTA / DOĞRULANDI</span>
+    </div>
+    <p><strong>CWE Sınıflandırması:</strong> CWE-276 (Incorrect Default Permissions), CWE-319 (Cleartext Transmission)</p>
+    <p><strong>Etkilenen Dosya:</strong> <code>android/app/src/main/AndroidManifest.xml</code> (Satır 5, 11)</p>
+    <div class="code-box">
+&lt;application
+    android:allowBackup="true"
+    android:usesCleartextTraffic="true" ...&gt;
+    </div>
+    <p><strong>Olası Etki:</strong> <code>allowBackup="true"</code>, fiziksel erişim durumunda USB hata ayıklama (ADB) üzerinden uygulamanın tüm yerel depolama verilerinin (görevler, finans, notlar) kilitli ekrandan dahi bilgisayara kopyalanabilmesine imkan tanır. <code>usesCleartextTraffic="true"</code> ise şifresiz HTTP trafiğine izin vererek MitM saldırılarına zemin hazırlar.</p>
+    <p><strong>Önerilen Düzeltme:</strong> Her iki parametre de <code>false</code> olarak ayarlanmalı veya şifresiz trafik izni kaldırılmalıdır.</p>
+  </div>
+
+  <!-- BULGU 3 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 3: Capacitor WebView Karma İçerik (allowMixedContent) İzni</div>
+      <span class="badge badge-medium">ORTA / DOĞRULANDI</span>
+    </div>
+    <p><strong>CWE Sınıflandırması:</strong> CWE-311 (Missing Encryption of Sensitive Data)</p>
+    <p><strong>Etkilenen Dosya:</strong> <code>capacitor.config.json</code> (Satır 8-10)</p>
+    <div class="code-box">
+"android": {
+  "allowMixedContent": true
+}
+    </div>
+    <p><strong>Olası Etki:</strong> Güvenli HTTPS oturumu içerisinde güvenli olmayan HTTP kaynaklarının yüklenmesine müsaade eder.</p>
+    <p><strong>Önerilen Düzeltme:</strong> <code>"allowMixedContent": false</code> olarak değiştirilmeli ya da blok konfigürasyondan çıkarılmalıdır.</p>
+  </div>
+
+  <!-- BULGU 4 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 4: Firebase Hosting Üzerinde Eksik Güvenlik Başlıkları ve CSP Yokluğu</div>
+      <span class="badge badge-medium">ORTA / DOĞRULANDI</span>
+    </div>
+    <p><strong>CWE Sınıflandırması:</strong> CWE-1021 (Clickjacking), CWE-693 (Protection Mechanism Failure)</p>
+    <p><strong>Etkilenen Dosyalar:</strong> <code>firebase.json</code>, <code>index.html</code></p>
+    <p><strong>Açıklama:</strong> <code>firebase.json</code> yapılandırmasında HTTP güvenlik başlıkları (<code>X-Frame-Options</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>) ve Content Security Policy (CSP) tanımlanmamıştır.</p>
+    <p><strong>Önerilen Düzeltme:</strong> Firebase Hosting yapılandırmasına <code>headers</code> bloğu eklenerek Clickjacking ve MIME-sniffing korumaları etkinleştirilmelidir.</p>
+  </div>
+
+  <!-- BULGU 5 & 6 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 5 &amp; 6: ProGuard/R8 Karartma ve Tarih Formatlarında Savunma Derinliği</div>
+      <span class="badge badge-low">DÜŞÜK / İNCELEME GEREKLİ</span>
+    </div>
+    <p><strong>CWE Sınıflandırması:</strong> CWE-656 (Reliance on Security Through Obscurity), CWE-79 (Improper Neutralization)</p>
+    <p><strong>Etkilenen Dosyalar:</strong> <code>android/app/build.gradle</code> (Satır 30: <code>minifyEnabled false</code>), <code>script.js</code> (Satır 254, 1269)</p>
+    <p><strong>Açıklama:</strong> Release derlemesinde kod küçültme/karartma kapalıdır. Ayrıca <code>script.js</code> içerisindeki <code>task.createdAt</code> ve <code>formatExpenseDate</code> metinleri doğrudan HTML şablonuna basılmaktadır; normal kullanımda güvenli format döndürse de, savunma derinliği (defense-in-depth) açısından <code>escapeHtml()</code> ile sarılması önerilir.</p>
+  </div>
+
+  <!-- BULGU 7 -->
+  <div class="card avoid-break">
+    <div class="card-header">
+      <div class="card-title">Bulgu 7: "Çok Kullanıcılı Yetkisiz Erişim / IDOR / Oturum İhlali" İddiası</div>
+      <span class="badge badge-fp">YANLIŞ ALARM (FALSE POSITIVE)</span>
+    </div>
+    <p><strong>Açıklama:</strong> Uygulama merkezi bir sunucuya veya kullanıcı hesapları veritabanına sahip değildir. Tüm veriler yalnızca yerel cihazda depolanmaktadır. Playwright çoklu oturum testinde de kanıtlandığı üzere, kullanıcılar arası veri sızıntısı veya IDOR riski mimari gereği imkansızdır.</p>
+  </div>
+
+  <!-- MOBİL BEYANI VE ÖNCELİK TABLOSU -->
+  <div class="avoid-break">
+    <h2>5. Mobil Cihaz / Emülatör Durumu Beyanı</h2>
+    <p>
+      Geliştirme ortamına bağlı fiziksel bir Android cihaz veya aktif emülatör bulunmadığından, <strong>"APK cihaz üzerinde çalıştırıldı" şeklinde gerçeğe aykırı bir bildirim yapılmamıştır</strong>. Mobil değerlendirme; kaynak kodları, Gradle konfigürasyonu, Android Manifest izinleri ve Capacitor köprüsünün statik/mimari denetimiyle gerçekleştirilmiştir.
+    </p>
+
+    <h2>6. Önceliklendirilmiş İyileştirme Yol Haritası</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Öncelik</th>
+          <th>Aksiyon Konusu</th>
+          <th>Risk Derecesi</th>
+          <th>Tavsiye Edilen Aksiyon</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1 (Acil)</strong></td>
+          <td>Keystore &amp; Git İzolasyonu</td>
+          <td><span class="badge badge-critical">KRİTİK</span></td>
+          <td>Şifreleri <code>key.properties</code> ortamına al, .gitignore'a <code>*.jks</code> ekle, Git geçmişini temizle.</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Android Manifest Sıkılaştırma</td>
+          <td><span class="badge badge-medium">ORTA</span></td>
+          <td><code>allowBackup="false"</code> ve <code>usesCleartextTraffic="false"</code> tanımla.</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>Capacitor Güvenliği</td>
+          <td><span class="badge badge-medium">ORTA</span></td>
+          <td><code>allowMixedContent: false</code> yap.</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>Web Güvenlik Başlıkları</td>
+          <td><span class="badge badge-medium">ORTA</span></td>
+          <td><code>firebase.json</code> içerisine CSP, X-Frame-Options ve nosniff başlıklarını ekle.</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>ProGuard &amp; XSS Derinliği</td>
+          <td><span class="badge badge-low">DÜŞÜK</span></td>
+          <td><code>minifyEnabled true</code> yap; tarih çıktılarını <code>escapeHtml()</code> ile sar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    DailyFlow Güvenlik ve Test Denetimi &bull; sast_scaner_agent &amp; sast_validator_agent standartlarına uygun olarak üretilmiştir.
+  </div>
+
+</body>
+</html>
